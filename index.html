@@ -1,0 +1,1387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#15182B">
+  <meta name="description" content="PRESS START — explore the history, people and surprises behind video games.">
+  <title>PRESS START | Player One</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --site-primary: #F45B83;
+      --site-secondary: #303653;
+      --site-background: #15182B;
+      --site-on-primary: #15182B;
+      --site-on-secondary: #F5F2EB;
+      --site-on-background: #F5F2EB;
+      --site-font-body: Arial, Helvetica, sans-serif;
+      --site-font-heading: "Arial Black", Arial, Helvetica, sans-serif;
+      --site-heading-scale: 1;
+      --site-spacing-scale: 1;
+      --site-radius-scale: 1;
+      --site-decoration-opacity: 1;
+      --bg: light-dark(#F5F2EB, var(--site-background));
+      --ink: light-dark(#171A2D, var(--site-on-background));
+      --muted: light-dark(#616477, #B9BDD0);
+      --surface: light-dark(#FFFFFF, #232740);
+      --surface-raised: light-dark(#ECE8E0, var(--site-secondary));
+      --surface-deep: light-dark(#E5E0D8, var(--site-secondary));
+      --line: light-dark(rgba(21,24,43,.16), rgba(245,242,235,.18));
+      --accent: var(--site-primary);
+      --accent-ink: var(--site-on-primary);
+      --heading-font: var(--site-font-heading);
+      --body-font: var(--site-font-body);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+    body { min-width: 320px; margin: 0; font-family: var(--body-font); background: var(--bg); color: var(--ink); }
+    button, a { font: inherit; }
+    a { color: inherit; }
+    button { cursor: pointer; }
+    .app-root { min-height: 100vh; width: 100%; border-radius: 0; overflow: clip; background-color: light-dark(#F5F2EB, var(--site-background)); color: light-dark(#171A2D, var(--site-on-background)); }
+    .hero { position: relative; isolation: isolate; min-height: max(760px, 100svh); overflow: hidden; padding: calc(1.75rem * var(--site-spacing-scale)) clamp(1.2rem,5vw,5.5rem) 4rem; background: var(--bg); }
+    .hero-grid { position: absolute; z-index: -1; inset: 0; opacity: calc(.55 * var(--site-decoration-opacity)); background-image: radial-gradient(light-dark(rgba(21,24,43,.18),rgba(185,189,208,.2)) 1px,transparent 1px); background-size: 30px 30px; mask-image: linear-gradient(90deg,transparent 38%,#000 70%); }
+    .site-header { display:flex; justify-content:space-between; align-items:center; position:relative; z-index:3; }
+    .brand { display:flex; align-items:center; gap:.7rem; text-decoration:none; }
+    .brand-mark { width:40px; height:40px; }
+    .brand-wordmark { display:grid; color:var(--ink); font:800 .76rem/1.03 Consolas,monospace; letter-spacing:.1em; }
+    .header-status { display:flex; align-items:center; gap:.65rem; color:var(--muted); font:700 .62rem/1 Consolas,monospace; letter-spacing:.12em; }
+    .header-status i { width:7px; height:7px; background:var(--accent); border-radius:50%; }
+    .header-status span { color:var(--accent); }
+    .hero-layout { position:relative; display:flex; align-items:center; min-height:calc(100svh - 120px); max-width:1440px; margin-inline:auto; }
+    .hero-content { position:relative; z-index:2; width:min(47%,565px); padding:3rem 0 2rem; }
+    .eyebrow { display:flex; align-items:center; gap:.65rem; margin:0 0 1.1rem; color:var(--accent); font:700 .68rem/1.4 Consolas,monospace; letter-spacing:.14em; }
+    .eyebrow span { width:7px; height:7px; background:var(--accent); display:inline-block; }
+    .hero h1 { margin:0; font-size:calc(clamp(3.3rem,6.6vw,6.8rem) * var(--site-heading-scale)); font-family:var(--heading-font); font-weight:900; line-height:.91; letter-spacing:-.085em; text-wrap:balance; }
+    .hero h1 em { color:var(--accent); font-style:normal; }
+    .hero-intro { max-width:34ch; margin:1.25rem 0 2rem; color:var(--muted); font-size:1rem; line-height:1.65; }
+    .menu-caption { display:flex; align-items:center; gap:.85rem; margin-bottom:.4rem; color:var(--muted); font:700 .64rem/1.4 Consolas,monospace; letter-spacing:.18em; }
+    .menu-caption i { width:52px; height:1px; background:var(--accent); }
+    .main-menu { display:flex; flex-direction:column; border-top:1px solid var(--line); }
+    .menu-item { position:relative; display:grid; grid-template-columns:2.15rem 1.6rem minmax(0,1fr) 1.4rem; align-items:center; gap:.55rem; width:100%; min-height:53px; padding:.7rem .2rem; border:0; border-bottom:1px solid var(--line); color:var(--muted); text-align:left; background:transparent; transition:padding 180ms ease,background 180ms ease,color 180ms ease; }
+    .menu-item::before { content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--accent); transform:scaleY(0); transition:transform 180ms ease; }
+    .menu-item:hover,.menu-item:focus-visible,.menu-item.is-selected { padding-left:.65rem; color:var(--ink); background:color-mix(in srgb,var(--accent) 12%,transparent); }
+    .menu-item.is-selected::before { transform:scaleY(1); }
+    .menu-item:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+    .menu-number { color:var(--muted); font:500 .68rem/1 Consolas,monospace; }
+    .menu-item.is-selected .menu-number { color:var(--accent); }
+    .menu-item svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .menu-label { font:800 .88rem/1.2 Consolas,monospace; letter-spacing:.075em; }
+    .menu-arrow { color:var(--accent); font-size:1.15rem; opacity:0; transform:translate(-4px,4px); transition:opacity 180ms ease,transform 180ms ease; }
+    .menu-item:hover .menu-arrow,.menu-item:focus-visible .menu-arrow,.menu-item.is-selected .menu-arrow { opacity:1; transform:translate(0,0); }
+    .menu-status { display:flex; align-items:flex-start; gap:.6rem; min-height:2.6em; max-width:36ch; margin:1rem 0 0; color:var(--muted); font-size:.8rem; line-height:1.5; }
+    .menu-status span { flex:0 0 auto; width:6px; height:6px; margin-top:.45rem; background:var(--accent); }
+    .hero-art-wrap { position:absolute; top:50%; right:-2rem; width:min(58vw,720px); aspect-ratio:1; transform:translateY(-50%); pointer-events:none; filter:drop-shadow(0 18px 25px rgba(0,0,0,.25)); }
+    .hero-art { display:block; width:100%; height:100%; object-fit:contain; transition:transform 900ms cubic-bezier(.22,1,.36,1); }
+    .dial-label { position:absolute; color:var(--muted); font:700 .58rem/1 Consolas,monospace; letter-spacing:.15em; white-space:nowrap; }
+    .dial-label-top { top:5%; right:13%; }
+    .dial-label-bottom { bottom:6%; left:11%; color:var(--accent); }
+    .hero-spark { position:absolute; color:var(--accent); pointer-events:none; opacity:var(--site-decoration-opacity); }
+    .hero-spark-one { top:22%; right:8%; font-size:1.7rem; animation:spin 18s linear infinite; }
+    .hero-spark-two { top:68%; left:49%; font-size:1rem; opacity:calc(.7 * var(--site-decoration-opacity)); }
+    .hero-scroll { position:absolute; left:clamp(1.2rem,5vw,5.5rem); bottom:1.5rem; display:flex; gap:.7rem; color:var(--muted); text-decoration:none; font:700 .59rem/1.3 Consolas,monospace; letter-spacing:.13em; }
+    .hero-scroll span { color:var(--accent); }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .about { position:relative; z-index:2; padding:clamp(2.5rem,6vw,5.5rem) clamp(1.2rem,5vw,5.5rem) 1.5rem; background:var(--bg); border-top:1px solid var(--line); }
+    .about-inner { width:min(1440px,100%); margin-inline:auto; }
+    .about-header { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding-bottom:1.6rem; border-bottom:1px solid var(--line); }
+    .about-brand { display:inline-flex; align-items:center; gap:.7rem; text-decoration:none; font:800 .76rem/1 Consolas,monospace; letter-spacing:.1em; }
+    .about-brand span { display:grid; place-items:center; width:34px; height:34px; border-radius:calc(11px * var(--site-radius-scale)); color:var(--accent-ink); background:var(--accent); font:900 1rem/1 Arial,sans-serif; }
+    .back-link { display:inline-flex; gap:.7rem; align-items:center; padding:.7rem 0 .7rem .8rem; border-bottom:1px solid var(--accent); color:var(--muted); text-decoration:none; font:700 .67rem/1.2 Consolas,monospace; letter-spacing:.1em; }
+    .back-link span { color:var(--accent); }
+    .about-intro { display:flex; align-items:end; justify-content:space-between; gap:2rem; padding:clamp(2.5rem,6vw,5rem) 0 clamp(1.8rem,4vw,3rem); }
+    .about-intro h2 { max-width:13ch; margin:0; font:900 calc(clamp(2.6rem,6.3vw,6.2rem) * var(--site-heading-scale))/.94 var(--heading-font); letter-spacing:-.075em; text-wrap:balance; }
+    .about-intro h2 em { color:var(--accent); font-style:normal; }
+    .about-intro-copy { max-width:28ch; margin:0 0 .3rem; color:var(--muted); font-size:1rem; line-height:1.65; }
+    .team-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); width:min(100%,1000px); margin-inline:auto; gap:calc(8px * var(--site-spacing-scale)); }
+    .member-card { min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:calc(12px * var(--site-radius-scale)); background:var(--surface); transition:border-color 180ms ease,transform 180ms ease; }
+    .member-card:hover { transform:translateY(-2px); border-color:var(--accent); }
+    .member-avatar { display:flex; align-items:center; justify-content:center; padding:9px 7px 0; }
+    .member-avatar img { display:block; width:min(100%,150px); height:auto; }
+    .member-card h3 { min-height:34px; margin:0; padding:3px 2px 10px; display:flex; align-items:center; justify-content:center; color:var(--ink); text-align:center; text-transform:uppercase; font:700 clamp(.55rem,.88vw,.73rem)/1.25 Consolas,monospace; letter-spacing:.12em; }
+    .about-info { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; margin-top:clamp(3rem,7vw,6.5rem); background:var(--line); border:1px solid var(--line); }
+    .info-block { min-height:260px; padding:clamp(1.4rem,3vw,2.6rem); background:var(--surface); }
+    .info-index { color:var(--accent); font:700 .63rem/1.4 Consolas,monospace; letter-spacing:.14em; }
+    .info-block h3,.audience-block h3 { margin:1.4rem 0 .9rem; color:var(--ink); font:850 calc(clamp(1.55rem,2.6vw,2.8rem) * var(--site-heading-scale))/1 var(--heading-font); letter-spacing:-.055em; }
+    .info-block p,.audience-block p { max-width:51ch; margin:0; color:var(--muted); font-size:.97rem; line-height:1.8; }
+    .audience-block { grid-column:1/-1; display:grid; grid-template-columns:minmax(130px,.32fr) minmax(0,1fr); align-items:center; gap:clamp(1.5rem,5vw,5rem); padding:clamp(1.8rem,4.5vw,4rem); overflow:hidden; background:var(--accent); color:var(--accent-ink); }
+    .audience-stamp { display:grid; place-items:center; width:clamp(112px,15vw,190px); aspect-ratio:1; border:2px solid var(--accent-ink); border-radius:50%; color:var(--accent-ink); text-align:center; font:900 clamp(1.1rem,2.2vw,2rem)/.95 Consolas,monospace; letter-spacing:-.08em; transform:rotate(-11deg); }
+    .audience-block .info-index { color:color-mix(in srgb,var(--accent-ink) 70%,transparent); }
+    .audience-block h3 { max-width:17ch; margin-top:.8rem; color:var(--accent-ink); }
+    .audience-block p { max-width:61ch; color:color-mix(in srgb,var(--accent-ink) 84%,transparent); }
+    .no-bets { display:inline-flex; gap:.5rem; align-items:center; margin-top:1.25rem; padding-top:.75rem; border-top:1px solid color-mix(in srgb,var(--accent-ink) 24%,transparent); color:var(--accent-ink); font:700 .68rem/1.4 Consolas,monospace; }
+    .no-bets b { font-size:.9rem; }
+    .about-footer { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; padding:1.5rem 0 .4rem; color:var(--muted); font:600 .59rem/1.4 Consolas,monospace; letter-spacing:.1em; }
+    .about-footer span:first-child { color:var(--ink); }
+    .about-footer a { color:var(--accent); text-decoration:none; }
+    .about-footer a:hover { text-decoration:underline; text-underline-offset:.35em; }
+
+    .timeline-section { position:relative; overflow:clip; padding:clamp(3.2rem,7vw,6rem) clamp(1rem,4vw,4rem) 4rem; border-top:1px solid var(--line); background:var(--surface-deep); }
+    .timeline-section::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:calc(.6 * var(--site-decoration-opacity)); background-image:linear-gradient(rgba(185,189,208,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(185,189,208,.055) 1px,transparent 1px); background-size:48px 48px; mask-image:linear-gradient(180deg,#000,transparent 88%); }
+    .timeline-shell { position:relative; width:min(1480px,100%); margin-inline:auto; }
+    .timeline-header { display:flex; align-items:center; justify-content:space-between; gap:1.2rem; padding-bottom:1.4rem; border-bottom:1px solid var(--line); }
+    .timeline-header .about-brand span { box-shadow:0 0 22px color-mix(in srgb,var(--accent) 35%,transparent); }
+    .timeline-intro { display:flex; justify-content:space-between; align-items:end; gap:2rem; padding:clamp(2.5rem,5vw,4.4rem) 0 1.7rem; }
+    .timeline-intro h2 { max-width:13ch; margin:0; font:900 calc(clamp(2.8rem,6vw,5.7rem) * var(--site-heading-scale))/.91 var(--heading-font); letter-spacing:-.08em; text-wrap:balance; }
+    .timeline-intro h2 em { color:var(--accent); font-style:normal; }
+    .timeline-intro-copy { max-width:34ch; margin:0 0 .35rem; color:var(--muted); line-height:1.7; font-size:.95rem; }
+    .timeline-instruction { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin:1.2rem 1rem .65rem; color:var(--muted); font:700 .61rem/1.4 Consolas,monospace; letter-spacing:.14em; text-transform:uppercase; }
+    .timeline-instruction strong { color:var(--accent); font-weight:700; }
+    .timeline-viewport { position:relative; width:100%; height:600px; overflow:hidden; outline:none; perspective:1600px; }
+    .timeline-viewport:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
+    .timeline-track { position:absolute; top:0; left:0; display:flex; align-items:center; gap:clamp(14px,2vw,26px); height:100%; will-change:transform; transition:transform 680ms cubic-bezier(.2,.82,.2,1); }
+    .stage-card { position:relative; flex:0 0 min(78vw,940px); width:min(78vw,940px); height:548px; overflow:hidden; border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line)); background:var(--surface); color:var(--ink); opacity:.13; filter:brightness(.52) saturate(.55); transform:scale(.72) rotateY(8deg); transition:opacity 600ms ease,filter 600ms ease,transform 680ms cubic-bezier(.2,.82,.2,1),border-color 500ms ease,box-shadow 500ms ease; cursor:pointer; box-shadow:0 30px 70px rgba(0,0,0,.18); }
+    .stage-card::before { content:""; position:absolute; inset:0; pointer-events:none; z-index:0; background:linear-gradient(130deg,color-mix(in srgb,var(--accent) 11%,transparent),transparent 38%),linear-gradient(0deg,rgba(0,0,0,.10),transparent 50%); }
+    .stage-card::after { content:""; position:absolute; inset:9px; pointer-events:none; border:1px solid var(--line); opacity:.6; }
+    .stage-card.is-neighbor { opacity:.43; filter:brightness(.66) saturate(.6); transform:scale(.77) rotateY(6deg); }
+    .stage-card.is-active { opacity:1; filter:none; transform:scale(1) rotateY(0); z-index:3; cursor:default; border-color:color-mix(in srgb,var(--accent) 78%,var(--line)); box-shadow:0 34px 90px rgba(0,0,0,.30),0 0 42px color-mix(in srgb,var(--accent) 13%,transparent); }
+    .stage-card.is-active::after { border-color:color-mix(in srgb,var(--accent) 35%,var(--line)); opacity:.8; }
+    .stage-head { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.35rem 1.55rem .95rem; border-bottom:1px solid var(--line); color:var(--muted); font:700 .62rem/1 Consolas,monospace; letter-spacing:.12em; }
+    .stage-id { color:var(--accent); }
+    .stage-era { padding:.45rem .65rem; border:1px solid color-mix(in srgb,var(--accent) 55%,var(--line)); color:var(--ink); background:color-mix(in srgb,var(--accent) 9%,transparent); }
+    .stage-category { text-align:right; }
+    .stage-body { position:relative; z-index:1; display:grid; grid-template-columns:1.02fr .98fr; align-items:center; gap:1rem; height:calc(100% - 113px); padding:.9rem 2rem 1.6rem; }
+    .stage-copy { align-self:center; max-width:470px; padding-left:.5rem; }
+    .stage-kicker { display:inline-flex; align-items:center; gap:.55rem; color:var(--accent); font:700 .63rem/1.3 Consolas,monospace; letter-spacing:.15em; }
+    .stage-kicker::before { content:""; width:21px; height:1px; background:var(--accent); }
+    .stage-copy h3 { margin:.8rem 0 1rem; font:900 calc(clamp(2.25rem,3.8vw,4.1rem) * var(--site-heading-scale))/.91 var(--heading-font); letter-spacing:-.075em; text-transform:uppercase; text-wrap:balance; }
+    .stage-copy h3 em { color:var(--accent); font-style:normal; }
+    .stage-description { max-width:48ch; color:var(--muted); font-size:.9rem; line-height:1.75; }
+    .milestone-label { display:block; margin:1.4rem 0 .65rem; color:var(--muted); font:700 .58rem/1.3 Consolas,monospace; letter-spacing:.16em; }
+    .milestones { display:flex; flex-wrap:wrap; gap:.45rem; }
+    .milestone { display:inline-flex; align-items:center; min-height:29px; padding:.4rem .57rem; border:1px solid var(--line); color:var(--ink); background:var(--surface-raised); font:700 .58rem/1.25 Consolas,monospace; }
+    .stage-note { margin:1.05rem 0 0; color:var(--muted); font-size:.7rem; line-height:1.5; }
+    .stage-note b { color:var(--accent); font-weight:700; }
+    .device-scene { position:relative; display:grid; place-items:center; min-width:0; height:100%; overflow:hidden; isolation:isolate; }
+    .device-scene::before { content:""; position:absolute; width:82%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,color-mix(in srgb,var(--accent) 23%,transparent),transparent 68%); filter:blur(14px); opacity:.75; }
+    .device-scene::after { content:""; position:absolute; left:10%; right:5%; bottom:14%; height:14%; border-radius:50%; background:radial-gradient(ellipse,rgba(0,0,0,.5),transparent 72%); filter:blur(10px); }
+    .device-art { position:relative; z-index:2; width:100%; max-width:510px; transform-style:preserve-3d; animation:deviceFloat 7s ease-in-out infinite; }
+    .device-art svg { display:block; width:100%; height:auto; overflow:visible; filter:drop-shadow(0 22px 20px rgba(0,0,0,.28)); }
+    @keyframes deviceFloat { 0%,100% { transform:translateY(2px) rotateX(2deg); } 50% { transform:translateY(-9px) rotateX(-1deg); } }
+    .device-caption { position:absolute; z-index:3; right:1rem; bottom:.85rem; color:var(--muted); font:700 .56rem/1.3 Consolas,monospace; letter-spacing:.16em; text-align:right; }
+    .device-caption b { display:block; margin-bottom:.2rem; color:var(--accent); font-size:.65rem; }
+    .stage-foot { position:absolute; z-index:2; left:1.6rem; right:1.6rem; bottom:0; display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.75rem 0; border-top:1px solid var(--line); color:var(--muted); font:700 .55rem/1.3 Consolas,monospace; letter-spacing:.12em; }
+    .stage-foot span:last-child { color:var(--accent); }
+    .timeline-controls { display:grid; grid-template-columns:auto minmax(120px,1fr) auto; align-items:center; gap:1.2rem; width:min(940px,100%); margin:1.35rem auto 0; }
+    .timeline-arrow { display:grid; place-items:center; width:48px; height:48px; border:1px solid var(--line); color:var(--ink); background:var(--surface); transition:background 180ms ease,border-color 180ms ease,transform 180ms ease; }
+    .timeline-arrow:hover:not(:disabled) { border-color:var(--accent); background:color-mix(in srgb,var(--accent) 12%,var(--surface)); transform:translateY(-2px); }
+    .timeline-arrow:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    .timeline-arrow:disabled { opacity:.25; cursor:not-allowed; }
+    .timeline-arrow svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .progress-meta { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:.9rem; color:var(--muted); font:700 .62rem/1 Consolas,monospace; letter-spacing:.12em; }
+    .progress-meta strong { color:var(--accent); font-size:.78rem; }
+    .progress-rail { height:3px; background:var(--line); }
+    .progress-fill { width:0; height:100%; background:var(--accent); box-shadow:0 0 12px var(--accent); transition:width 450ms ease; }
+    .timeline-dots { display:flex; justify-content:center; align-items:flex-start; gap:clamp(.15rem,.7vw,.7rem); width:min(1060px,100%); margin:1.7rem auto 0; }
+    .timeline-dot { position:relative; display:grid; justify-items:center; gap:.58rem; min-width:0; flex:1; padding:0; border:0; color:var(--muted); background:transparent; font:700 .52rem/1 Consolas,monospace; cursor:pointer; }
+    .timeline-dot::before { content:""; display:block; width:9px; height:9px; border:1px solid var(--muted); border-radius:50%; background:var(--surface-deep); transition:transform 180ms ease,background 180ms ease,border-color 180ms ease; }
+    .timeline-dot::after { content:""; position:absolute; top:4px; left:calc(50% + 7px); width:calc(100% - 14px); height:1px; background:var(--line); }
+    .timeline-dot:last-child::after { display:none; }
+    .timeline-dot.is-active { color:var(--accent); }
+    .timeline-dot.is-active::before { border-color:var(--accent); background:var(--accent); box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent); transform:scale(1.05); }
+    .timeline-dot:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+    .timeline-note { max-width:750px; margin:2.2rem auto 0; text-align:center; color:var(--muted); font-size:.72rem; line-height:1.65; }
+    .timeline-note strong { color:var(--ink); }
+    .timeline-sources { display:flex; flex-wrap:wrap; justify-content:center; gap:.6rem 1.2rem; margin:1.1rem auto 0; color:var(--muted); font:600 .55rem/1.5 Consolas,monospace; letter-spacing:.1em; }
+    .timeline-sources a { color:var(--accent); text-decoration:none; }
+    .timeline-sources a:hover { text-decoration:underline; text-underline-offset:3px; }
+    .timeline-footer { display:flex; justify-content:space-between; gap:1rem; margin-top:3rem; padding-top:1.1rem; border-top:1px solid var(--line); color:var(--muted); font:600 .58rem/1.5 Consolas,monospace; letter-spacing:.1em; }
+    .timeline-footer a { color:var(--accent); text-decoration:none; }
+
+    /* Scroll-driven 3D history experience */
+    .timeline-section { background:#090B12; color:#F5F2EB; }
+    .timeline-section .timeline-intro-copy { color:#A9AFBF; }
+    .timeline-section .about-brand,.timeline-section .back-link { color:#E8EAF0; }
+    .timeline-section .timeline-intro h2 { max-width:12ch; }
+    .scrolly-experience { position:relative; display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); align-items:start; gap:clamp(1.5rem,4vw,4rem); width:min(1480px,100%); margin:1.5rem auto 0; }
+    .scrolly-copy { grid-column:1; grid-row:1; min-width:0; }
+    .scrolly-visual { grid-column:2; grid-row:1; position:sticky; top:0; align-self:start; height:100svh; min-height:620px; overflow:hidden; border-left:1px solid rgba(245,242,235,.13); background:radial-gradient(ellipse at 50% 46%,rgba(71,87,118,.22),transparent 57%),#090B12; }
+    #history-webgl { position:absolute; inset:0; width:100%; height:100%; display:block; }
+    .visual-shade { position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg,rgba(9,11,18,.2),transparent 35%),linear-gradient(0deg,#090B12 0%,transparent 20%,transparent 78%,rgba(9,11,18,.42) 100%); }
+    .visual-hud { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:clamp(1.1rem,3vw,2rem); pointer-events:none; }
+    .visual-topline { display:flex; align-items:center; justify-content:space-between; gap:1rem; color:#A9AFBF; font:700 .58rem/1.4 Consolas,monospace; letter-spacing:.16em; }
+    .visual-topline strong { color:#F45B83; font-weight:700; }
+    .visual-device-name { max-width:25ch; margin:auto 0 .55rem auto; color:#F5F2EB; text-align:right; font:800 clamp(.75rem,1vw,1rem)/1.25 Consolas,monospace; letter-spacing:.12em; }
+    .visual-bottom { display:grid; grid-template-columns:1fr auto; align-items:end; gap:1rem; }
+    .visual-era { color:#F45B83; font:700 .68rem/1.4 Consolas,monospace; letter-spacing:.13em; }
+    .visual-counter { color:#E9EAF0; font:700 .7rem/1 Consolas,monospace; letter-spacing:.12em; }
+    .visual-progress { grid-column:1/-1; height:2px; background:rgba(245,242,235,.2); }
+    .visual-progress span { display:block; width:0; height:100%; background:#F45B83; box-shadow:0 0 14px #F45B83; transition:width 220ms linear; }
+    .visual-nav { display:flex; justify-content:flex-end; gap:7px; margin-top:.9rem; pointer-events:auto; }
+    .visual-nav button { width:19px; height:3px; padding:0; border:0; background:rgba(245,242,235,.27); cursor:pointer; transition:width 200ms ease,background 200ms ease; }
+    .visual-nav button[aria-current="step"] { width:34px; background:#F45B83; }
+    .visual-fallback { position:absolute; inset:0; display:none; place-items:center; padding:2rem; color:#A9AFBF; text-align:center; font:700 .7rem/1.6 Consolas,monospace; letter-spacing:.1em; }
+    .scrolly-intro { display:flex; flex-direction:column; justify-content:center; min-height:76svh; padding:2rem .5rem 3rem 0; }
+    .scrolly-intro .chapter-tag { color:#F45B83; }
+    .scrolly-intro h3 { max-width:10ch; margin:1.1rem 0; color:#F5F2EB; font:900 clamp(2.8rem,5vw,5.2rem)/.94 var(--heading-font); letter-spacing:-.08em; }
+    .scrolly-intro h3 em { color:#F45B83; font-style:normal; }
+    .scrolly-intro p:last-child { max-width:40ch; color:#A9AFBF; font-size:.94rem; line-height:1.75; }
+    .history-chapter { position:relative; display:flex; flex-direction:column; justify-content:center; min-height:93svh; padding:clamp(2rem,5vw,4.2rem) .6rem clamp(2rem,5vw,4.2rem) 1.15rem; border-left:1px solid rgba(245,242,235,.16); opacity:.38; transform:translateY(22px); transition:opacity 450ms ease,transform 550ms cubic-bezier(.2,.8,.2,1),border-color 450ms ease; scroll-margin-top:10vh; }
+    .history-chapter::before { content:""; position:absolute; top:50%; left:-2px; width:3px; height:44px; transform:translateY(-50%) scaleY(0); background:#F45B83; transition:transform 450ms ease; }
+    .history-chapter.is-current { opacity:1; transform:translateY(0); border-color:rgba(244,91,131,.55); }
+    .history-chapter.is-current::before { transform:translateY(-50%) scaleY(1); }
+    .chapter-tag { display:flex; align-items:center; gap:.75rem; color:#A9AFBF; font:700 .61rem/1.4 Consolas,monospace; letter-spacing:.16em; }
+    .chapter-tag b { color:#F45B83; font-weight:700; }
+    .chapter-title { max-width:12ch; margin:1.1rem 0 1.2rem; color:#F5F2EB; font:900 clamp(2.25rem,4vw,4.1rem)/.94 var(--heading-font); letter-spacing:-.075em; text-wrap:balance; }
+    .chapter-title em { color:#F45B83; font-style:normal; }
+    .chapter-description { max-width:49ch; margin:0; color:#A9AFBF; font-size:clamp(.84rem,1.05vw,.98rem); line-height:1.8; }
+    .chapter-milestones { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.45rem; }
+    .chapter-milestones span { display:inline-flex; align-items:center; min-height:30px; padding:.45rem .62rem; border:1px solid rgba(245,242,235,.17); color:#E7E8ED; background:rgba(245,242,235,.045); font:700 .58rem/1.3 Consolas,monospace; }
+    .chapter-footnote { max-width:47ch; margin:1.2rem 0 0; color:#82899B; font-size:.72rem; line-height:1.65; }
+    .chapter-footnote strong { color:#D9DCE5; font-weight:700; }
+    .scrolly-finish { display:flex; flex-direction:column; justify-content:center; min-height:78svh; padding:2rem .6rem 3rem 1.15rem; }
+    .scrolly-finish h3 { max-width:10ch; margin:1rem 0; color:#F5F2EB; font:900 clamp(2.8rem,5vw,5rem)/.94 var(--heading-font); letter-spacing:-.08em; }
+    .scrolly-finish h3 em { color:#F45B83; font-style:normal; }
+    .scrolly-finish p { max-width:43ch; color:#A9AFBF; line-height:1.75; }
+    .scrolly-finish a { display:inline-flex; width:max-content; gap:.65rem; align-items:center; margin-top:1.2rem; padding:.8rem 1rem; border:1px solid #F45B83; color:#F5F2EB; text-decoration:none; font:700 .65rem/1 Consolas,monospace; letter-spacing:.12em; transition:background 180ms ease,color 180ms ease; }
+    .scrolly-finish a:hover { color:#090B12; background:#F45B83; }
+    .timeline-section .timeline-footer { color:#858C9E; }
+    .timeline-instruction,.timeline-viewport,.timeline-controls,.timeline-dots,.timeline-note,.timeline-sources { display:none !important; }
+
+    @media(max-width:1000px) {
+      .hero-content { width:52%; }
+      .hero-art-wrap { right:-2.5rem; width:56vw; opacity:.9; }
+      .stage-card { flex-basis:min(82vw,900px); width:min(82vw,900px); }
+      .stage-body { padding-inline:1.3rem; }
+      .stage-copy h3 { font-size:calc(clamp(2rem,4vw,3.6rem) * var(--site-heading-scale)); }
+      .scrolly-experience { gap:1.3rem; grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr); }
+      .history-chapter { padding-left:.8rem; }
+      .chapter-title { font-size:clamp(2.05rem,4.3vw,3.4rem); }
+    }
+    @media(max-width:760px) {
+      .hero { min-height:900px; padding:1.2rem 1rem 3rem; }
+      .hero-layout { display:block; min-height:810px; padding-top:2.5rem; }
+      .hero-content { width:100%; padding:1.3rem 0 0; }
+      .hero h1 { font-size:calc(clamp(2.8rem,12vw,4.5rem) * var(--site-heading-scale)); }
+      .hero-intro { margin:.8rem 0 1.15rem; font-size:.88rem; }
+      .main-menu { max-width:470px; }
+      .menu-item { min-height:39px; grid-template-columns:1.8rem 1.35rem minmax(0,1fr) 1.3rem; gap:.42rem; padding-top:.45rem; padding-bottom:.45rem; }
+      .menu-label { font-size:.74rem; }
+      .menu-item svg { width:17px; height:17px; }
+      .menu-status { margin-top:.55rem; min-height:1.6em; font-size:.74rem; }
+      .hero-art-wrap { top:auto; bottom:-1rem; right:50%; width:min(78vw,390px); transform:translateX(50%); opacity:.96; }
+      .dial-label { font-size:.48rem; }
+      .hero-spark-one { top:51%; right:7%; font-size:1.1rem; }
+      .hero-spark-two { display:none; }
+      .hero-scroll { left:1rem; bottom:.9rem; }
+      .header-status { font-size:.52rem; }
+      .about { padding:1.5rem 1rem 1rem; }
+      .about-header { padding-bottom:1.15rem; }
+      .about-brand { gap:.5rem; font-size:.64rem; }
+      .about-brand span { width:30px; height:30px; }
+      .back-link { gap:.35rem; font-size:.55rem; }
+      .about-intro { display:block; padding:2.2rem 0 1.5rem; }
+      .about-intro h2 { max-width:12ch; font-size:calc(clamp(2.5rem,12.5vw,4.3rem) * var(--site-heading-scale)); }
+      .about-intro-copy { margin-top:1rem; font-size:.9rem; }
+      .team-grid { display:flex; overflow-x:auto; width:calc(100% + 20px); margin-left:-10px; padding:0 10px 6px; gap:8px; scroll-snap-type:x mandatory; scrollbar-width:thin; }
+      .member-card { flex:0 0 124px; scroll-snap-align:start; }
+      .member-avatar { padding:7px 5px 0; }
+      .member-card h3 { min-height:30px; padding:3px 2px 8px; font-size:.58rem; letter-spacing:.1em; }
+      .about-info { grid-template-columns:minmax(0,1fr); margin-top:2.7rem; }
+      .info-block { min-height:auto; padding:1.4rem; }
+      .info-block h3,.audience-block h3 { margin:1rem 0 .7rem; font-size:calc(1.85rem * var(--site-heading-scale)); }
+      .info-block p,.audience-block p { font-size:.9rem; }
+      .audience-block { grid-column:auto; grid-template-columns:minmax(0,1fr); gap:1.4rem; padding:1.5rem; }
+      .audience-stamp { width:86px; font-size:1rem; }
+      .about-footer { padding:1.1rem 0 .25rem; font-size:.54rem; }
+      .timeline-section { padding:2.7rem .25rem 2.5rem; }
+      .timeline-header { margin-inline:.8rem; padding-bottom:1rem; }
+      .timeline-intro { display:block; padding:2.2rem .8rem 1rem; }
+      .timeline-intro h2 { max-width:11ch; font-size:calc(clamp(2.7rem,12vw,4.1rem) * var(--site-heading-scale)); }
+      .timeline-intro-copy { margin-top:1rem; font-size:.86rem; }
+      .timeline-instruction { margin-inline:1rem; font-size:.52rem; }
+      .timeline-viewport { height:730px; }
+      .timeline-track { gap:12px; }
+      .stage-card { flex-basis:78vw; width:78vw; height:680px; }
+      .stage-head { flex-wrap:wrap; justify-content:space-between; padding:1rem .95rem .75rem; font-size:.52rem; }
+      .stage-category { display:none; }
+      .stage-body { display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; gap:.1rem; height:calc(100% - 86px); padding:.95rem 1rem 3.2rem; }
+      .stage-copy { max-width:none; padding:0; }
+      .stage-copy h3 { max-width:13ch; margin:.65rem 0 .75rem; font-size:calc(clamp(2rem,9vw,2.9rem) * var(--site-heading-scale)); }
+      .stage-description { font-size:.78rem; line-height:1.6; }
+      .milestone-label { margin:.8rem 0 .5rem; font-size:.53rem; }
+      .milestones { gap:.35rem; }
+      .milestone { min-height:25px; padding:.3rem .42rem; font-size:.49rem; }
+      .stage-note { margin-top:.65rem; font-size:.62rem; }
+      .device-scene { min-height:230px; flex:1; }
+      .device-art { max-width:320px; width:92%; }
+      .device-caption { right:.35rem; bottom:.2rem; font-size:.47rem; }
+      .stage-foot { left:1rem; right:1rem; font-size:.47rem; }
+      .timeline-controls { gap:.55rem; padding:0 .75rem; margin-top:.55rem; }
+      .timeline-arrow { width:41px; height:41px; }
+      .progress-meta { gap:.45rem; font-size:.53rem; }
+      .progress-meta strong { font-size:.67rem; }
+      .timeline-dots { justify-content:flex-start; overflow-x:auto; padding:0 1rem .55rem; gap:.35rem; scrollbar-width:thin; }
+      .timeline-dot { flex:0 0 54px; font-size:.48rem; }
+      .timeline-dot::after { width:calc(100% - 8px); left:calc(50% + 5px); }
+      .timeline-note { margin:1.6rem 1rem 0; font-size:.67rem; }
+      .timeline-sources { margin-inline:1rem; font-size:.5rem; }
+      .timeline-footer { margin:2rem .9rem 0; font-size:.5rem; }
+      .timeline-section { padding:2.7rem .9rem 2.5rem; }
+      .scrolly-experience { display:flex; flex-direction:column; gap:0; margin-top:.5rem; }
+      .scrolly-visual { position:sticky; top:0; z-index:4; order:0; width:100%; height:43svh; min-height:300px; border:1px solid rgba(245,242,235,.13); }
+      .scrolly-copy { order:1; width:100%; }
+      .visual-hud { padding:.85rem; }
+      .visual-device-name { font-size:.63rem; }
+      .visual-topline { font-size:.49rem; }
+      .visual-nav { gap:5px; }
+      .visual-nav button { width:12px; }
+      .visual-nav button[aria-current="step"] { width:23px; }
+      .scrolly-intro { min-height:60svh; padding:2.5rem .2rem; }
+      .scrolly-intro h3 { font-size:clamp(2.8rem,13vw,4.4rem); }
+      .history-chapter { min-height:80svh; padding:2rem .2rem 2rem .9rem; }
+      .chapter-title { font-size:clamp(2.4rem,11vw,3.7rem); }
+      .chapter-description { font-size:.86rem; }
+      .chapter-milestones { margin-top:1rem; }
+      .chapter-milestones span { font-size:.53rem; }
+      .scrolly-finish { min-height:65svh; padding-left:.9rem; }
+      .scrolly-finish h3 { font-size:clamp(2.7rem,12vw,4.2rem); }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      html { scroll-behavior:auto; }
+      .hero-spark-one,.device-art { animation:none; }
+      .hero-art,.menu-item,.menu-arrow,.member-card,.stage-card,.timeline-track,.progress-fill { transition:none; }
+      .history-chapter,.visual-progress span,.visual-nav button { transition:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-root" id="app">
+    <section class="hero" id="welcome" aria-labelledby="hero-title">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <header class="site-header">
+        <a class="brand" href="#welcome" aria-label="PRESS START home">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#F45B83"/><path d="M14 13h36v10H24v7h19v10H24v11H14z" fill="#15182B"/><path d="M42 13h8v10h-8zM42 30h8v10h-8zM42 47h8v4h-8z" fill="#F5F2EB"/></svg>
+          <span class="brand-wordmark"><strong>PRESS</strong><strong>START</strong></span>
+        </a>
+        <span class="header-status"><i></i> PLAYER 01 <span>/</span> READY</span>
+      </header>
+      <div class="hero-layout">
+        <div class="hero-content">
+          <p class="eyebrow"><span></span> GAME CULTURE, REPLAYED</p>
+          <h1 id="hero-title">WELCOME,<br><em>PLAYER ONE</em></h1>
+          <p class="hero-intro">Explore the worlds, stories, and surprises behind video games.</p>
+          <div class="menu-caption"><span>MAIN MENU</span><i></i></div>
+          <nav class="main-menu" aria-label="Main menu">
+            <button class="menu-item is-selected" type="button" data-menu="0" data-target="welcome" aria-pressed="true"><span class="menu-number">01</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span class="menu-label">MENU</span><span class="menu-arrow">↗</span></button>
+            <button class="menu-item" type="button" data-menu="1" data-target="about-us" aria-pressed="false"><span class="menu-number">02</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 10.7v5M12 7.5h.01"/></svg><span class="menu-label">ABOUT US</span><span class="menu-arrow">↗</span></button>
+            <button class="menu-item" type="button" data-menu="2" data-target="timeline" aria-pressed="false"><span class="menu-number">03</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.4 2.2"/></svg><span class="menu-label">TIMELINE</span><span class="menu-arrow">↗</span></button>
+            <button class="menu-item" type="button" data-menu="3" data-target="game" aria-pressed="false"><span class="menu-number">04</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.4 8.2h9.2c2 0 3.1 1 3.8 3.2l1 3.3c.7 2.4-1.7 4-3.6 2.4l-2.4-2H8.6l-2.4 2c-1.9 1.6-4.3 0-3.6-2.4l1-3.3c.7-2.2 1.8-3.2 3.8-3.2Z"/><path d="M7 10.7v4M5 12.7h4M16.5 11.5h.01M18.2 14h.01"/></svg><span class="menu-label">GAME</span><span class="menu-arrow">↗</span></button>
+            <button class="menu-item" type="button" data-menu="4" data-target="did-you-know" aria-pressed="false"><span class="menu-number">05</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.3 15.2a6 6 0 1 1 7.4 0c-.9.6-1.2 1.4-1.2 2.3h-5c0-.9-.3-1.7-1.2-2.3Z"/><path d="M9.5 20h5M10.2 22h3.6M12 4.6v.01"/></svg><span class="menu-label">DID YOU KNOW?</span><span class="menu-arrow">↗</span></button>
+          </nav>
+          <p class="menu-status" id="menu-status" aria-live="polite"><span></span> Choose a destination to begin.</p>
+        </div>
+        <div class="hero-art-wrap" aria-label="Arcade selection wheel surrounded by game controllers">
+          <img class="hero-art" id="hero-art" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgOTAwIiBmaWxsPSJub25lIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iZGlzYyIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFRyYW5zZm9ybT0idHJhbnNsYXRlKDQ1MCA0NTApIHJvdGF0ZSg5MCkgc2NhbGUoNDMwKSI+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiMzMDM2NTMiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxNTE4MkIiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9IndoZWVsIiB4MT0iMTgwIiB5MT0iMTgwIiB4Mj0iNzIwIiB5Mj0iNzIwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNGNUYyRUIiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4Rjk2QUQiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxjaXJjbGUgY3g9IjQ1MCIgY3k9IjQ1MCIgcj0iNDMwIiBmaWxsPSJ1cmwoI2Rpc2MpIiBzdHJva2U9IiNGNUYyRUIiIHN0cm9rZS1vcGFjaXR5PSIuMTYiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxjaXJjbGUgY3g9IjQ1MCIgY3k9IjQ1MCIgcj0iMzkwIiBzdHJva2U9IiNCOUJERDAiIHN0cm9rZS1vcGFjaXR5PSIuMiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSIzIDE4Ii8+CiAgPGNpcmNsZSBjeD0iNDUwIiBjeT0iNDUwIiByPSIzNDIiIHN0cm9rZT0iI0Y0NUI4MyIgc3Ryb2tlLW9wYWNpdHk9Ii40NSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtZGFzaGFycmF5PSI1MCAxMiA2IDEyIi8+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDUwIDQ1MCkiPgogICAgPHBhdGggZD0iTTAgMCBMLTIzOCAtMjM4IEEzMzYgMzM2IDAgMCAxIDIzOCAtMjM4WiIgZmlsbD0iIzMwMzY1MyIgc3Ryb2tlPSIjMTUxODJCIiBzdHJva2Utd2lkdGg9IjgiLz4KICAgIDxwYXRoIGQ9Ik0wIDAgTDIzOCAtMjM4IEEzMzYgMzM2IDAgMCAxIDMzNiAwWiIgZmlsbD0iIzIzMjc0MCIgc3Ryb2tlPSIjMTUxODJCIiBzdHJva2Utd2lkdGg9IjgiLz4KICAgIDxwYXRoIGQ9Ik0wIDAgTDMzNiAwIEEzMzYgMzM2IDAgMCAxIDIzOCAyMzhaIiBmaWxsPSIjMzAzNjUzIiBzdHJva2U9IiMxNTE4MkIiIHN0cm9rZS13aWR0aD0iOCIvPgogICAgPHBhdGggZD0iTTAgMCBMMjM4IDIzOCBBMzM2IDMzNiAwIDAgMSAwIDMzNloiIGZpbGw9IiNGNDVCODMiIHN0cm9rZT0iIzE1MTgyQiIgc3Ryb2tlLXdpZHRoPSI4Ii8+CiAgICA8cGF0aCBkPSJNMCAwIEwwIDMzNiBBMzM2IDMzNiAwIDAgMSAtMjM4IDIzOFoiIGZpbGw9IiMzMDM2NTMiIHN0cm9rZT0iIzE1MTgyQiIgc3Ryb2tlLXdpZHRoPSI4Ii8+CiAgICA8cGF0aCBkPSJNMCAwIEwtMjM4IDIzOCBBMzM2IDMzNiAwIDAgMSAtMzM2IDBaIiBmaWxsPSIjMjMyNzQwIiBzdHJva2U9IiMxNTE4MkIiIHN0cm9rZS13aWR0aD0iOCIvPgogICAgPHBhdGggZD0iTTAgMCBMLTMzNiAwIEEzMzYgMzM2IDAgMCAxIC0yMzggLTIzOFoiIGZpbGw9IiMzMDM2NTMiIHN0cm9rZT0iIzE1MTgyQiIgc3Ryb2tlLXdpZHRoPSI4Ii8+CiAgICA8Y2lyY2xlIHI9IjE5NCIgZmlsbD0iIzE1MTgyQiIgc3Ryb2tlPSIjRjVGMkVCIiBzdHJva2Utb3BhY2l0eT0iLjgiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPGNpcmNsZSByPSIxNjYiIGZpbGw9IiMyMzI3NDAiIHN0cm9rZT0iI0Y0NUI4MyIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgICA8Y2lyY2xlIHI9IjEzOCIgZmlsbD0iIzE1MTgyQiIgc3Ryb2tlPSIjQjlCREQwIiBzdHJva2Utb3BhY2l0eT0iLjQiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHBhdGggZD0iTTAgLTI3MCBMMjggLTI4IEwwIC01OCBMLTI4IC0yOFoiIGZpbGw9IiNGNUYyRUIiLz4KICAgIDxwYXRoIGQ9Ik0wIC0yNDUgTDEyIC02NiBMMCAtODIgTC0xMiAtNjZaIiBmaWxsPSIjRjQ1QjgzIi8+CiAgICA8Y2lyY2xlIHI9IjQwIiBmaWxsPSIjRjQ1QjgzIiBzdHJva2U9IiNGNUYyRUIiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPGNpcmNsZSByPSIxNCIgZmlsbD0iIzE1MTgyQiIvPgogIDwvZz4KICA8ZyBzdHJva2U9IiNGNUYyRUIiIHN0cm9rZS13aWR0aD0iMTIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDUgMzU0KSByb3RhdGUoLTI1KSI+CiAgICAgIDxwYXRoIGQ9Ik0yMiA1MiBRMzAgMjMgNjUgMjIgSDEzMiBRMTY2IDIzIDE3NCA1MiBMMTkyIDEwNCBRMTk5IDEyOCAxODAgMTM0IFExNjQgMTQwIDE0OCAxMjIgTDEzMCAxMDUgSDY0IEw0NiAxMjIgUTMwIDE0MCAxNCAxMzQgUS01IDEyOCAyIDEwNFoiIGZpbGw9IiMyMzI3NDAiLz4KICAgICAgPHBhdGggZD0iTTU0IDU5IFY5NiBNMzYgNzcuNSBINzIiIHN0cm9rZT0iI0Y0NUI4MyIgc3Ryb2tlLXdpZHRoPSIxMCIvPgogICAgICA8Y2lyY2xlIGN4PSIxMzciIGN5PSI2NCIgcj0iOSIgZmlsbD0iI0Y1RjJFQiIgc3Ryb2tlPSJub25lIi8+PGNpcmNsZSBjeD0iMTU5IiBjeT0iODUiIHI9IjkiIGZpbGw9IiNGNDVCODMiIHN0cm9rZT0ibm9uZSIvPgogICAgPC9nPgogICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAwIDEwNSkgcm90YXRlKDI0KSI+CiAgICAgIDxyZWN0IHg9IjQiIHk9IjYiIHdpZHRoPSIxNzgiIGhlaWdodD0iMTA4IiByeD0iMzQiIGZpbGw9IiMzMDM2NTMiLz4KICAgICAgPHJlY3QgeD0iMjgiIHk9IjIzIiB3aWR0aD0iMTMwIiBoZWlnaHQ9Ijc0IiByeD0iMTgiIHN0cm9rZT0iI0I5QkREMCIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICAgIDxwYXRoIGQ9Ik02MiA0NiBWNzYgTTQ3IDYxIEg3NyIgc3Ryb2tlPSIjRjQ1QjgzIiBzdHJva2Utd2lkdGg9IjciLz4KICAgICAgPGNpcmNsZSBjeD0iMTI2IiBjeT0iNTAiIHI9IjciIGZpbGw9IiNGNUYyRUIiIHN0cm9rZT0ibm9uZSIvPjxjaXJjbGUgY3g9IjE0NSIgY3k9IjY5IiByPSI3IiBmaWxsPSIjRjQ1QjgzIiBzdHJva2U9Im5vbmUiLz4KICAgIDwvZz4KICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU5NSA2NzApIHJvdGF0ZSgtMTgpIj4KICAgICAgPHBhdGggZD0iTTI1IDQyIFEzNiAxMCA2OCAxMCBIMTMwIFExNjMgMTAgMTc2IDQyIEwxOTIgODkgUTIwMCAxMTYgMTc4IDEyNSBRMTU5IDEzMiAxNDMgMTEyIEwxMjcgOTkgSDcwIEw1NCAxMTIgUTM3IDEzMiAxOCAxMjUgUS0zIDExNiA4IDg5WiIgZmlsbD0iIzIzMjc0MCIvPgogICAgICA8cGF0aCBkPSJNNTUgNDUgVjc5IE0zOCA2MiBINzIiIHN0cm9rZT0iI0Y0NUI4MyIgc3Ryb2tlLXdpZHRoPSI4Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjEzNyIgY3k9IjQ3IiByPSI4IiBmaWxsPSIjRjVGMkVCIiBzdHJva2U9Im5vbmUiLz48Y2lyY2xlIGN4PSIxNTgiIGN5PSI2OCIgcj0iOCIgZmlsbD0iI0Y0NUI4MyIgc3Ryb2tlPSJub25lIi8+CiAgICA8L2c+CiAgPC9nPgogIDxnIGZpbGw9IiNGNDVCODMiPgogICAgPHBhdGggZD0iTTIxMCAxNzAgbDggMjAgMjAgOC0yMCA4LTggMjAtOC0yMC0yMC04IDIwLTh6Ii8+CiAgICA8cGF0aCBkPSJNNzcwIDM2MCBsNyAxNiAxNiA3LTE2IDctNyAxNi03LTE2LTE2LTcgMTYtN3oiLz4KICAgIDxjaXJjbGUgY3g9IjIzNSIgY3k9IjY4MCIgcj0iOCIvPjxjaXJjbGUgY3g9Ijc5MCIgY3k9IjE4MCIgcj0iNyIvPgogIDwvZz4KICA8ZyBmaWxsPSIjRjVGMkVCIiBvcGFjaXR5PSIuNiI+PGNpcmNsZSBjeD0iMTMwIiBjeT0iNTUwIiByPSI1Ii8+PGNpcmNsZSBjeD0iNzY1IiBjeT0iNTgwIiByPSI0Ii8+PGNpcmNsZSBjeD0iMzkwIiBjeT0iOTAiIHI9IjQiLz48Y2lyY2xlIGN4PSI4MjAiIGN5PSI0NTUiIHI9IjUiLz48L2c+Cjwvc3ZnPgo=" alt="A circular selection wheel surrounded by generic video game controllers and arcade decorations.">
+          <span class="dial-label dial-label-top">PLAYER 01</span><span class="dial-label dial-label-bottom">READY TO PLAY</span>
+        </div>
+      </div>
+      <span class="hero-spark hero-spark-one" aria-hidden="true">✳</span><span class="hero-spark hero-spark-two" aria-hidden="true">✦</span>
+      <a class="hero-scroll" href="#about-us">DISCOVER THE TEAM <span>↓</span></a>
+    </section>
+
+    <section class="about" id="about-us" aria-labelledby="about-title">
+      <div class="about-inner">
+        <header class="about-header"><a class="about-brand" href="#welcome"><span>P</span> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU <span>↗</span></a></header>
+        <div class="about-intro"><div><p class="eyebrow"><span></span> MEET THE TEAM</p><h2 id="about-title">The people behind <em>the spin.</em></h2></div><p class="about-intro-copy">Five people, one shared idea, and a wheel full of possibilities.</p></div>
+        <div class="team-grid" aria-label="The PRESS START team">
+          <article class="member-card"><div class="member-avatar"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTcwIj48Y2lyY2xlIGN4PSIxMTAiIGN5PSI3NyIgcj0iNjEiIGZpbGw9IiMzMDM0MzAiLz48cGF0aCBkPSJNOTQgMTAydjE2cTE2IDE0IDMyIDB2LTE2WiIgZmlsbD0iI0YyRDBCNSIvPjxwYXRoIGQ9Ik03MCAxNDhjNC0yMSAxOS0zMCAyOC0zMmgyNGMxNSAzIDI5IDE0IDMzIDMydjVINjVaIiBmaWxsPSIjRkYyRjc5Ii8+PGVsbGlwc2UgY3g9IjExMCIgY3k9Ijc3IiByeD0iMjgiIHJ5PSIzMiIgZmlsbD0iI0YyRDBCNSIvPjxwYXRoIGQ9Ik04MiA2N2MtNy05IDAtMjkgMTctMzQgMjAtNyA0MCA5IDQwIDMxbC03LTZjLTE0LTktMzUtNy00NSA3WiIgZmlsbD0iIzcwNDUyRiIvPjxwYXRoIGQ9Im0xNTMgMTA1IDE2LTI3IiBzdHJva2U9IiM5QzcwNDYiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0ibTE0MyA3OCAxMy0xMiAxMCAxMCAxMy04IDEyIDEwLTEyIDExLTEyLTgtMTAgMTBaIiBmaWxsPSIjMTBENEM5IiBzdHJva2U9IiM2RUYyRTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Im0xNTggODMgMTAtMTAgNiA2LTEwIDEwWiIgZmlsbD0iI0U4RkZGQyIvPjwvc3ZnPgo=" alt="" loading="lazy"></div><h3>JOSUE</h3></article>
+          <article class="member-card"><div class="member-avatar"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTcwIj48Y2lyY2xlIGN4PSIxMTAiIGN5PSI3NyIgcj0iNjEiIGZpbGw9IiMzMDM0MzAiLz48cGF0aCBkPSJNNzYgODNjLTktMzAgMi01NCAyOS01NiAyOC0zIDQ4IDE2IDQwIDUzbDYgMzItMTUgMTEtNi00MVoiIGZpbGw9IiM3MDQ3MkYiLz48cGF0aCBkPSJNOTQgMTAydjE2cTE2IDE0IDMyIDB2LTE2WiIgZmlsbD0iI0U3QkM5NCIvPjxwYXRoIGQ9Ik03MCAxNDhjNC0yMSAxOS0zMCAyOC0zMmgyNGMxNSAzIDI5IDE0IDMzIDMydjVINjVaIiBmaWxsPSIjNzU1MUY2Ii8+PGVsbGlwc2UgY3g9IjExMCIgY3k9Ijc3IiByeD0iMjgiIHJ5PSIzMiIgZmlsbD0iI0U3QkM5NCIvPjxwYXRoIGQ9Ik04MiA2NWMyLTIwIDE1LTI5IDI4LTI4IDE2IDAgMjcgMTIgMjggMjdsLTktN2MtMTQtNS0zMS0zLTQyIDdaIiBmaWxsPSIjNzA0NzJGIi8+PHBhdGggZD0iTTgwIDcxcTMwLTcgNjAgMGwtMiAxMnEtMjgtNS01NiAwWiIgZmlsbD0iIzA5MEEwQyIvPjxwYXRoIGQ9Im04MyA3NC0xNCA1LTMgNW0xOS00LTEyIDhtNjYtMTUgMTIgNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDkwQTBDIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPgo=" alt="" loading="lazy"></div><h3>IGNACIO</h3></article>
+          <article class="member-card"><div class="member-avatar"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTcwIj48Y2lyY2xlIGN4PSIxMTAiIGN5PSI3NyIgcj0iNjEiIGZpbGw9IiMzMDM0MzAiLz48cGF0aCBkPSJNNzYgODBjLTctMjktMS01MyAyOS01NiAzMS0zIDQ4IDIwIDQwIDYxbDYgNDctMTUgMTMtNi02MloiIGZpbGw9IiMyMDE3MTUiLz48cGF0aCBkPSJNOTQgMTAydjE2cTE2IDE0IDMyIDB2LTE2WiIgZmlsbD0iIzkzNUIzRCIvPjxwYXRoIGQ9Ik03MCAxNDhjNC0yMSAxOS0zMCAyOC0zMmgyNGMxNSAzIDI5IDE0IDMzIDMydjVINjVaIiBmaWxsPSIjMENDOEM4Ii8+PGVsbGlwc2UgY3g9IjExMCIgY3k9Ijc3IiByeD0iMjgiIHJ5PSIzMiIgZmlsbD0iIzkzNUIzRCIvPjxwYXRoIGQ9Ik04MCA2N2MtMS0yMCAxMi0zMyAzMC0zM3MyOSAxNCAyOSAzM2wtNy05Yy0xNC04LTM0LTUtNDUgN1oiIGZpbGw9IiMyMDE3MTUiLz48cGF0aCBkPSJtODIgODctNiAzOSAxMCAxMSAxMC00MFptNTYgMCA2IDM5LTEwIDExLTEwLTQwWiIgZmlsbD0iIzIwMTcxNSIvPjwvc3ZnPgo=" alt="" loading="lazy"></div><h3>ELIANA</h3></article>
+          <article class="member-card"><div class="member-avatar"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTcwIj48Y2lyY2xlIGN4PSIxMTAiIGN5PSI3NyIgcj0iNjEiIGZpbGw9IiMzMDM0MzAiLz48ZyBmaWxsPSIjRTZDNDVCIj48Y2lyY2xlIGN4PSI4NSIgY3k9IjUyIiByPSIxMCIvPjxjaXJjbGUgY3g9Ijk1IiBjeT0iNDIiIHI9IjEyIi8+PGNpcmNsZSBjeD0iMTA5IiBjeT0iMzkiIHI9IjEyIi8+PGNpcmNsZSBjeD0iMTIyIiBjeT0iNDEiIHI9IjEyIi8+PGNpcmNsZSBjeD0iMTM1IiBjeT0iNDkiIHI9IjEwIi8+PC9nPjxwYXRoIGQ9Ik05NCAxMDJ2MTZxMTYgMTQgMzIgMHYtMTZaIiBmaWxsPSIjRjJDRkIwIi8+PHBhdGggZD0iTTcwIDE0OGM0LTIxIDE5LTMwIDI4LTMyaDI0YzE1IDMgMjkgMTQgMzMgMzJ2NUg2NVoiIGZpbGw9IiMzNkQ5OEIiLz48ZWxsaXBzZSBjeD0iMTEwIiBjeT0iNzciIHJ4PSIyOCIgcnk9IjMyIiBmaWxsPSIjRjJDRkIwIi8+PHBhdGggZD0iTTgwIDU2cTEtMTkgMjktMjIgMjggMiAzMSAyMmwtNCAxMHEtMjYtNy01MiAwWiIgZmlsbD0iI0Q4MjQzNiIvPjxwYXRoIGQ9Ik04MCA1N3EzMC05IDYwIDBsMTMgOXEtNDIgNy04NiAwWiIgZmlsbD0iI0YyMUYzNSIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjQ4IiByPSIxMCIgZmlsbD0iI0ZGRjhFQSIvPjxwYXRoIGQ9Ik0xMTAgNDJ2MTJtLTYtNmgxMiIgc3Ryb2tlPSIjRDgyNDM2IiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4K" alt="" loading="lazy"></div><h3>SANTIAGO</h3></article>
+          <article class="member-card"><div class="member-avatar"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTcwIj48Y2lyY2xlIGN4PSIxMTAiIGN5PSI3NyIgcj0iNjEiIGZpbGw9IiMzMDM0MzAiLz48cGF0aCBkPSJNODMgNzNjLTUtMjAgNC0zNyAyMC0zOSAxOS00IDM0IDEwIDM1IDMwbC03LTZjLTE1LTgtMzMtNC00MyA5WiIgZmlsbD0iIzE3MTkxQSIvPjxwYXRoIGQ9Ik05NCAxMDJ2MTZxMTYgMTQgMzIgMHYtMTZaIiBmaWxsPSIjRjJDRkIwIi8+PHBhdGggZD0iTTcwIDE0OGM0LTIxIDE5LTMwIDI4LTMyaDI0YzE1IDMgMjkgMTQgMzMgMzJ2NUg2NVoiIGZpbGw9IiM1MjZBMzIiLz48ZWxsaXBzZSBjeD0iMTEwIiBjeT0iNzciIHJ4PSIyOCIgcnk9IjMyIiBmaWxsPSIjRjJDRkIwIi8+PHBhdGggZD0iTTgyIDY3cTQtMjIgMjgtMjMgMjUgMSAyOCAyM2wtNyA1cS0yMi02LTQ0IDBaIiBmaWxsPSIjMjYzMzFEIi8+PHBhdGggZD0iTTgwIDY2cTI5LTggNjAgMGwxMSAxMXEtNDAgNy04MiAwWiIgZmlsbD0iIzQzNTgyNyIvPjxwYXRoIGQ9Im0xMTAgNTAgNCA5aDEwbC04IDYgMyA5LTktNi05IDYgMy05LTgtNmgxMFoiIGZpbGw9IiNGMkNGM0QiLz48L3N2Zz4K" alt="" loading="lazy"></div><h3>TEO</h3></article>
+        </div>
+        <div class="about-info">
+          <article class="info-block"><span class="info-index">01 / THE CREW</span><h3>Who We Are</h3><p>We’re Josue, Ignacio, Eliana, Santiago, and Teo. We’re a team bringing our ideas together to create a gaming experience of our own.</p></article>
+          <article class="info-block"><span class="info-index">02 / THE IDEA</span><h3>What We Do</h3><p>We’re building a video-game-inspired website around a roulette-style game. We’ll explore gaming culture, share fun facts, look back at gaming history, and invite you to play.</p></article>
+          <article class="audience-block"><div class="audience-stamp" aria-hidden="true">PLAYER<br>ONE</div><div><span class="info-index">03 / YOUR TURN</span><h3>This Website Is for You If...</h3><p>You enjoy video games, like discovering something new, love quick challenges, or simply want to have fun. We’re making this space with kids and teens in mind.</p><span class="no-bets"><b>✳</b> Just for fun. No real-money betting.</span></div></article>
+        </div>
+        <footer class="about-footer"><span>PRESS START</span><span>MADE FOR THE LOVE OF GAMES</span><a href="#timeline">EXPLORE THE TIMELINE ↓</a></footer>
+      </div>
+    </section>
+
+    <section class="timeline-section" id="timeline" aria-labelledby="timeline-title">
+      <div class="timeline-shell">
+        <header class="timeline-header"><a class="about-brand" href="#welcome"><span>P</span> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU <span>↗</span></a></header>
+        <div class="timeline-intro"><div><p class="eyebrow"><span></span> THE HISTORY OF PLAY</p><h2 id="timeline-title">EVERY ERA<br><em>CHANGED THE GAME.</em></h2></div><p class="timeline-intro-copy">Scroll through the generations. Watch the hardware evolve as the camera moves through the history of play.</p></div>
+        <div class="scrolly-experience" id="history-journey">
+          <div class="scrolly-copy">
+            <div class="scrolly-intro">
+              <p class="chapter-tag"><b>START THE JOURNEY</b> / 01—11</p>
+              <h3>FROM PIXELS<br>TO <em>INFINITE WORLDS.</em></h3>
+              <p>Keep scrolling to travel through the history of video games. Each chapter changes the 3D object, the lighting and the point of view.</p>
+            </div>
+            <article class="history-chapter is-current" data-stage="0">
+              <p class="chapter-tag"><b>01 / THE BEGINNINGS</b><span>1950s–1960s</span></p>
+              <h3 class="chapter-title">THE FIRST<br><em>DIGITAL GAMES.</em></h3>
+              <p class="chapter-description">Before home consoles, researchers experimented with interactive electronics. Tennis for Two turned an oscilloscope into a simple tennis game, and Spacewar! brought a space battle to a university computer.</p>
+              <div class="chapter-milestones"><span>Tennis for Two · 1958</span><span>Spacewar! · 1962</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Computers became places people could play, not only machines for calculations.</p>
+            </article>
+            <article class="history-chapter" data-stage="1">
+              <p class="chapter-tag"><b>02 / THE ARCADE ERA</b><span>1972–late 1970s</span></p>
+              <h3 class="chapter-title">ARCADES<br><em>LIGHT UP.</em></h3>
+              <p class="chapter-description">Pong helped make video games a public attraction. Soon, arcade cabinets brought games into cafés, shops and dedicated game rooms, while Space Invaders turned high scores into a shared obsession.</p>
+              <div class="chapter-milestones"><span>Magnavox Odyssey · 1972</span><span>Pong · 1972</span><span>Space Invaders · 1978</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Gaming moved from research labs into public entertainment.</p>
+            </article>
+            <article class="history-chapter" data-stage="2">
+              <p class="chapter-tag"><b>03 / HOME CONSOLES</b><span>Late 1970s–early 1980s</span></p>
+              <h3 class="chapter-title">THE GAME<br><em>COMES HOME.</em></h3>
+              <p class="chapter-description">Cartridge-based systems made it possible to play different games on one console. The Atari 2600 helped turn the television into a home gaming screen, while Intellivision brought another major system into the living room.</p>
+              <div class="chapter-milestones"><span>Atari 2600 · 1977</span><span>Intellivision · 1979</span><span>Interchangeable cartridges</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Players could build a collection and choose what to play at home.</p>
+            </article>
+            <article class="history-chapter" data-stage="3">
+              <p class="chapter-tag"><b>04 / 8-BIT & 16-BIT</b><span>1983–late 1980s</span></p>
+              <h3 class="chapter-title">CHARACTERS<br><em>COME ALIVE.</em></h3>
+              <p class="chapter-description">Nintendo's Family Computer launched in Japan in 1983 and reached North America as the NES in 1985. Sega's Mega Drive arrived in Japan in 1988. More expressive graphics helped games build recognizable worlds and characters.</p>
+              <div class="chapter-milestones"><span>Famicom · Japan, 1983</span><span>NES · North America, 1985</span><span>Mega Drive · Japan, 1988</span><span>Super Mario Bros. · 1985</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Franchises, memorable characters and console rivalries became central to gaming.</p>
+            </article>
+            <article class="history-chapter" data-stage="4">
+              <p class="chapter-tag"><b>05 / THE 3D REVOLUTION</b><span>1990–2000</span></p>
+              <h3 class="chapter-title">A WHOLE<br><em>NEW DIMENSION.</em></h3>
+              <p class="chapter-description">The Super Nintendo era refined 2D worlds, while the PlayStation and Nintendo 64 helped bring polygonal 3D environments into the mainstream. Players could explore spaces that felt larger and more spatial.</p>
+              <div class="chapter-milestones"><span>Super Famicom · Japan, 1990</span><span>PlayStation · Japan, 1994</span><span>Nintendo 64 · 1996</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Disc storage, 3D graphics and new camera perspectives changed game design.</p>
+            </article>
+            <article class="history-chapter" data-stage="5">
+              <p class="chapter-tag"><b>06 / ONLINE GAMING</b><span>2001–2005</span></p>
+              <h3 class="chapter-title">WORLDS<br><em>CONNECT.</em></h3>
+              <p class="chapter-description">PlayStation 2 and Xbox pushed console hardware forward. Online services and broadband connections made it easier for players to compete and cooperate across distances.</p>
+              <div class="chapter-milestones"><span>PlayStation 2 · 2000</span><span>Xbox · 2001</span><span>Online multiplayer expands</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Multiplayer could reach beyond the same room and the same screen.</p>
+            </article>
+            <article class="history-chapter" data-stage="6">
+              <p class="chapter-tag"><b>07 / HIGH DEFINITION</b><span>2005–2010</span></p>
+              <h3 class="chapter-title">DETAILS<br><em>GET SHARPER.</em></h3>
+              <p class="chapter-description">Xbox 360 and PlayStation 3 brought high-definition graphics to living-room consoles, while PC gaming continued pushing visual detail and performance. Wii added motion controls and online stores widened how players connected.</p>
+              <div class="chapter-milestones"><span>Xbox 360 · 2005</span><span>PlayStation 3 · 2006</span><span>PC gaming · HD graphics</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> HD visuals grew alongside motion controls and connected communities.</p>
+            </article>
+            <article class="history-chapter" data-stage="7">
+              <p class="chapter-tag"><b>08 / NEW GENERATIONS</b><span>2011–2015</span></p>
+              <h3 class="chapter-title">A MORE<br><em>CONNECTED ERA.</em></h3>
+              <p class="chapter-description">PlayStation 4 and Xbox One arrived in 2013. Digital libraries, downloadable games, streaming features and large online communities became a normal part of console ecosystems.</p>
+              <div class="chapter-milestones"><span>PlayStation 4 · 2013</span><span>Xbox One · 2013</span><span>Digital libraries grow</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Discovering, sharing and updating games increasingly happened online.</p>
+            </article>
+            <article class="history-chapter" data-stage="8">
+              <p class="chapter-tag"><b>09 / REALISM & ESPORTS</b><span>2016–2020</span></p>
+              <h3 class="chapter-title">NEW WAYS<br><em>TO PLAY.</em></h3>
+              <p class="chapter-description">PlayStation VR brought console-focused virtual reality to more players, while Nintendo Switch combined handheld and TV play. Competitive gaming and esports also reached wider audiences.</p>
+              <div class="chapter-milestones"><span>PlayStation VR · 2016</span><span>Nintendo Switch · 2017</span><span>VR & esports grow</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Gaming expanded beyond the traditional screen and living-room setup.</p>
+            </article>
+            <article class="history-chapter" data-stage="9">
+              <p class="chapter-tag"><b>10 / NEW-GENERATION CONSOLES</b><span>2020–2023</span></p>
+              <h3 class="chapter-title">SPEED MEETS<br><em>DETAIL.</em></h3>
+              <p class="chapter-description">PlayStation 5 and Xbox Series X|S launched in 2020. Solid-state storage, advanced lighting and stronger hardware helped developers create detailed worlds with shorter loading times.</p>
+              <div class="chapter-milestones"><span>PlayStation 5 · 2020</span><span>Xbox Series X|S · 2020</span><span>SSD & ray tracing</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> Faster storage and richer rendering became defining parts of the generation.</p>
+            </article>
+            <article class="history-chapter" data-stage="10">
+              <p class="chapter-tag"><b>11 / THE FUTURE OF GAMING</b><span>2024 onward</span></p>
+              <h3 class="chapter-title">THE NEXT<br><em>FRONTIER.</em></h3>
+              <p class="chapter-description">Cloud gaming, AI-assisted development, mixed reality and new graphics techniques are active areas of experimentation. Their long-term impact is still unfolding, so the next chapter remains an open question.</p>
+              <div class="chapter-milestones"><span>Cloud gaming</span><span>AI-assisted tools</span><span>Immersive interfaces</span></div>
+              <p class="chapter-footnote"><strong>THE SHIFT /</strong> These are developing technologies and trends, not guaranteed predictions.</p>
+            </article>
+            <div class="scrolly-finish">
+              <p class="chapter-tag"><b>END OF THE CURRENT LEVEL</b> / THE STORY CONTINUES</p>
+              <h3>THE NEXT LEVEL<br><em>IS YET TO COME.</em></h3>
+              <p>From a few glowing pixels to worlds that keep expanding, video games are still changing. The next big idea may come from anywhere.</p>
+              <a href="#timeline">REPLAY THE JOURNEY <span>↗</span></a>
+            </div>
+          </div>
+          <aside class="scrolly-visual" aria-label="Live three-dimensional gaming hardware scene">
+            <canvas id="history-webgl" aria-label="Three-dimensional scene that changes as you scroll"></canvas>
+            <div class="visual-fallback" id="visual-fallback">A WebGL-capable browser is needed to display this 3D prototype.</div>
+            <div class="visual-shade" aria-hidden="true"></div>
+            <div class="visual-hud">
+              <div class="visual-topline"><span>PRESS START / <strong>3D ARCHIVE</strong></span><span>SCROLL-SCRUBBED</span></div>
+              <div class="visual-device-name" id="scene-device-name">EARLY COMPUTER DISPLAY</div>
+              <div class="visual-bottom"><span class="visual-era" id="scene-period">1950s–1960s / THE BEGINNINGS</span><span class="visual-counter" id="scene-counter">01 / 11</span><div class="visual-progress"><span id="scene-progress"></span></div><div class="visual-nav" id="scene-nav" aria-label="Jump to a history chapter"></div></div>
+            </div>
+          </aside>
+        </div>
+        <div class="timeline-instruction"><span><strong>SELECT AN ERA</strong> / MOVE THROUGH THE YEARS</span><span>← → USE ARROWS OR CLICK A CASE</span></div>
+        <div class="timeline-viewport" id="timeline-viewport" tabindex="0" role="region" aria-label="Interactive video game history timeline. Use left and right arrow keys to change era.">
+          <div class="timeline-track" id="timeline-track"></div>
+        </div>
+        <div class="timeline-controls">
+          <button class="timeline-arrow" id="timeline-prev" type="button" aria-label="Previous era" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+          <div class="progress-meta"><strong id="timeline-count">01 / 12</strong><div class="progress-rail"><div class="progress-fill" id="timeline-progress"></div></div><span>12 ERAS</span></div>
+          <button class="timeline-arrow" id="timeline-next" type="button" aria-label="Next era"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+        <nav class="timeline-dots" id="timeline-dots" aria-label="Jump to an era"></nav>
+        <p class="timeline-note"><strong>One important detail:</strong> console launch dates can differ by country. The cards show regional dates where that helps explain the timeline.</p>
+        <div class="timeline-sources"><span>HISTORY NOTES:</span><a href="https://www.history.com/articles/history-of-video-games" target="_blank" rel="noreferrer">HISTORY.COM</a><a href="https://www.computerhistory.org/timeline/graphics-games/" target="_blank" rel="noreferrer">COMPUTER HISTORY MUSEUM</a><a href="https://blog.scienceandmediamuseum.org.uk/60-years-history-of-videogames-timeline-1951-2011/" target="_blank" rel="noreferrer">NATIONAL SCIENCE AND MEDIA MUSEUM</a></div>
+        <footer class="timeline-footer"><span>PRESS START / PLAYER 01</span><span>THE STORY IS STILL LOADING...</span><a href="#welcome">RETURN TO START ↑</a></footer>
+      </div>
+    </section>
+  </div>
+  <script>
+    (() => {
+      const menuItems = [...document.querySelectorAll('.menu-item')];
+      const heroArt = document.getElementById('hero-art');
+      const menuStatus = document.getElementById('menu-status');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const descriptions = [
+        'Choose a destination to begin.',
+        'Meet the people and ideas behind this project.',
+        'Travel through the history of video games, one era at a time.',
+        'This level is still being built. Stay tuned!',
+        'Fun facts are loading. Come back soon!'
+      ];
+      function selectMenu(index) {
+        menuItems.forEach((button, i) => {
+          const selected = i === index;
+          button.classList.toggle('is-selected', selected);
+          button.setAttribute('aria-pressed', String(selected));
+        });
+        if (heroArt) heroArt.style.transform = 'rotate(' + (index * 2) + 'deg) scale(1.01)';
+        if (menuStatus) menuStatus.innerHTML = '<span></span>' + descriptions[index];
+      }
+      menuItems.forEach((button, index) => {
+        button.addEventListener('click', () => {
+          selectMenu(index);
+          const target = button.dataset.target;
+          if (['welcome','about-us','timeline'].includes(target)) {
+            document.getElementById(target)?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+          }
+        });
+      });
+      document.querySelectorAll('a[href="#welcome"]').forEach(link => link.addEventListener('click', () => selectMenu(0)));
+
+      const eras = [
+        { years:'1950s–1960s', category:'LAB EXPERIMENTS', title:'THE FIRST DIGITAL GAMES', desc:'Before consoles, games lived inside laboratories. Researchers connected simple experiments to bulky computers and screens. Tennis for Two (1958) and Spacewar! (1962) showed that a computer could become a place to play.', highlights:['Tennis for Two · 1958','Spacewar! · 1962'], note:'The beginning: computers became interactive playgrounds.', device:'EARLY COMPUTER DISPLAY', type:'computer', accent:'#63C8E8' },
+        { years:'1972–1978', category:'THE ARCADE BOOM', title:'ARCADES LIGHT UP', desc:'Pong helped turn video games into a public attraction in 1972. A few years later, Space Invaders (1978) filled arcades with new challenges, high scores and crowds of players.', highlights:['Magnavox Odyssey · 1972','Pong · 1972','Space Invaders · 1978'], note:'Games moved into arcades, shops and public spaces.', device:'ARCADE CABINET', type:'arcade', accent:'#F4A340' },
+        { years:'1977–1983', category:'HOME CONSOLES', title:'GAMES MOVE HOME', desc:'Cartridge-based consoles made it possible to build a game collection and play on the living-room television. The Atari 2600 arrived in 1977, followed by systems such as Intellivision in 1979.', highlights:['Atari 2600 · 1977','Intellivision · 1979'], note:'Interchangeable cartridges helped create a new home-gaming habit.', device:'CARTRIDGE CONSOLE', type:'cartridge', accent:'#D5A15C' },
+        { years:'1983–1989', category:'8-BIT & 16-BIT', title:'THE 8-BIT & 16-BIT ERA', desc:'Home systems became more capable and recognizable. Nintendo introduced the Famicom in Japan in 1983; it reached North America as the NES in 1985. Sega launched the Mega Drive in Japan in 1988.', highlights:['Famicom · Japan, 1983','NES · North America, 1985','Mega Drive · Japan, 1988'], note:'Color, sound, character-based adventures and console rivalries grew.', device:'8-BIT HOME CONSOLE', type:'eightbit', accent:'#E56C53' },
+        { years:'1990–1995', category:'16-BIT TO 3D', title:'A NEW DIMENSION', desc:'The Super Famicom launched in Japan in 1990 (Super Nintendo in North America in 1991). Sony’s PlayStation followed in Japan in 1994 and in North America in 1995, bringing CD-based games into the spotlight.', highlights:['Super Famicom · Japan, 1990','PlayStation · Japan, 1994','PlayStation · North America, 1995'], note:'CD-ROM storage and 3D experiments changed what games could contain.', device:'DISC-BASED CONSOLE', type:'disc', accent:'#8C83E9' },
+        { years:'1996–2000', category:'THE 3D REVOLUTION', title:'3D WORLDS GO MAINSTREAM', desc:'The Nintendo 64 arrived in 1996, while the Dreamcast launched in Japan in 1998 and North America in 1999. Analog controls, polygonal environments and early online features pushed games into more explorable worlds.', highlights:['Nintendo 64 · 1996','Dreamcast · Japan, 1998','Dreamcast · North America, 1999'], note:'Games increasingly asked players to explore in every direction.', device:'3D CONSOLE & CONTROLLER', type:'cube', accent:'#65B7A5' },
+        { years:'2000–2005', category:'ONLINE GAMING', title:'POWER & ONLINE PLAY', desc:'The PlayStation 2 arrived in 2000 and Xbox followed in 2001. More powerful hardware, DVD playback, online services and connected multiplayer made consoles bigger entertainment hubs.', highlights:['PlayStation 2 · 2000','Xbox · 2001','Online console play expands'], note:'Gaming became a shared experience across living rooms and networks.', device:'NETWORK-READY CONSOLE', type:'online', accent:'#8FBF72' },
+        { years:'2005–2010', category:'HD & NEW EXPERIENCES', title:'HIGH DEFINITION ARRIVES', desc:'Xbox 360 and PlayStation 3 brought high-definition graphics to living-room consoles, while PC gaming continued pushing visual detail and performance. Wii added motion controls and online stores widened how players connected.', highlights:['Xbox 360 · 2005','PlayStation 3 · 2006','PC gaming · HD graphics'], note:'Digital downloads and online communities became part of console life.', device:'HD CONSOLE GENERATION', type:'hd', accent:'#5EB5D5' },
+        { years:'2011–2015', category:'DIGITAL GENERATIONS', title:'GAMES GO SOCIAL & DIGITAL', desc:'PlayStation 4 and Xbox One arrived in 2013. Digital libraries, streaming, indie releases and competitive gaming became more visible parts of the scene, while phones and tablets brought games to more places.', highlights:['PlayStation 4 · 2013','Xbox One · 2013','Digital libraries grow'], note:'Playing, sharing and discovering games became more connected.', device:'SLIM MODERN CONSOLE', type:'slim', accent:'#E16D9E' },
+        { years:'2016–2020', category:'VR & HYBRID PLAY', title:'NEW WAYS TO PLAY', desc:'PlayStation VR brought a console-focused virtual-reality headset in 2016. Nintendo Switch arrived in 2017 with a design that could move between handheld and TV play.', highlights:['PlayStation VR · 2016','Nintendo Switch · 2017','Portable + TV play'], note:'The screen could move with the player, or surround them.', device:'VR HEADSET & HANDHELD', type:'vr', accent:'#A58AE8' },
+        { years:'2020–2023', category:'NEW-GENERATION CONSOLES', title:'A NEW HARDWARE GENERATION', desc:'PlayStation 5 and Xbox Series X|S launched in 2020. Faster solid-state storage, detailed lighting and higher performance helped make large game worlds feel more responsive.', highlights:['PlayStation 5 · 2020','Xbox Series X|S · 2020','Faster storage & ray tracing'], note:'The focus shifted toward speed, detail and smoother worlds.', device:'CURRENT-GENERATION CONSOLE', type:'tower', accent:'#73C9BF' },
+        { years:'2024–FUTURE', category:'THE NEXT FRONTIER', title:'THE NEXT CHAPTER IS LOADING', desc:'Cloud streaming, AI-assisted tools and immersive interfaces continue to develop. Instead of one fixed direction, the next era may bring more ways to create, access and experience games across devices.', highlights:['Cloud gaming','AI-assisted creation','New immersive interfaces'], note:'This chapter is still being written — the next big change may surprise us.', device:'FUTURE PLAY CONCEPT', type:'future', accent:'#E8B85C' }
+      ];
+
+      const track = document.getElementById('timeline-track');
+      const viewport = document.getElementById('timeline-viewport');
+      const prev = document.getElementById('timeline-prev');
+      const next = document.getElementById('timeline-next');
+      const count = document.getElementById('timeline-count');
+      const progress = document.getElementById('timeline-progress');
+      const dots = document.getElementById('timeline-dots');
+      let active = 0;
+
+      function deviceSvg(type, index, accent) {
+        const p = 'd' + index;
+        const common = `
+          <defs>
+            <linearGradient id="${p}-front" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#687184"/><stop offset=".48" stop-color="#333A4B"/><stop offset="1" stop-color="#141925"/></linearGradient>
+            <linearGradient id="${p}-top" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ADB5C1"/><stop offset=".35" stop-color="#545D6E"/><stop offset="1" stop-color="#242B3A"/></linearGradient>
+            <linearGradient id="${p}-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#222A39"/><stop offset="1" stop-color="#080D17"/></linearGradient>
+            <linearGradient id="${p}-screen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#15243D"/><stop offset=".55" stop-color="#315D76"/><stop offset="1" stop-color="${accent}"/></linearGradient>
+            <linearGradient id="${p}-accent" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${accent}"/><stop offset="1" stop-color="#F5F2EB"/></linearGradient>
+            <filter id="${p}-shadow" x="-40%" y="-40%" width="180%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+          </defs>
+          <ellipse cx="300" cy="380" rx="190" ry="25" fill="#000" opacity=".22" filter="url(#${p}-shadow)"/>
+        `;
+        const models = {
+          computer: `
+            <g transform="translate(4 0)">
+              <path d="M122 98 371 52 442 93 193 145Z" fill="#AAB2BF"/>
+              <path d="M193 145 442 93 442 286 193 339Z" fill="url(#${p}-side)"/>
+              <path d="M122 98 193 145 193 339 122 287Z" fill="#202837"/>
+              <path d="M145 111 366 72 366 235 145 276Z" fill="#080D15" stroke="#9099A8" stroke-width="5"/>
+              <path d="M159 123 352 89 352 222 159 257Z" fill="url(#${p}-screen)"/>
+              <path d="M159 123 352 89 352 104 159 139Z" fill="#D2DAE5" opacity=".14"/>
+              <path d="M253 284 321 270 337 314 270 331Z" fill="#414A5C"/><path d="M220 335 358 305 383 324 245 356Z" fill="#222A38"/>
+              <path d="M382 121 423 112 423 270 382 279Z" fill="#0E1420"/>
+              <circle cx="402" cy="145" r="7" fill="${accent}"/><circle cx="402" cy="169" r="5" fill="#7D8798"/>
+              <path d="M135 294 183 326 183 339 135 307Z" fill="#111824"/>
+              <path d="M175 361 408 312" stroke="${accent}" stroke-width="3" opacity=".55"/>
+            </g>`,
+          arcade: `
+            <g transform="translate(30 0)">
+              <path d="M202 41 386 10 425 43 239 82Z" fill="#929BAB"/>
+              <path d="M239 82 425 43 425 324 239 365Z" fill="#121824"/>
+              <path d="M202 41 239 82 239 365 202 322Z" fill="#273143"/>
+              <path d="M224 93 388 59 388 229 224 265Z" fill="#070B13" stroke="#6D7788" stroke-width="5"/>
+              <path d="M236 106 376 77 376 211 236 241Z" fill="url(#${p}-screen)"/>
+              <path d="M250 214 267 189 283 205 300 165 317 184 344 132 360 145 376 119 376 211 236 241Z" fill="${accent}" opacity=".72"/>
+              <path d="M244 264 392 231 392 258 244 292Z" fill="#30394B"/>
+              <circle cx="286" cy="279" r="10" fill="#E64D59"/><circle cx="311" cy="274" r="8" fill="#F2C05E"/><circle cx="333" cy="269" r="8" fill="#69C69B"/>
+              <path d="M275 274 275 248 286 246 286 271Z" fill="#0A111C"/><path d="M279 251 282 220 291 218 291 252Z" fill="#B9C2CF"/>
+              <path d="M257 309 387 280 387 306 257 335Z" fill="#080D15"/><circle cx="357" cy="296" r="5" fill="${accent}"/>
+              <path d="M240 365 425 324 425 342 240 384Z" fill="#050912"/>
+            </g>`,
+          cartridge: `
+            <g transform="translate(0 30)">
+              <path d="M122 180 350 110 472 166 241 241Z" fill="url(#${p}-top)"/>
+              <path d="M122 180 241 241 241 312 122 250Z" fill="#202838"/>
+              <path d="M241 241 472 166 472 235 241 312Z" fill="url(#${p}-side)"/>
+              <path d="M153 180 342 124 424 165 234 226Z" fill="#151B26" stroke="#9D7854" stroke-width="3"/>
+              <path d="M170 183 344 132M186 194 359 143M204 205 376 154" stroke="#B58A5A" stroke-width="3" opacity=".8"/>
+              <path d="M240 250 442 184" stroke="#778294" stroke-width="4" opacity=".4"/>
+              <rect x="275" y="174" width="83" height="23" rx="4" transform="rotate(-17 275 174)" fill="#090E17"/>
+              <path d="M399 180 447 165 447 184 399 199Z" fill="${accent}"/>
+              <g transform="translate(55 280) rotate(-13)"><path d="M0 30 91 5 119 22 28 48Z" fill="#30394A"/><path d="M28 48 119 22 119 55 28 81Z" fill="#111824"/><circle cx="38" cy="43" r="7" fill="#D6DCE5"/><path d="M41 42 47 8 56 6 53 44Z" fill="#AAB3C0"/><circle cx="82" cy="40" r="5" fill="${accent}"/></g>
+            </g>`,
+          eightbit: `
+            <g transform="translate(0 35)">
+              <path d="M125 176 357 111 462 162 230 234Z" fill="#A5ADBA"/>
+              <path d="M125 176 230 234 230 292 125 236Z" fill="#586274"/>
+              <path d="M230 234 462 162 462 220 230 292Z" fill="#222A38"/>
+              <path d="M158 174 353 122 425 158 230 218Z" fill="#333B4A"/>
+              <path d="M182 170 336 129 398 159 244 201Z" fill="#111722"/>
+              <path d="M244 201 398 159 398 173 244 215Z" fill="#596475"/>
+              <rect x="290" y="163" width="74" height="14" rx="3" transform="rotate(-15 290 163)" fill="#090E18"/>
+              <circle cx="390" cy="183" r="8" fill="${accent}"/><circle cx="411" cy="177" r="5" fill="#D8DEE8"/>
+              <g transform="translate(72 280) rotate(-10)"><path d="M0 24 130 0 162 18 31 45Z" fill="#A6AFBD"/><path d="M31 45 162 18 162 46 31 73Z" fill="#333C4C"/><path d="M30 29 43 27 43 52 30 55Z" fill="#0D1420"/><path d="M24 41 50 36" stroke="#DCE1E9" stroke-width="4"/><circle cx="112" cy="35" r="6" fill="${accent}"/><circle cx="130" cy="31" r="6" fill="#E3E7ED"/></g>
+            </g>`,
+          disc: `
+            <g transform="translate(0 35)">
+              <path d="M111 198 348 126 480 185 243 263Z" fill="#CCD2DB"/>
+              <path d="M111 198 243 263 243 306 111 240Z" fill="#454E5E"/>
+              <path d="M243 263 480 185 480 229 243 306Z" fill="#151C29"/>
+              <path d="M145 197 346 137 442 180 240 245Z" fill="#313A49"/>
+              <path d="M172 190 343 141 410 171 240 221Z" fill="#101722"/>
+              <circle cx="323" cy="181" r="27" fill="#9BA5B5" opacity=".55"/><circle cx="323" cy="181" r="10" fill="#111722"/><circle cx="323" cy="181" r="4" fill="${accent}"/>
+              <path d="M369 191 431 173 431 190 369 208Z" fill="#0B111C"/><circle cx="451" cy="195" r="7" fill="${accent}"/>
+              <g transform="translate(71 294) rotate(-11)"><path d="M0 22 112 0 145 18 32 42Z" fill="#7B8594"/><path d="M32 42 145 18 145 48 32 72Z" fill="#252E3E"/><circle cx="44" cy="38" r="7" fill="#111722"/><circle cx="44" cy="38" r="3" fill="#E8ECF1"/><circle cx="107" cy="38" r="6" fill="${accent}"/><circle cx="123" cy="34" r="5" fill="#DDE3EA"/></g>
+            </g>`,
+          cube: `
+            <g transform="translate(15 20)">
+              <path d="M150 127 342 72 426 115 233 176Z" fill="#8893A6"/>
+              <path d="M150 127 233 176 233 313 150 263Z" fill="#343D4D"/>
+              <path d="M233 176 426 115 426 251 233 313Z" fill="#111824"/>
+              <path d="M177 137 336 91 395 121 235 169Z" fill="#252E3D"/>
+              <path d="M188 143 325 103 325 127 188 167Z" fill="#0A101A"/>
+              <path d="M343 117 405 97 405 237 343 257Z" fill="#1D2634"/>
+              <path d="M359 143 391 133M359 158 391 148M359 173 391 163M359 188 391 178M359 203 391 193" stroke="#657183" stroke-width="5" stroke-linecap="round"/>
+              <g transform="translate(65 294) rotate(-13)"><path d="M0 24 123 0 160 22 37 49Z" fill="#7C8799"/><path d="M37 49 160 22 160 53 37 81Z" fill="#242D3B"/><path d="M44 36 57 33 57 57 44 60Z" fill="#111722"/><path d="M41 48 61 44" stroke="#DDE2E9" stroke-width="4"/><circle cx="119" cy="41" r="6" fill="${accent}"/><circle cx="137" cy="36" r="6" fill="#DCE1E9"/></g>
+            </g>`,
+          online: `
+            <g transform="translate(0 35)">
+              <path d="M124 196 352 126 468 180 240 252Z" fill="#7D8797"/>
+              <path d="M124 196 240 252 240 297 124 241Z" fill="#2F3849"/>
+              <path d="M240 252 468 180 468 224 240 297Z" fill="#0D1420"/>
+              <path d="M159 192 351 132 430 169 239 230Z" fill="#161D2A"/>
+              <path d="M185 186 341 138 341 147 185 195Z" fill="#566173"/>
+              <path d="M354 159 427 136 427 182 354 205Z" fill="#080D16"/>
+              <path d="M363 166 418 149" stroke="${accent}" stroke-width="4"/><circle cx="400" cy="192" r="5" fill="#A8B0BC"/>
+              <g transform="translate(72 290) rotate(-11)"><path d="M0 23 129 0 159 20 31 45Z" fill="#465264"/><path d="M31 45 159 20 159 52 31 77Z" fill="#0D1420"/><path d="M36 34 54 30 54 50 36 54Z" fill="#090F19"/><circle cx="119" cy="39" r="6" fill="${accent}"/><circle cx="136" cy="34" r="6" fill="#DCE1EA"/><path d="M70 43 91 39" stroke="#BAC2CE" stroke-width="3"/></g>
+            </g>`,
+          hd: `
+            <g transform="translate(0 35)">
+              <path d="M115 192 350 119 476 179 240 255Z" fill="#AEB8C6"/>
+              <path d="M115 192 240 255 240 299 115 237Z" fill="#3B4555"/>
+              <path d="M240 255 476 179 476 220 240 299Z" fill="#141B28"/>
+              <path d="M151 190 348 129 443 174 246 238Z" fill="#222B39"/>
+              <path d="M183 181 337 134 409 168 255 217Z" fill="#697588" opacity=".5"/>
+              <path d="M256 235 450 173" stroke="#111722" stroke-width="7"/>
+              <path d="M392 167 445 150 445 170 392 187Z" fill="${accent}"/>
+              <g transform="translate(68 294) rotate(-11)"><path d="M0 23 130 0 161 20 30 46Z" fill="#C3CBD5"/><path d="M30 46 161 20 161 52 30 78Z" fill="#2E3747"/><path d="M40 35 57 32 57 53 40 56Z" fill="#0A101A"/><circle cx="120" cy="39" r="6" fill="${accent}"/><circle cx="137" cy="35" r="6" fill="#E6EAF0"/></g>
+            </g>`,
+          slim: `
+            <g transform="translate(5 12)">
+              <path d="M232 70 352 40 413 76 292 110Z" fill="#AEB7C4"/>
+              <path d="M292 110 413 76 413 310 292 348Z" fill="#121925"/>
+              <path d="M232 70 292 110 292 348 232 309Z" fill="#394353"/>
+              <path d="M251 89 274 104 274 300 251 285Z" fill="#101722"/>
+              <path d="M310 116 393 92 393 306 310 331Z" fill="#1C2533"/>
+              <path d="M322 139 382 122M322 152 382 135M322 165 382 148M322 178 382 161M322 191 382 174M322 204 382 187" stroke="#657184" stroke-width="4"/>
+              <path d="M291 344 413 306 413 324 291 363Z" fill="#070D17"/>
+              <g transform="translate(45 305) rotate(-10)"><path d="M0 18 130 0 160 16 30 40Z" fill="#9AA5B5"/><path d="M30 40 160 16 160 44 30 69Z" fill="#252E3C"/><circle cx="43" cy="33" r="6" fill="#0A1019"/><path d="M39 42 57 39" stroke="#0A1019" stroke-width="5"/><circle cx="120" cy="35" r="6" fill="${accent}"/><circle cx="138" cy="31" r="6" fill="#E4E8EE"/></g>
+            </g>`,
+          vr: `
+            <g transform="translate(0 35)">
+              <path d="M100 192 328 125 449 185 220 258Z" fill="#8792A3"/>
+              <path d="M100 192 220 258 220 291 100 225Z" fill="#2B3445"/>
+              <path d="M220 258 449 185 449 218 220 291Z" fill="#111824"/>
+              <path d="M143 188 327 134 412 176 228 235Z" fill="#171F2C"/>
+              <rect x="251" y="145" width="98" height="10" rx="5" transform="rotate(-16 251 145)" fill="#070C14"/>
+              <g transform="translate(115 70) rotate(-9)">
+                <path d="M0 52Q8 10 61 0L245 0Q293 8 300 52L281 111Q268 133 233 131L67 131Q30 131 17 107Z" fill="#111A29" stroke="#9FAABD" stroke-width="7"/>
+                <path d="M33 51Q38 25 72 22L224 22Q260 27 269 53L257 91Q248 108 218 107L79 107Q48 105 42 90Z" fill="url(#${p}-screen)"/>
+                <path d="M17 72 0 65M282 73 300 65" stroke="${accent}" stroke-width="9" stroke-linecap="round"/>
+                <path d="M91 131 83 151M217 131 225 151" stroke="#BBC4D1" stroke-width="8"/>
+              </g>
+            </g>`,
+          tower: `
+            <g transform="translate(15 0)">
+              <path d="M215 58 348 25 420 66 287 105Z" fill="#EEF0F3"/>
+              <path d="M287 105 420 66 420 336 287 378Z" fill="#171E2B"/>
+              <path d="M215 58 287 105 287 378 215 329Z" fill="#C4CCD6"/>
+              <path d="M233 79 270 103 270 346 233 322Z" fill="#F2F4F7"/>
+              <path d="M308 119 399 92 399 317 308 345Z" fill="#202A39"/>
+              <path d="M320 147 387 127M320 161 387 141M320 175 387 155M320 189 387 169M320 203 387 183M320 217 387 197" stroke="#687487" stroke-width="5"/>
+              <path d="M287 373 420 332 420 349 287 391Z" fill="#0B111B"/>
+              <circle cx="390" cy="304" r="6" fill="${accent}"/>
+              <g transform="translate(50 305) rotate(-10)"><path d="M0 22 126 0 160 20 33 45Z" fill="#AEB8C7"/><path d="M33 45 160 20 160 50 33 76Z" fill="#242D3C"/><circle cx="46" cy="38" r="6" fill="#0B111A"/><path d="M42 45 60 41" stroke="#0B111A" stroke-width="4"/><circle cx="119" cy="41" r="6" fill="${accent}"/><circle cx="137" cy="36" r="6" fill="#E5E9EF"/></g>
+            </g>`,
+          future: `
+            <g transform="translate(0 15)">
+              <ellipse cx="300" cy="220" rx="170" ry="142" fill="none" stroke="${accent}" stroke-width="2" opacity=".45" stroke-dasharray="6 10"/>
+              <ellipse cx="300" cy="220" rx="130" ry="102" fill="none" stroke="#D7E0EF" stroke-width="1.5" opacity=".35" transform="rotate(-24 300 220)"/>
+              <circle cx="300" cy="196" r="94" fill="url(#${p}-screen)" opacity=".92"/>
+              <path d="M237 194Q247 148 291 157Q308 116 354 144Q389 148 390 182Q430 192 404 226Q386 254 355 242L257 242Q214 234 237 194Z" fill="#D6E3F2" opacity=".8"/>
+              <path d="M265 185Q277 161 302 173Q326 137 355 171Q377 176 371 199Q391 212 372 228L269 228Q238 218 265 185Z" fill="#F7FAFF" opacity=".8"/>
+              <path d="M300 104V74M194 157 173 142M410 161 431 146M300 289V320" stroke="${accent}" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="300" cy="69" r="5" fill="${accent}"/><circle cx="166" cy="137" r="5" fill="${accent}"/><circle cx="438" cy="140" r="5" fill="${accent}"/><circle cx="300" cy="326" r="5" fill="${accent}"/>
+              <g transform="translate(105 290) rotate(-10)"><path d="M0 20 130 0 162 20 32 44Z" fill="#77859A"/><path d="M32 44 162 20 162 52 32 77Z" fill="#151E2D"/><path d="M45 33 61 30 61 52 45 55Z" fill="#080F1A"/><circle cx="122" cy="40" r="6" fill="${accent}"/><circle cx="140" cy="36" r="6" fill="#E8EEF5"/></g>
+              <path d="M225 354 393 354" stroke="${accent}" stroke-width="2" opacity=".7"/><path d="M250 369 370 369" stroke="#DDE8F6" stroke-width="1" opacity=".5"/>
+            </g>`
+        };
+        return `<svg viewBox="0 0 560 430" role="img" aria-label="Stylized three-dimensional ${type} gaming hardware illustration">${common}<g>${models[type] || models.future}</g></svg>`;
+      }
+
+      function renderCards() {
+        track.innerHTML = eras.map((era, index) => `
+          <article class="stage-card" data-index="${index}" tabindex="-1" aria-hidden="true">
+            <header class="stage-head"><span class="stage-id">CASE ${String(index+1).padStart(2,'0')} / 12</span><span class="stage-era">${era.years}</span><span class="stage-category">${era.category}</span></header>
+            <div class="stage-body">
+              <div class="stage-copy"><span class="stage-kicker">${era.category}</span><h3>${era.title.replace(/(DIGITAL GAMES|ARCADES|HOME|3D|DIMENSION|ONLINE|HIGH DEFINITION|SOCIAL|NEW WAYS|HARDWARE GENERATION|CHAPTER)/i,'<em>$1</em>')}</h3><p class="stage-description">${era.desc}</p><span class="milestone-label">KEY MILESTONES</span><div class="milestones">${era.highlights.map(item => `<span class="milestone">${item}</span>`).join('')}</div><p class="stage-note"><b>WHY IT MATTERED /</b> ${era.note}</p></div>
+              <div class="device-scene"><div class="device-art">${deviceSvg(era.type,index,era.accent)}</div><div class="device-caption"><b>${era.device}</b>3D-STYLE HARDWARE STUDY</div></div>
+            </div>
+            <footer class="stage-foot"><span>PRESS START / HISTORY ARCHIVE</span><span>${String(index+1).padStart(2,'0')} — ${era.years}</span></footer>
+          </article>`).join('');
+        dots.innerHTML = eras.map((era,index) => `<button class="timeline-dot" type="button" data-index="${index}" aria-label="Jump to ${era.years}" title="${era.years}"><span>${era.years.replace('–','–')}</span></button>`).join('');
+        [...track.querySelectorAll('.stage-card')].forEach(card => card.addEventListener('click', () => {
+          const index = Number(card.dataset.index);
+          if (index !== active) setActive(index);
+        }));
+        [...dots.querySelectorAll('.timeline-dot')].forEach(dot => dot.addEventListener('click', () => setActive(Number(dot.dataset.index))));
+      }
+
+      function centerActive() {
+        const cards = [...track.querySelectorAll('.stage-card')];
+        if (!cards.length) return;
+        const first = cards[0];
+        const cardWidth = first.offsetWidth;
+        const styles = getComputedStyle(track);
+        const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+        const offset = viewport.clientWidth / 2 - (active * (cardWidth + gap) + cardWidth / 2);
+        track.style.transform = `translate3d(${offset}px,0,0)`;
+      }
+
+      function setActive(index, moveFocus=false) {
+        active = Math.max(0,Math.min(eras.length-1,index));
+        [...track.querySelectorAll('.stage-card')].forEach((card,i) => {
+          const distance = Math.abs(i-active);
+          card.classList.toggle('is-active',distance===0);
+          card.classList.toggle('is-neighbor',distance===1);
+          card.setAttribute('aria-hidden',String(distance>1));
+          card.tabIndex = distance===0 ? 0 : -1;
+        });
+        [...dots.querySelectorAll('.timeline-dot')].forEach((dot,i) => {
+          dot.classList.toggle('is-active',i===active);
+          dot.setAttribute('aria-current',i===active ? 'step' : 'false');
+        });
+        count.textContent = `${String(active+1).padStart(2,'0')} / ${String(eras.length).padStart(2,'0')}`;
+        progress.style.width = `${((active+1)/eras.length)*100}%`;
+        prev.disabled = active===0;
+        next.disabled = active===eras.length-1;
+        centerActive();
+        if (moveFocus) viewport.focus({preventScroll:true});
+      }
+
+      renderCards();
+      setActive(0);
+      prev.addEventListener('click', () => setActive(active-1));
+      next.addEventListener('click', () => setActive(active+1));
+      viewport.addEventListener('keydown', event => {
+        if (event.key==='ArrowRight') { event.preventDefault(); setActive(active+1); }
+        if (event.key==='ArrowLeft') { event.preventDefault(); setActive(active-1); }
+        if (event.key==='Home') { event.preventDefault(); setActive(0); }
+        if (event.key==='End') { event.preventDefault(); setActive(eras.length-1); }
+      });
+      let resizeFrame = 0;
+      window.addEventListener('resize', () => {
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(centerActive);
+      });
+    })();
+  </script>
+  <script>
+    (() => {
+      return;
+      const canvas = document.getElementById('history-webgl');
+      const chapters = Array.from(document.querySelectorAll('.history-chapter'));
+      const nav = document.getElementById('scene-nav');
+      const fallback = document.getElementById('visual-fallback');
+      if (!canvas || !chapters.length || !nav) return;
+      const periods = [
+        ['1950s–1960s','EARLY COMPUTER DISPLAY','#63C8E8'],
+        ['1972–late 1970s','ARCADE CABINET','#F4A340'],
+        ['Late 1970s–early 1980s','CARTRIDGE CONSOLE','#D5A15C'],
+        ['1983–late 1980s','8-BIT HOME CONSOLE','#E56C53'],
+        ['1990–2000','DISC-BASED 3D CONSOLE','#8C83E9'],
+        ['2001–2005','NETWORK-READY CONSOLE','#65B7A5'],
+        ['2005–2010','HIGH-DEFINITION CONSOLE','#5EB5D5'],
+        ['2011–2015','DIGITAL GENERATION','#E16D9E'],
+        ['2016–2020','VR & HYBRID PLAY','#A58AE8'],
+        ['2020–2023','CURRENT-GENERATION CONSOLE','#73C9BF'],
+        ['2024 ONWARD','FUTURE PLAY CONCEPT','#E8B85C']
+      ];
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const gl = canvas.getContext('webgl', {antialias:true, alpha:false, powerPreference:'low-power'});
+      if (!gl) {
+        canvas.style.display = 'none';
+        fallback.style.display = 'grid';
+        return;
+      }
+      const vertexSource = 'attribute vec3 aPosition; attribute vec3 aNormal; uniform mat4 uMvp; uniform mat4 uModel; varying vec3 vNormal; void main(){ gl_Position=uMvp*vec4(aPosition,1.0); vNormal=normalize(mat3(uModel)*aNormal); }';
+      const fragmentSource = 'precision mediump float; uniform vec3 uColor; uniform float uOpacity; varying vec3 vNormal; void main(){ float diffuse=max(dot(normalize(vNormal),normalize(vec3(-0.45,0.8,0.65))),0.0); float light=0.32+diffuse*0.78; gl_FragColor=vec4(uColor*light,uOpacity); }';
+      function compile(type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader));
+        return shader;
+      }
+      let program;
+      try {
+        program = gl.createProgram();
+        gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSource));
+        gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSource));
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program));
+      } catch (error) {
+        canvas.style.display = 'none';
+        fallback.style.display = 'grid';
+        fallback.textContent = 'THE 3D VIEW COULD NOT START IN THIS BROWSER.';
+        return;
+      }
+      gl.useProgram(program);
+      const loc = {
+        position:gl.getAttribLocation(program,'aPosition'),
+        normal:gl.getAttribLocation(program,'aNormal'),
+        mvp:gl.getUniformLocation(program,'uMvp'),
+        model:gl.getUniformLocation(program,'uModel'),
+        color:gl.getUniformLocation(program,'uColor'),
+        opacity:gl.getUniformLocation(program,'uOpacity')
+      };
+      function meshData(positions, normals) {
+        const pb = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER,pb);
+        gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(positions),gl.STATIC_DRAW);
+        const nb = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER,nb);
+        gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(normals),gl.STATIC_DRAW);
+        return {position:pb,normal:nb,count:positions.length/3};
+      }
+      function makeBox() {
+        const faces = [
+          [[-.5,-.5,.5],[.5,-.5,.5],[.5,.5,.5],[-.5,.5,.5],[0,0,1]],
+          [[.5,-.5,-.5],[-.5,-.5,-.5],[-.5,.5,-.5],[.5,.5,-.5],[0,0,-1]],
+          [[-.5,-.5,-.5],[-.5,-.5,.5],[-.5,.5,.5],[-.5,.5,-.5],[-1,0,0]],
+          [[.5,-.5,.5],[.5,-.5,-.5],[.5,.5,-.5],[.5,.5,.5],[1,0,0]],
+          [[-.5,.5,.5],[.5,.5,.5],[.5,.5,-.5],[-.5,.5,-.5],[0,1,0]],
+          [[-.5,-.5,-.5],[.5,-.5,-.5],[.5,-.5,.5],[-.5,-.5,.5],[0,-1,0]]
+        ];
+        const pos=[], nor=[], order=[0,1,2,0,2,3];
+        faces.forEach(face=>order.forEach(i=>{pos.push(...face[i]);nor.push(...face[4]);}));
+        return meshData(pos,nor);
+      }
+      function makeSphere() {
+        const pos=[],nor=[],lat=14,lon=20;
+        for(let y=0;y<lat;y++) for(let x=0;x<lon;x++) {
+          const a=(y/lat)*Math.PI,b=((y+1)/lat)*Math.PI,c=(x/lon)*Math.PI*2,d=((x+1)/lon)*Math.PI*2;
+          const v=(t,u)=>[Math.sin(t)*Math.cos(u),Math.cos(t),Math.sin(t)*Math.sin(u)];
+          const q=[v(a,c),v(b,c),v(b,d),v(a,c),v(b,d),v(a,d)];
+          q.forEach(n=>{pos.push(...n);nor.push(...n);});
+        }
+        return meshData(pos,nor);
+      }
+      function makeRing() {
+        const pos=[],nor=[],major=42,minor=10,R=.78,r=.055;
+        for(let y=0;y<minor;y++) for(let x=0;x<major;x++) {
+          const u=x/major*Math.PI*2,v=y/minor*Math.PI*2,u2=(x+1)/major*Math.PI*2,v2=(y+1)/minor*Math.PI*2;
+          const point=(a,b)=>[(R+r*Math.cos(b))*Math.cos(a),r*Math.sin(b),(R+r*Math.cos(b))*Math.sin(a)];
+          const normal=(a,b)=>[Math.cos(b)*Math.cos(a),Math.sin(b),Math.cos(b)*Math.sin(a)];
+          const q=[[u,v],[u,v2],[u2,v2],[u,v],[u2,v2],[u2,v]];
+          q.forEach(pair=>{pos.push(...point(pair[0],pair[1]));nor.push(...normal(pair[0],pair[1]));});
+        }
+        return meshData(pos,nor);
+      }
+      const meshes={box:makeBox(),sphere:makeSphere(),ring:makeRing()};
+      const identity=()=>new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+      function multiply(a,b) {
+        const o=new Float32Array(16);
+        for(let c=0;c<4;c++) for(let r=0;r<4;r++) o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];
+        return o;
+      }
+      function move(x,y,z) { const m=identity();m[12]=x;m[13]=y;m[14]=z;return m; }
+      function size(x,y,z) { const m=identity();m[0]=x;m[5]=y;m[10]=z;return m; }
+      function rx(a) { const m=identity(),c=Math.cos(a),s=Math.sin(a);m[5]=c;m[6]=s;m[9]=-s;m[10]=c;return m; }
+      function ry(a) { const m=identity(),c=Math.cos(a),s=Math.sin(a);m[0]=c;m[2]=-s;m[8]=s;m[10]=c;return m; }
+      function rz(a) { const m=identity(),c=Math.cos(a),s=Math.sin(a);m[0]=c;m[1]=s;m[4]=-s;m[5]=c;return m; }
+      function perspective(fov,aspect,near,far) {
+        const f=1/Math.tan(fov/2),nf=1/(near-far),m=new Float32Array(16);
+        m[0]=f/aspect;m[5]=f;m[10]=(far+near)*nf;m[11]=-1;m[14]=2*far*near*nf;
+        return m;
+      }
+      function normalize(v) { const n=Math.hypot(v[0],v[1],v[2])||1;return [v[0]/n,v[1]/n,v[2]/n]; }
+      function cross(a,b) { return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]; }
+      function dot(a,b) { return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]; }
+      function lookAt(eye,target) {
+        const z=normalize([eye[0]-target[0],eye[1]-target[1],eye[2]-target[2]]);
+        const x=normalize(cross([0,1,0],z)),y=cross(z,x),m=identity();
+        m[0]=x[0];m[1]=y[0];m[2]=z[0];m[4]=x[1];m[5]=y[1];m[6]=z[1];m[8]=x[2];m[9]=y[2];m[10]=z[2];
+        m[12]=-dot(x,eye);m[13]=-dot(y,eye);m[14]=-dot(z,eye);
+        return m;
+      }
+      function part(mesh,x,y,z,sx,sy,sz,color,ax,ay,az) {
+        return {mesh:mesh,x:x,y:y,z:z,sx:sx,sy:sy,sz:sz,color:color,ax:ax||0,ay:ay||0,az:az||0};
+      }
+      const hardware = [
+        [part('box',0,.22,0,2.15,1.55,.72,'#505967'),part('box',0,.27,.39,1.72,1.18,.08,'#111827'),part('box',0,.28,.445,1.5,.96,.025,'#2A7890'),part('box',0,-.72,-.02,.28,.42,.35,'#7B8491'),part('box',0,-.96,.03,1.15,.16,.74,'#414B5A'),part('sphere',.83,-.53,.4,.1,.1,.07,'#63C8E8')],
+        [part('box',0,-.02,0,1.5,2.9,1.08,'#343A49'),part('box',0,.43,.57,1.22,1.25,.1,'#0B101A'),part('box',0,.44,.635,1.02,1.02,.025,'#D17A35'),part('box',0,-.64,.59,1.15,.28,.12,'#111827'),part('box',-.34,-.84,.67,.11,.11,.1,'#F4A340'),part('sphere',.25,-.83,.69,.09,.09,.08,'#F5C46B'),part('box',0,1.49,-.02,1.38,.12,.94,'#727C89')],
+        [part('box',0,-.22,0,2.35,.42,1.25,'#A77B50',0,-.12,0),part('box',0,.06,.02,1.55,.28,.95,'#171D29',0,-.12,0),part('box',-.55,.65,.08,.45,.8,.16,'#C79A62',0,-.12,0),part('box',.55,-.7,.3,.98,.15,.42,'#343E4C',-.12,.08,0),part('box',.37,-.64,.52,.08,.06,.05,'#D5A15C'),part('sphere',.69,-.62,.51,.07,.07,.06,'#E9A04D')],
+        [part('box',0,-.12,0,2.1,.55,1.35,'#D2D7DF'),part('box',0,.2,.13,1.4,.22,.82,'#272F3D'),part('box',-.58,.62,.03,.5,.65,.18,'#A9B3C2',0,-.1,0),part('box',.12,-.62,.45,.95,.14,.48,'#303948',0,.08,0),part('box',-.2,-.58,.7,.12,.12,.08,'#E56C53'),part('sphere',.48,-.55,.71,.07,.07,.06,'#E9B45A'),part('sphere',.7,-.55,.71,.07,.07,.06,'#E9B45A')],
+        [part('box',0,-.2,0,2.15,.42,1.28,'#BAC2CD'),part('box',-.15,.12,.1,1.48,.22,.86,'#343D4D'),part('ring',.35,.15,.78,.34,.34,.08,'#8C83E9',Math.PI/2,0,0),part('box',-.55,-.65,.1,.92,.12,.38,'#252E3D'),part('sphere',-.7,-.58,.33,.08,.08,.07,'#8C83E9'),part('box',.58,-.62,.14,.8,.12,.42,'#525D70')],
+        [part('box',0,.1,0,1.1,2.5,.85,'#303A4B'),part('box',0,.2,.46,.72,.3,.05,'#101722'),part('box',0,-.93,.02,1.18,.22,.96,'#202A39'),part('ring',0,.1,-.52,1.35,1.35,.07,'#65B7A5',Math.PI/2,0,0),part('sphere',-1.05,.25,-.2,.14,.14,.14,'#65B7A5'),part('sphere',1.05,.25,-.2,.14,.14,.14,'#65B7A5')],
+        [part('box',0,-.12,0,2.3,.52,1.35,'#AEB8C7'),part('box',0,.18,.14,1.7,.18,.92,'#313B4C'),part('box',.75,-.48,.34,.17,.07,.07,'#5EB5D5'),part('box',-.4,-.7,.2,.88,.12,.42,'#333D4E'),part('sphere',.3,-.62,.42,.07,.07,.06,'#5EB5D5'),part('sphere',.5,-.62,.42,.07,.07,.06,'#E7EDF3')],
+        [part('box',.15,.05,0,.64,2.9,.72,'#4B5668'),part('box',.15,.05,.39,.45,2.42,.06,'#131B28'),part('box',-.95,-.72,.08,.9,.14,.48,'#343E4F'),part('box',-.95,-.6,.24,.2,.12,.12,'#E16D9E'),part('box',1.03,.55,0,.18,1.3,.12,'#7F8A9D')],
+        [part('box',-.55,.38,0,1.85,1.12,.72,'#171E2B',0,-.08,0),part('box',-.55,.4,.37,1.5,.72,.1,'#303E57'),part('box',.83,-.55,.05,.9,.17,.38,'#555F70',0,.15,0),part('box',.83,-.43,.29,.3,.1,.08,'#A58AE8'),part('sphere',1.1,-.42,.3,.07,.07,.07,'#E8EAF0'),part('ring',-.55,.4,-.2,1.15,1.15,.05,'#A58AE8',Math.PI/2,0,0)],
+        [part('box',.12,.05,0,.78,3.25,.9,'#E0E5EC',0,-.08,0),part('box',.12,.04,.46,.56,2.75,.06,'#323D4F'),part('box',-.9,-.8,.12,1.05,.16,.46,'#303B4C'),part('box',-.9,-.68,.35,.22,.08,.07,'#73C9BF'),part('sphere',-.42,-.65,.36,.07,.07,.06,'#F2F4F7'),part('ring',.12,.05,-.54,1.22,1.22,.04,'#73C9BF',Math.PI/2,0,0)],
+        [part('sphere',0,.22,0,1.18,1.18,1.18,'#D9E2F0'),part('box',0,-.67,.22,1.45,.26,.65,'#282F41'),part('box',-.48,-.62,.55,.18,.12,.08,'#E8B85C'),part('sphere',.45,-.58,.56,.08,.08,.08,'#E8B85C'),part('ring',0,.22,-.1,1.85,1.85,.045,'#E8B85C',.3,.2,0),part('ring',0,.22,-.1,2.2,2.2,.035,'#9EB9DE',1.1,-.45,.35)]
+      ];
+      const navButtons=periods.map((p,i)=>{
+        const b=document.createElement('button');
+        b.type='button';b.setAttribute('aria-label','Go to '+p[0]);b.title=p[0];
+        b.addEventListener('click',()=>chapters[i].scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'}));
+        nav.appendChild(b);return b;
+      });
+      const periodLabel=document.getElementById('scene-period');
+      const deviceLabel=document.getElementById('scene-device-name');
+      const counter=document.getElementById('scene-counter');
+      const progressBar=document.getElementById('scene-progress');
+      let active=0,lastScroll=0,frame=0;
+      function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+      function smooth(v){v=clamp(v,0,1);return v*v*(3-2*v);}
+      function hexColor(hex){return [parseInt(hex.slice(1,3),16)/255,parseInt(hex.slice(3,5),16)/255,parseInt(hex.slice(5,7),16)/255];}
+      function drawPart(item,group,viewProjection,opacity) {
+        const model=multiply(group,multiply(move(item.x,item.y,item.z),multiply(ry(item.ay),multiply(rx(item.ax),multiply(rz(item.az),size(item.sx,item.sy,item.sz))))));
+        const mvp=multiply(viewProjection,model),mesh=meshes[item.mesh];
+        gl.uniformMatrix4fv(loc.model,false,model);
+        gl.uniformMatrix4fv(loc.mvp,false,mvp);
+        gl.uniform3fv(loc.color,hexColor(item.color));
+        gl.uniform1f(loc.opacity,opacity);
+        gl.bindBuffer(gl.ARRAY_BUFFER,mesh.position);
+        gl.enableVertexAttribArray(loc.position);
+        gl.vertexAttribPointer(loc.position,3,gl.FLOAT,false,0,0);
+        gl.bindBuffer(gl.ARRAY_BUFFER,mesh.normal);
+        gl.enableVertexAttribArray(loc.normal);
+        gl.vertexAttribPointer(loc.normal,3,gl.FLOAT,false,0,0);
+        gl.drawArrays(gl.TRIANGLES,0,mesh.count);
+      }
+      function drawModel(index,viewProjection,opacity,rotation,scaleValue) {
+        const accent=periods[index][2];
+        const group=multiply(ry(rotation),multiply(rx(.08+Math.sin(rotation*.45)*.08),size(scaleValue,scaleValue,scaleValue)));
+        drawPart(part('ring',0,0,-.95,2.15,2.15,.05,accent,.3,rotation*.18,.2),group,viewProjection,opacity*.32);
+        hardware[index].forEach((item,j)=>drawPart(item,group,viewProjection,opacity));
+      }
+      function resize() {
+        const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,1.5);
+        const w=Math.max(1,Math.floor(rect.width*dpr)),h=Math.max(1,Math.floor(rect.height*dpr));
+        if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}
+      }
+      function updateActive() {
+        const mid=window.innerHeight*.52;
+        let nearest=0,best=Infinity;
+        chapters.forEach((chapter,i)=>{
+          const r=chapter.getBoundingClientRect(),distance=Math.abs((r.top+r.height*.5)-mid);
+          if(distance<best){best=distance;nearest=i;}
+        });
+        if(nearest!==active){
+          active=nearest;
+          chapters.forEach((chapter,i)=>chapter.classList.toggle('is-current',i===active));
+          navButtons.forEach((button,i)=>{if(i===active)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');});
+          periodLabel.textContent=periods[active][0]+' / '+chapters[active].querySelector('.chapter-tag b').textContent.replace(/^\d+\s*\/\s*/,'');
+          deviceLabel.textContent=periods[active][1];
+          counter.textContent=String(active+1).padStart(2,'0')+' / 11';
+        }
+      }
+      function render(now) {
+        resize();
+        updateActive();
+        const vh=window.innerHeight,rect=chapters[active].getBoundingClientRect();
+        const local=clamp(.5+(vh*.5-(rect.top+rect.height*.5))/(rect.height*.9),0,1);
+        const global=(active+local)/chapters.length;
+        progressBar.style.width=(global*100)+'%';
+        gl.clearColor(.025,.031,.052,1);
+        gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+        gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+        const aspect=canvas.width/Math.max(1,canvas.height);
+        const angle=global*1.65+local*.28;
+        const eye=[Math.sin(angle)*.58,Math.cos(angle*.65)*.2,6.7-Math.sin(local*Math.PI)*.35];
+        const view=multiply(perspective(Math.PI/4.2,aspect,.1,50),lookAt(eye,[0,0,0]));
+        const motion=reduced?0:now*.00012;
+        const rotation=(active*.23)+(local*.62)+motion;
+        const modelScale=1+Math.sin(local*Math.PI)*.09;
+        const crossfade=smooth((local-.79)/.21);
+        if(active<chapters.length-1 && crossfade>.01){
+          drawModel(active,view,1-crossfade*.86,rotation,modelScale);
+          drawModel(active+1,view,crossfade*.9,rotation+.45,modelScale*.82);
+        }else{
+          drawModel(active,view,1,rotation,modelScale);
+        }
+        if(!reduced) frame=requestAnimationFrame(render);
+      }
+      navButtons[0].setAttribute('aria-current','step');
+      if(reduced){
+        window.addEventListener('scroll',()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(render);},{passive:true});
+      }
+      window.addEventListener('resize',()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(render);});
+      window.addEventListener('scroll',()=>{if(reduced){cancelAnimationFrame(frame);frame=requestAnimationFrame(render);}}, {passive:true});
+      frame=requestAnimationFrame(render);
+    })();
+  </script>
+  <script>
+    (() => {
+      const canvas=document.getElementById('history-webgl');
+      const chapters=[...document.querySelectorAll('.history-chapter')];
+      const nav=document.getElementById('scene-nav');
+      const fallback=document.getElementById('visual-fallback');
+      if(!canvas||!chapters.length||!nav)return;
+      const eras=[
+        ['1950s–1960s','EARLY COMPUTER DISPLAY','#63C8E8'],
+        ['1972–late 1970s','ARCADE CABINET','#F4A340'],
+        ['Late 1970s–early 1980s','CARTRIDGE CONSOLE','#D5A15C'],
+        ['1983–late 1980s','8-BIT HOME CONSOLE','#E56C53'],
+        ['1990–2000','DISC-BASED 3D CONSOLE','#8C83E9'],
+        ['2001–2005','NETWORK-READY CONSOLE','#65B7A5'],
+        ['2005–2010','HIGH-DEFINITION CONSOLE','#5EB5D5'],
+        ['2011–2015','DIGITAL GENERATION','#E16D9E'],
+        ['2016–2020','VR & HYBRID PLAY','#A58AE8'],
+        ['2020–2023','CURRENT-GENERATION CONSOLE','#73C9BF'],
+        ['2024 ONWARD','FUTURE PLAY CONCEPT','#E8B85C']
+      ];
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const gl=canvas.getContext('webgl',{antialias:true,alpha:false,powerPreference:'low-power'});
+      if(!gl){canvas.hidden=true;fallback.style.display='grid';return;}
+      const vs='attribute vec3 aP;attribute vec3 aN;uniform mat4 uM;uniform mat4 uVP;varying vec3 vN;void main(){gl_Position=uVP*uM*vec4(aP,1.0);vN=normalize(mat3(uM)*aN);}';
+      const fs='precision mediump float;uniform vec3 uC;uniform float uA;varying vec3 vN;void main(){float l=.3+max(dot(normalize(vN),normalize(vec3(-.5,.8,.65))),0.0)*.8;gl_FragColor=vec4(uC*l,uA);}';
+      function shader(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
+      let prog;
+      try{prog=gl.createProgram();gl.attachShader(prog,shader(gl.VERTEX_SHADER,vs));gl.attachShader(prog,shader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw Error('link');}
+      catch(e){canvas.hidden=true;fallback.style.display='grid';fallback.textContent='THE 3D VIEW COULD NOT START IN THIS BROWSER.';return;}
+      gl.useProgram(prog);
+      const L={p:gl.getAttribLocation(prog,'aP'),n:gl.getAttribLocation(prog,'aN'),m:gl.getUniformLocation(prog,'uM'),vp:gl.getUniformLocation(prog,'uVP'),c:gl.getUniformLocation(prog,'uC'),a:gl.getUniformLocation(prog,'uA')};
+      function buffer(pos,nor){const p=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,p);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(pos),gl.STATIC_DRAW);const n=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,n);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(nor),gl.STATIC_DRAW);return{p,n,count:pos.length/3};}
+      function cube(){const f=[[[ -.5,-.5,.5],[.5,-.5,.5],[.5,.5,.5],[-.5,.5,.5],[0,0,1]],[[.5,-.5,-.5],[-.5,-.5,-.5],[-.5,.5,-.5],[.5,.5,-.5],[0,0,-1]],[[-.5,-.5,-.5],[-.5,-.5,.5],[-.5,.5,.5],[-.5,.5,-.5],[-1,0,0]],[[.5,-.5,.5],[.5,-.5,-.5],[.5,.5,-.5],[.5,.5,.5],[1,0,0]],[[-.5,.5,.5],[.5,.5,.5],[.5,.5,-.5],[-.5,.5,-.5],[0,1,0]],[[-.5,-.5,-.5],[.5,-.5,-.5],[.5,-.5,.5],[-.5,-.5,.5],[0,-1,0]]],p=[],n=[],o=[0,1,2,0,2,3];f.forEach(a=>o.forEach(i=>{p.push(...a[i]);n.push(...a[4]);}));return buffer(p,n);}
+      function roundMesh(ring){const p=[],n=[],rows=ring?10:14,cols=ring?42:20;for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){const a=y/rows*Math.PI*2,b=(y+1)/rows*Math.PI*2,c=x/cols*Math.PI*2,d=(x+1)/cols*Math.PI*2;let point,normal;if(ring){point=(u,v)=>[(.78+.055*Math.cos(v))*Math.cos(u),.055*Math.sin(v),(.78+.055*Math.cos(v))*Math.sin(u)];normal=(u,v)=>[Math.cos(v)*Math.cos(u),Math.sin(v),Math.cos(v)*Math.sin(u)];}else{point=(u,v)=>[Math.sin(v)*Math.cos(u),Math.cos(v),Math.sin(v)*Math.sin(u)];normal=point;}const q=[[c,a],[c,b],[d,b],[c,a],[d,b],[d,a]];q.forEach(z=>{p.push(...point(z[0],z[1]));n.push(...normal(z[0],z[1]));});}return buffer(p,n);}
+      const geo={box:cube(),sphere:roundMesh(false),ring:roundMesh(true)};
+      const I=()=>new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+      const mul=(a,b)=>{const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];return o;};
+      const T=(x,y,z)=>{const m=I();m[12]=x;m[13]=y;m[14]=z;return m;};
+      const S=(x,y,z)=>{const m=I();m[0]=x;m[5]=y;m[10]=z;return m;};
+      const RX=a=>{const m=I(),c=Math.cos(a),s=Math.sin(a);m[5]=c;m[6]=s;m[9]=-s;m[10]=c;return m;};
+      const RY=a=>{const m=I(),c=Math.cos(a),s=Math.sin(a);m[0]=c;m[2]=-s;m[8]=s;m[10]=c;return m;};
+      const RZ=a=>{const m=I(),c=Math.cos(a),s=Math.sin(a);m[0]=c;m[1]=s;m[4]=-s;m[5]=c;return m;};
+      function proj(f,asp,n,far){const t=1/Math.tan(f/2),q=1/(n-far),m=new Float32Array(16);m[0]=t/asp;m[5]=t;m[10]=(far+n)*q;m[11]=-1;m[14]=2*far*n*q;return m;}
+      const norm=v=>{const n=Math.hypot(...v)||1;return v.map(x=>x/n);};
+      const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+      const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+      function view(eye){const z=norm(eye),x=norm(cross([0,1,0],z)),y=cross(z,x),m=I();m[0]=x[0];m[1]=y[0];m[2]=z[0];m[4]=x[1];m[5]=y[1];m[6]=z[1];m[8]=x[2];m[9]=y[2];m[10]=z[2];m[12]=-dot(x,eye);m[13]=-dot(y,eye);m[14]=-dot(z,eye);return m;}
+      const P=(g,x,y,z,sx,sy,sz,c,ax=0,ay=0,az=0)=>({g,x,y,z,sx,sy,sz,c,ax,ay,az});
+      const models=[
+        [P('box',0,.15,0,2.1,1.5,.65,'#667180'),P('box',0,.2,.36,1.7,1.15,.06,'#111827'),P('box',0,.2,.405,1.48,.93,.02,'#277B93'),P('box',0,-.72,0,.27,.42,.3,'#737E8F'),P('box',0,-.95,.03,1.15,.15,.7,'#394352')],
+        [P('box',0,0,0,1.45,2.8,1,'#343D4D'),P('box',0,.4,.53,1.2,1.2,.07,'#0C111A'),P('box',0,.4,.58,1.02,1.02,.03,'#D1843E'),P('box',0,-.7,.54,1.12,.26,.1,'#151C29'),P('box',-.34,-.83,.62,.12,.12,.1,'#F4A340'),P('sphere',.24,-.83,.63,.1,.1,.1,'#F5C46B')],
+        [P('box',0,-.22,0,2.3,.42,1.2,'#A77B50',0,-.12),P('box',0,.05,.02,1.55,.26,.9,'#171D29',0,-.12),P('box',-.55,.65,.08,.42,.78,.16,'#C79A62',0,-.12),P('box',.55,-.68,.28,.95,.14,.4,'#343E4C'),P('sphere',.68,-.61,.48,.08,.08,.07,'#E9A04D')],
+        [P('box',0,-.12,0,2.05,.5,1.3,'#D2D7DF'),P('box',0,.17,.13,1.42,.2,.8,'#272F3D'),P('box',-.58,.62,.03,.48,.62,.17,'#A9B3C2',0,-.1),P('box',.12,-.61,.44,.95,.13,.45,'#303948',0,.08),P('sphere',.48,-.55,.68,.08,.08,.08,'#E9B45A')],
+        [P('box',0,-.2,0,2.12,.4,1.24,'#BAC2CD'),P('box',-.15,.12,.1,1.45,.2,.82,'#343D4D'),P('ring',.35,.15,.72,.35,.35,.08,'#8C83E9',1.57),P('box',-.55,-.65,.1,.9,.12,.36,'#252E3D'),P('sphere',-.7,-.58,.32,.08,.08,.08,'#8C83E9'),P('box',.58,-.62,.14,.8,.12,.4,'#525D70')],
+        [P('box',0,.12,0,1.05,2.45,.85,'#303A4B'),P('box',0,.2,.45,.7,.28,.05,'#101722'),P('box',0,-.92,.02,1.15,.2,.92,'#202A39'),P('ring',0,.1,-.52,1.3,1.3,.06,'#65B7A5',1.57),P('sphere',-1.02,.24,-.2,.14,.14,.14,'#65B7A5'),P('sphere',1.02,.24,-.2,.14,.14,.14,'#65B7A5')],
+        [P('box',0,-.12,0,2.25,.5,1.3,'#AEB8C7'),P('box',0,.16,.14,1.68,.17,.88,'#313B4C'),P('box',-.4,-.7,.2,.86,.12,.4,'#333D4E'),P('sphere',.3,-.62,.4,.07,.07,.07,'#5EB5D5'),P('sphere',.5,-.62,.4,.07,.07,.07,'#E7EDF3')],
+        [P('box',.15,.05,0,.62,2.8,.7,'#4B5668'),P('box',.15,.05,.38,.44,2.35,.05,'#131B28'),P('box',-.95,-.72,.08,.86,.14,.46,'#343E4F'),P('box',-.95,-.6,.24,.18,.1,.1,'#E16D9E'),P('box',1.02,.55,0,.16,1.25,.12,'#7F8A9D')],
+        [P('box',-.55,.38,0,1.8,1.1,.7,'#171E2B',0,-.08),P('box',-.55,.4,.37,1.45,.7,.08,'#303E57'),P('box',.83,-.55,.05,.88,.16,.36,'#555F70',0,.15),P('box',.83,-.43,.29,.28,.1,.08,'#A58AE8'),P('ring',-.55,.4,-.2,1.1,1.1,.05,'#A58AE8',1.57)],
+        [P('box',.12,.05,0,.76,3.15,.88,'#E0E5EC',0,-.08),P('box',.12,.04,.45,.54,2.65,.06,'#323D4F'),P('box',-.9,-.8,.12,1,.15,.44,'#303B4C'),P('box',-.9,-.68,.35,.2,.08,.07,'#73C9BF'),P('ring',.12,.05,-.54,1.2,1.2,.04,'#73C9BF',1.57)],
+        [P('sphere',0,.2,0,1.2,1.2,1.2,'#D9E2F0'),P('box',0,-.68,.22,1.4,.25,.62,'#282F41'),P('box',-.48,-.62,.55,.18,.12,.08,'#E8B85C'),P('sphere',.45,-.58,.56,.08,.08,.08,'#E8B85C'),P('ring',0,.2,-.1,1.85,1.85,.045,'#E8B85C',.3,.2),P('ring',0,.2,-.1,2.15,2.15,.035,'#9EB9DE',1.1,-.45,.35)]
+      ];
+      const buttons=eras.map((e,i)=>{const b=document.createElement('button');b.type='button';b.title=e[0];b.setAttribute('aria-label','Jump to '+e[0]);b.onclick=()=>chapters[i].scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});nav.appendChild(b);return b;});
+      const period=document.getElementById('scene-period'),device=document.getElementById('scene-device-name'),counter=document.getElementById('scene-counter'),progress=document.getElementById('scene-progress');
+      const color=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
+      function draw(o,group,vp,alpha){const model=mul(group,mul(T(o.x,o.y,o.z),mul(RY(o.ay),mul(RX(o.ax),mul(RZ(o.az),S(o.sx,o.sy,o.sz))))));gl.uniformMatrix4fv(L.m,false,model);gl.uniformMatrix4fv(L.vp,false,vp);gl.uniform3fv(L.c,color(o.c));gl.uniform1f(L.a,alpha);const g=geo[o.g];gl.bindBuffer(gl.ARRAY_BUFFER,g.p);gl.enableVertexAttribArray(L.p);gl.vertexAttribPointer(L.p,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,g.n);gl.enableVertexAttribArray(L.n);gl.vertexAttribPointer(L.n,3,gl.FLOAT,false,0,0);gl.drawArrays(gl.TRIANGLES,0,g.count);}
+      function drawStage(i,vp,a,angle,zoom){const group=mul(RY(angle),mul(RX(.08+Math.sin(angle*.45)*.08),S(zoom,zoom,zoom)));draw(P('ring',0,0,-.95,2.1,2.1,.05,eras[i][2],.3,angle*.18),group,vp,a*.28);models[i].forEach(o=>draw(o,group,vp,a));}
+      function fit(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.5),w=Math.max(1,Math.floor(r.width*d)),h=Math.max(1,Math.floor(r.height*d));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}}
+      let active=0,raf=0;
+      function tick(time){
+        fit();const mid=innerHeight*.52;let chosen=0,dist=Infinity;
+        chapters.forEach((c,i)=>{const r=c.getBoundingClientRect(),d=Math.abs(r.top+r.height*.5-mid);if(d<dist){dist=d;chosen=i;}});
+        if(chosen!==active){active=chosen;chapters.forEach((c,i)=>c.classList.toggle('is-current',i===active));buttons.forEach((b,i)=>{if(i===active)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});period.textContent=eras[active][0]+' / '+chapters[active].querySelector('.chapter-tag b').textContent.replace(/^\d+\s*\/\s*/,'');device.textContent=eras[active][1];counter.textContent=String(active+1).padStart(2,'0')+' / 11';}
+        const r=chapters[active].getBoundingClientRect(),local=Math.max(0,Math.min(1,.5+(innerHeight*.5-(r.top+r.height*.5))/(r.height*.9))),global=(active+local)/chapters.length;
+        progress.style.width=(global*100)+'%';gl.clearColor(.025,.031,.052,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+        const eye=[Math.sin(global*1.65+local*.28)*.58,Math.cos((global*1.65+local*.28)*.65)*.2,6.7-Math.sin(local*Math.PI)*.35],vp=mul(proj(Math.PI/4.2,canvas.width/Math.max(1,canvas.height),.1,50),view(eye)),spin=(reduced?0:time*.00012)+active*.23+local*.62,zoom=1+Math.sin(local*Math.PI)*.09,fade=Math.max(0,Math.min(1,(local-.79)/.21));
+        const eased=fade*fade*(3-2*fade);
+        if(active<models.length-1&&eased>.01){drawStage(active,vp,1-eased*.86,spin,zoom);drawStage(active+1,vp,eased*.9,spin+.45,zoom*.82);}else drawStage(active,vp,1,spin,zoom);
+        if(!reduced)raf=requestAnimationFrame(tick);
+      }
+      buttons[0].setAttribute('aria-current','step');
+      window.addEventListener('resize',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);});
+      window.addEventListener('scroll',()=>{if(reduced){cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);}}, {passive:true});
+      raf=requestAnimationFrame(tick);
+    })();
+  </script>
+  <script>
+(() => {
+  const base = document.getElementById('history-webgl');
+  const chapters = [...document.querySelectorAll('.history-chapter')];
+  const fallback = document.getElementById('visual-fallback');
+  if (!base || !chapters.length) return;
+
+  // The original procedural scene remains underneath as a fallback for eras without a supplied GLB.
+  // Chapter indexes follow the existing 0-based scroll timeline.
+  const modelFiles = new Map([
+    [0, 'osciloscopio2.glb.gz'],
+    [1, 'ARCADE1.glb.gz'],
+    [2, 'ATARI.glb.gz'],
+    [3, 'nes1.glb.gz'],
+    [4, 'ps11.glb.gz'],
+    [5, 'ps2.glb.gz'], // PlayStation 2 moved to the online-gaming era.
+    [6, 'pc.glb.gz'],
+    [7, 'ps4.glb.gz'],
+    [8, 'vr.glb.gz'],
+    [9, 'xboxx.glb.gz'],
+    [10, 'ia.glb.gz']
+  ]);
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'history-glb-models';
+  canvas.setAttribute('aria-label', 'Rotating 3D video game hardware models');
+  base.parentElement.insertBefore(canvas, base.nextSibling);
+  Object.assign(base.style, { zIndex: '0', transition: 'opacity 420ms ease' });
+  Object.assign(canvas.style, {
+    position: 'absolute', inset: '0', width: '100%', height: '100%',
+    display: 'block', zIndex: '1', opacity: '0', pointerEvents: 'none',
+    transition: 'opacity 420ms ease'
+  });
+  const shade = base.parentElement.querySelector('.visual-shade');
+  const hud = base.parentElement.querySelector('.visual-hud');
+  if (shade) shade.style.zIndex = '2';
+  if (hud) hud.style.zIndex = '3';
+  if (fallback) fallback.style.zIndex = '4';
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const identity = () => new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+  const multiply = (a,b) => {
+    const o = new Float32Array(16);
+    for (let c=0;c<4;c++) for (let r=0;r<4;r++) {
+      o[c*4+r] = a[r]*b[c*4] + a[4+r]*b[c*4+1] + a[8+r]*b[c*4+2] + a[12+r]*b[c*4+3];
+    }
+    return o;
+  };
+  const cross = (a,b) => [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+  const dot = (a,b) => a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+  const normalize = v => { const n=Math.hypot(...v)||1; return v.map(x=>x/n); };
+  function move(x,y,z) { const m=identity();m[12]=x;m[13]=y;m[14]=z;return m; }
+  function scale(s) { const m=identity();m[0]=s;m[5]=s;m[10]=s;return m; }
+  function rotateY(a) { const m=identity(),c=Math.cos(a),s=Math.sin(a);m[0]=c;m[2]=-s;m[8]=s;m[10]=c;return m; }
+  function lookAt(eye) {
+    const z=normalize(eye),x=normalize(cross([0,1,0],z)),y=cross(z,x),m=identity();
+    m[0]=x[0];m[1]=y[0];m[2]=z[0];m[4]=x[1];m[5]=y[1];m[6]=z[1];m[8]=x[2];m[9]=y[2];m[10]=z[2];
+    m[12]=-dot(x,eye);m[13]=-dot(y,eye);m[14]=-dot(z,eye);return m;
+  }
+  function projection(fov,aspect,near,far) {
+    const f=1/Math.tan(fov/2),q=1/(near-far),m=new Float32Array(16);
+    m[0]=f/aspect;m[5]=f;m[10]=(far+near)*q;m[11]=-1;m[14]=2*far*near*q;return m;
+  }
+
+  async function readGlb(fileName) {
+    const assetUrl = new URL('assets/' + fileName, document.baseURI);
+    const response = await fetch(assetUrl, { cache: 'force-cache' });
+    if (!response.ok) throw new Error(`No se encontró ${assetUrl.pathname} (${response.status}).`);
+    let buffer = await response.arrayBuffer();
+    if (fileName.endsWith('.gz')) {
+      if (!('DecompressionStream' in window)) throw new Error('El navegador no admite la descompresión gzip.');
+      buffer = await new Response(new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+    }
+
+    const header = new DataView(buffer);
+    if (header.getUint32(0,true)!==0x46546c67 || header.getUint32(4,true)!==2) throw new Error(`${fileName} no es un GLB glTF 2.0 válido.`);
+    let offset=12,gltf=null,binary=null;
+    while(offset+8<=buffer.byteLength) {
+      const length=header.getUint32(offset,true),type=header.getUint32(offset+4,true);offset+=8;
+      if(offset+length>buffer.byteLength) throw new Error(`El archivo ${fileName} está incompleto.`);
+      if(type===0x4e4f534a) gltf=JSON.parse(new TextDecoder().decode(new Uint8Array(buffer,offset,length)).trim());
+      else if(type===0x004e4942) binary=buffer.slice(offset,offset+length);
+      offset+=length;
+    }
+    if(!gltf||!binary) throw new Error(`${fileName} no contiene los bloques GLB necesarios.`);
+
+    const components={SCALAR:1,VEC2:2,VEC3:3,VEC4:4};
+    const types={
+      5120:{ArrayType:Int8Array,bytes:1,read:'getInt8'},5121:{ArrayType:Uint8Array,bytes:1,read:'getUint8'},
+      5122:{ArrayType:Int16Array,bytes:2,read:'getInt16'},5123:{ArrayType:Uint16Array,bytes:2,read:'getUint16'},
+      5125:{ArrayType:Uint32Array,bytes:4,read:'getUint32'},5126:{ArrayType:Float32Array,bytes:4,read:'getFloat32'}
+    };
+    function accessorData(index) {
+      const accessor=gltf.accessors[index],view=gltf.bufferViews[accessor.bufferView],component=types[accessor.componentType],itemSize=components[accessor.type];
+      if(!accessor||!view||!component||!itemSize) throw new Error(`${fileName} usa un formato de vértices no compatible.`);
+      const start=(view.byteOffset||0)+(accessor.byteOffset||0),stride=view.byteStride||component.bytes*itemSize,total=accessor.count*itemSize;
+      if(stride===component.bytes*itemSize) return new component.ArrayType(binary,start,total);
+      const result=new component.ArrayType(total),data=new DataView(binary);
+      for(let row=0;row<accessor.count;row++) for(let col=0;col<itemSize;col++) {
+        const at=start+row*stride+col*component.bytes;
+        result[row*itemSize+col]=component.bytes===1?data[component.read](at):data[component.read](at,true);
+      }
+      return result;
+    }
+
+    const scene=gltf.scenes[gltf.scene||0],node=gltf.nodes[scene.nodes[0]],mesh=gltf.meshes[node.mesh],primitive=mesh.primitives[0];
+    const positionAccessor=gltf.accessors[primitive.attributes.POSITION];
+    const normalAccessor=gltf.accessors[primitive.attributes.NORMAL];
+    const uvAccessor=gltf.accessors[primitive.attributes.TEXCOORD_0];
+    const positionNormalization = positionAccessor.normalized
+      ? ({5120:1/127,5121:1/255,5122:1/32767,5123:1/65535,5125:1/4294967295}[positionAccessor.componentType] || 1)
+      : 1;
+    const positionMin = positionAccessor.min.map(v => v * positionNormalization);
+    const positionMax = positionAccessor.max.map(v => v * positionNormalization);
+    const positions=accessorData(primitive.attributes.POSITION);
+    const normals=accessorData(primitive.attributes.NORMAL);
+    const uvs=accessorData(primitive.attributes.TEXCOORD_0);
+    const indexAccessor=gltf.accessors[primitive.indices];
+    const indices=accessorData(primitive.indices);
+    const material=gltf.materials[primitive.material||0]||{};
+    const pbr=material.pbrMetallicRoughness||{};
+    const textureInfo=pbr.baseColorTexture||material.emissiveTexture;
+    if(!textureInfo) throw new Error(`${fileName} no contiene una textura de color compatible.`);
+    const image=gltf.images[gltf.textures[textureInfo.index].source];
+    const imageView=gltf.bufferViews[image.bufferView];
+    const textureBytes=new Uint8Array(binary,imageView.byteOffset||0,imageView.byteLength).slice();
+    return {
+      positions,normals,uvs,indices,indexType:indexAccessor.componentType===5125?'uint32':'uint16',
+      // Preserve glTF's quantized integer attributes. The matching normalized flag
+      // is passed to WebGL's vertexAttribPointer so KHR_mesh_quantization is decoded.
+      attributes:{
+        position:{componentType:positionAccessor.componentType,normalized:!!positionAccessor.normalized},
+        normal:{componentType:normalAccessor.componentType,normalized:!!normalAccessor.normalized},
+        uv:{componentType:uvAccessor.componentType,normalized:!!uvAccessor.normalized}
+      },
+      center:positionMin.map((v,i)=>(v+positionMax[i])*.5),
+      scale:2.72/Math.max(...positionMax.map((v,i)=>v-positionMin[i])),
+      textureBytes,mimeType:image.mimeType||'image/png',emissive:!!material.emissiveTexture&&!pbr.baseColorTexture,
+      animated: fileName==='osciloscopio2.glb.gz'
+    };
+  }
+
+  function compile(gl,type,source) {
+    const shader=gl.createShader(type);gl.shaderSource(shader,source);gl.compileShader(shader);
+    if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader));
+    return shader;
+  }
+
+  async function uploadModel(gl,fileName) {
+    const asset=await readGlb(fileName);
+    const buffers={};
+    for(const [name,data] of [['position',asset.positions],['normal',asset.normals],['uv',asset.uvs]]) {
+      const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);buffers[name]=b;
+    }
+    const indexBuffer=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,asset.indices,gl.STATIC_DRAW);
+    const texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    const imageUrl=URL.createObjectURL(new Blob([asset.textureBytes],{type:asset.mimeType}));
+    const image=new Image();image.src=imageUrl;await image.decode();URL.revokeObjectURL(imageUrl);
+    // Other models load in parallel. Rebind this model's texture after the async decode
+    // so texImage2D cannot overwrite another model's texture.
+    gl.bindTexture(gl.TEXTURE_2D,texture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,image);gl.generateMipmap(gl.TEXTURE_2D);
+    return {...asset,buffers,indexBuffer,texture,indexCount:asset.indices.length};
+  }
+
+  async function start() {
+    const gl=canvas.getContext('webgl',{alpha:true,antialias:true,premultipliedAlpha:false,powerPreference:'high-performance'});
+    if(!gl) throw new Error('Este navegador no tiene WebGL habilitado.');
+    const vs='attribute vec3 aP;attribute vec3 aN;attribute vec2 aUv;uniform mat4 uMvp;uniform mat4 uModel;varying vec3 vN;varying vec2 vUv;void main(){gl_Position=uMvp*vec4(aP,1.0);vN=normalize(mat3(uModel)*aN);vUv=aUv;}';
+    const fs=`
+      precision mediump float;
+      uniform sampler2D uTexture;uniform float uEmissive;uniform float uTime;uniform float uAnimated;
+      varying vec3 vN;varying vec2 vUv;
+      void main(){
+        vec3 normal=normalize(vN);vec3 key=normalize(vec3(-.45,.82,.7));
+        float diffuse=max(dot(normal,key),0.0);float light=.58+.48*diffuse;
+        vec3 base=texture2D(uTexture,vUv).rgb;vec3 color=base*mix(light,1.0,uEmissive);
+        if(uAnimated>.5){
+          float cycle=mod(uTime*.62,2.0);float progress=cycle<1.0?cycle:2.0-cycle;
+          float ballX=.377+(progress-.5)*.112;float ballY=.185-sin(progress*3.14159265)*.052;
+          vec2 fromBall=vUv-vec2(ballX,ballY);float ballDistance=length(fromBall);
+          float screenDistance=length(vUv-vec2(.377,.149));float screenMask=1.0-smoothstep(.073,.082,screenDistance);
+          float ballCore=1.0-smoothstep(.0024,.0046,ballDistance);float ballHalo=exp(-ballDistance*155.0);
+          float direction=cycle<1.0?1.0:-1.0;vec2 travel=normalize(vec2(direction,-cos(progress*3.14159265)*.08));
+          float behind=clamp(dot(-fromBall,travel),0.0,.018);float streakDistance=length(fromBall+travel*behind);
+          float streak=exp(-streakDistance*260.0)*(1.0-smoothstep(.008,.018,behind));
+          float phosphor=.985+.015*sin(vUv.y*6000.0+uTime*28.0);color*=mix(1.0,phosphor,screenMask);
+          color+=vec3(.08,.95,.48)*(ballHalo*.24+ballCore*.95+streak*.13)*screenMask;
+        }
+        gl_FragColor=vec4(color,1.0);
+      }
+    `;
+    const program=gl.createProgram();gl.attachShader(program,compile(gl,gl.VERTEX_SHADER,vs));gl.attachShader(program,compile(gl,gl.FRAGMENT_SHADER,fs));gl.linkProgram(program);
+    if(!gl.getProgramParameter(program,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program));
+    gl.useProgram(program);
+    const loc={p:gl.getAttribLocation(program,'aP'),n:gl.getAttribLocation(program,'aN'),uv:gl.getAttribLocation(program,'aUv'),mvp:gl.getUniformLocation(program,'uMvp'),model:gl.getUniformLocation(program,'uModel'),texture:gl.getUniformLocation(program,'uTexture'),emissive:gl.getUniformLocation(program,'uEmissive'),time:gl.getUniformLocation(program,'uTime'),animated:gl.getUniformLocation(program,'uAnimated')};
+    gl.enable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.clearColor(0,0,0,0);gl.uniform1i(loc.texture,0);
+
+    const models=new Map();
+    await Promise.all([...modelFiles.entries()].map(async ([stage,file])=>{
+      try { models.set(stage,await uploadModel(gl,file)); }
+      catch(error) { console.warn('PRESS START 3D model not loaded:',file,error); }
+    }));
+    if(!models.size) throw new Error('No se pudo cargar ninguno de los modelos 3D.');
+    if(fallback) fallback.style.display='none';
+
+    function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.5),w=Math.max(1,Math.floor(r.width*d)),h=Math.max(1,Math.floor(r.height*d));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}}
+    function bindAttribute(buffer,location,size,info){
+      const types={5120:gl.BYTE,5121:gl.UNSIGNED_BYTE,5122:gl.SHORT,5123:gl.UNSIGNED_SHORT,5125:gl.UNSIGNED_INT,5126:gl.FLOAT};
+      const type=types[info.componentType];
+      if(type===undefined)throw new Error('Tipo de atributo GLB no compatible.');
+      gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.enableVertexAttribArray(location);
+      gl.vertexAttribPointer(location,size,type,info.normalized,0,0);
+    }
+    let activeStage=0;
+    function render(time){
+      resize();const mid=innerHeight*.52;let chosen=0,best=Infinity;
+      chapters.forEach((chapter,i)=>{const r=chapter.getBoundingClientRect(),distance=Math.abs(r.top+r.height*.5-mid);if(distance<best){best=distance;chosen=i;}});
+      activeStage=chosen;
+      const modelData=models.get(activeStage);const visible=!!modelData;
+      base.style.opacity=visible?'0':'1';canvas.style.opacity=visible?'1':'0';
+      gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+      if(modelData){
+        const angle=reduced?.20:time*.00035;
+        const bob=reduced?0:Math.sin(time*.00115)*.022;
+        const model=multiply(rotateY(angle),multiply(move(0,bob,0),multiply(scale(modelData.scale),move(-modelData.center[0],-modelData.center[1],-modelData.center[2]))));
+        const eye=[0,1.15,5.0];const vp=multiply(projection(Math.PI/4.7,canvas.width/Math.max(1,canvas.height),.1,60),lookAt(eye));
+        gl.uniformMatrix4fv(loc.model,false,model);gl.uniformMatrix4fv(loc.mvp,false,multiply(vp,model));
+        gl.uniform1f(loc.emissive,modelData.emissive?1:0);gl.uniform1f(loc.time,reduced?0:time*.001);gl.uniform1f(loc.animated,modelData.animated?1:0);
+        bindAttribute(modelData.buffers.position,loc.p,3,modelData.attributes.position);
+        bindAttribute(modelData.buffers.normal,loc.n,3,modelData.attributes.normal);
+        bindAttribute(modelData.buffers.uv,loc.uv,2,modelData.attributes.uv);
+        gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,modelData.texture);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,modelData.indexBuffer);
+        const format=modelData.indexType==='uint32'?gl.UNSIGNED_INT:gl.UNSIGNED_SHORT;
+        gl.drawElements(gl.TRIANGLES,modelData.indexCount,format,0);
+      }
+      requestAnimationFrame(render);
+    }
+    addEventListener('resize',resize);
+    requestAnimationFrame(render);
+  }
+
+  start().catch(error=>{
+    console.error('PRESS START 3D models:',error);
+    canvas.style.display='none';
+    // The original procedural scene remains visible if a GLB cannot be loaded.
+  });
+})();
+</script>
+</body>
+</html>
