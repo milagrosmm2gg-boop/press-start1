@@ -1147,7 +1147,12 @@
     [2, 'ATARI.glb.gz'],
     [3, 'nes1.glb.gz'],
     [4, 'ps11.glb.gz'],
-    [6, 'ps33.glb.gz']
+    [5, 'ps33.glb.gz'], // This supplied model is PlayStation 2, not PS3.
+    [6, 'pc.glb.gz'],
+    [7, 'ps4.glb.gz'],
+    [8, 'vr.glb.gz'],
+    [9, 'xboxx.glb.gz'],
+    [10, 'ia.glb.gz']
   ]);
 
   const canvas = document.createElement('canvas');
@@ -1236,6 +1241,11 @@
     const positionAccessor=gltf.accessors[primitive.attributes.POSITION];
     const normalAccessor=gltf.accessors[primitive.attributes.NORMAL];
     const uvAccessor=gltf.accessors[primitive.attributes.TEXCOORD_0];
+    const positionNormalization = positionAccessor.normalized
+      ? ({5120:1/127,5121:1/255,5122:1/32767,5123:1/65535,5125:1/4294967295}[positionAccessor.componentType] || 1)
+      : 1;
+    const positionMin = positionAccessor.min.map(v => v * positionNormalization);
+    const positionMax = positionAccessor.max.map(v => v * positionNormalization);
     const positions=accessorData(primitive.attributes.POSITION);
     const normals=accessorData(primitive.attributes.NORMAL);
     const uvs=accessorData(primitive.attributes.TEXCOORD_0);
@@ -1257,8 +1267,8 @@
         normal:{componentType:normalAccessor.componentType,normalized:!!normalAccessor.normalized},
         uv:{componentType:uvAccessor.componentType,normalized:!!uvAccessor.normalized}
       },
-      center:positionAccessor.min.map((v,i)=>(v+positionAccessor.max[i])*.5),
-      scale:2.72/Math.max(...positionAccessor.max.map((v,i)=>v-positionAccessor.min[i])),
+      center:positionMin.map((v,i)=>(v+positionMax[i])*.5),
+      scale:2.72/Math.max(...positionMax.map((v,i)=>v-positionMin[i])),
       textureBytes,mimeType:image.mimeType||'image/png',emissive:!!material.emissiveTexture&&!pbr.baseColorTexture,
       animated: fileName==='osciloscopio2.glb.gz'
     };
