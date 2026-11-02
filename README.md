@@ -1,8 +1,8 @@
 # PRESS START — Project
 
-## Modelos 3D en la línea de tiempo
+## Modelos 3D actualmente publicados
 
-El visor vertical usa un modelo por etapa y mantiene la rotación automática.
+El visor mantiene el desplazamiento vertical y la rotación automática de los modelos disponibles.
 
 | Etapa | Modelo |
 |---|---|
@@ -12,19 +12,11 @@ El visor vertical usa un modelo por etapa y mantiene la rotación automática.
 | Characters Come Alive | Nintendo NES |
 | A Whole New Dimension | PlayStation 1 |
 | Worlds Connect | PlayStation 2 |
-| Details Get Sharper | PC gamer (era de alta definición) |
-| A More Connected Era | PlayStation 4 |
-| New Ways to Play | Visor de realidad virtual |
-| Speed Meets Detail | Xbox Series X |
-| The Next Frontier | Inteligencia artificial |
 
-Los cinco modelos nuevos se sirven comprimidos como GLB con texturas optimizadas y geometría cuantizada. El visor interpreta los atributos de posición normalizados para mantener la escala y el encuadre.
-
-## Archivos
-
-- `index.html`: página completa y visor 3D.
-- `assets/`: modelos GLB comprimidos. Conservá esta carpeta en la raíz junto al HTML.
+Las etapas restantes conservan sus visuales procedurales mientras se incorporan los cinco modelos nuevos.
 
 ## Publicación
 
-Vercel despliega automáticamente los commits de la rama `main`.
+- `index.html`: página completa y visor 3D.
+- `assets/`: modelos GLB comprimidos.
+- Vercel publica automáticamente los commits de la rama `main`.
