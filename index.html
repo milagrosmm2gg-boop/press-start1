@@ -881,9 +881,9 @@
         <p class="feature-kicker">07 / IMAGINE YOUR NEXT LEVEL</p><h2 class="feature-title" id="whatif-title">WHAT <em>IF...?</em></h2>
         <p class="feature-lead">Small actions can lead to big discoveries. Read these possibilities and imagine what you could learn by playing and exploring.</p>
         <div class="whatif-grid">
-          <article class="whatif-card"><span class="tag">IF YOU PLAY</span><div><h3>If you play video games every day, you will improve your skills.</h3><p>Si jugás videojuegos todos los días, mejorarás tus habilidades.</p></div></article>
-          <article class="whatif-card"><span class="tag">IF YOU VISIT</span><div><h3>If you visit our website, you will learn about the history of video games.</h3><p>Si visitás nuestra página web, aprenderás sobre la historia de los videojuegos.</p></div></article>
-          <article class="whatif-card"><span class="tag">IF YOU EXPLORE</span><div><h3>If you explore the website, you will discover old and new video games.</h3><p>Si explorás la página web, descubrirás videojuegos antiguos y nuevos.</p></div></article>
+          <article class="whatif-card"><span class="tag">IF YOU PLAY</span><div><h3>If you play video games every day, you will improve your skills.</h3><p>Daily play can help you build sharper reflexes, problem-solving skills and confidence.</p></div></article>
+          <article class="whatif-card"><span class="tag">IF YOU VISIT</span><div><h3>If you visit our website, you will learn about the history of video games.</h3><p>Explore the milestones, inventions and creative ideas that shaped video game history.</p></div></article>
+          <article class="whatif-card"><span class="tag">IF YOU EXPLORE</span><div><h3>If you explore the website, you will discover old and new video games.</h3><p>Find classic favorites, modern adventures and the ideas that connect every generation of games.</p></div></article>
         </div>
         <div class="feature-footer"><span>THINK IT. TRY IT. DISCOVER IT.</span><a href="#console-battle">NEXT: CONSOLE BATTLE ↓</a></div>
       </div>
@@ -1707,24 +1707,24 @@
   async function readGlb(fileName) {
     const assetUrl = new URL('assets/' + fileName, document.baseURI);
     const response = await fetch(assetUrl, { cache: 'force-cache' });
-    if (!response.ok) throw new Error(`No se encontró ${assetUrl.pathname} (${response.status}).`);
+    if (!response.ok) throw new Error(`Could not find ${assetUrl.pathname} (${response.status}).`);
     let buffer = await response.arrayBuffer();
     if (fileName.endsWith('.gz')) {
-      if (!('DecompressionStream' in window)) throw new Error('El navegador no admite la descompresión gzip.');
+      if (!('DecompressionStream' in window)) throw new Error('This browser does not support gzip decompression.');
       buffer = await new Response(new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
     }
 
     const header = new DataView(buffer);
-    if (header.getUint32(0,true)!==0x46546c67 || header.getUint32(4,true)!==2) throw new Error(`${fileName} no es un GLB glTF 2.0 válido.`);
+    if (header.getUint32(0,true)!==0x46546c67 || header.getUint32(4,true)!==2) throw new Error(`${fileName} is not a valid GLB glTF 2.0 file.`);
     let offset=12,gltf=null,binary=null;
     while(offset+8<=buffer.byteLength) {
       const length=header.getUint32(offset,true),type=header.getUint32(offset+4,true);offset+=8;
-      if(offset+length>buffer.byteLength) throw new Error(`El archivo ${fileName} está incompleto.`);
+      if(offset+length>buffer.byteLength) throw new Error(`The ${fileName} file is incomplete.`);
       if(type===0x4e4f534a) gltf=JSON.parse(new TextDecoder().decode(new Uint8Array(buffer,offset,length)).trim());
       else if(type===0x004e4942) binary=buffer.slice(offset,offset+length);
       offset+=length;
     }
-    if(!gltf||!binary) throw new Error(`${fileName} no contiene los bloques GLB necesarios.`);
+    if(!gltf||!binary) throw new Error(`${fileName} does not contain the required GLB chunks.`);
 
     const components={SCALAR:1,VEC2:2,VEC3:3,VEC4:4};
     const types={
@@ -1734,7 +1734,7 @@
     };
     function accessorData(index) {
       const accessor=gltf.accessors[index],view=gltf.bufferViews[accessor.bufferView],component=types[accessor.componentType],itemSize=components[accessor.type];
-      if(!accessor||!view||!component||!itemSize) throw new Error(`${fileName} usa un formato de vértices no compatible.`);
+      if(!accessor||!view||!component||!itemSize) throw new Error(`${fileName} uses an unsupported vertex format.`);
       const start=(view.byteOffset||0)+(accessor.byteOffset||0),stride=view.byteStride||component.bytes*itemSize,total=accessor.count*itemSize;
       if(stride===component.bytes*itemSize) return new component.ArrayType(binary,start,total);
       const result=new component.ArrayType(total),data=new DataView(binary);
@@ -1762,7 +1762,7 @@
     const material=gltf.materials[primitive.material||0]||{};
     const pbr=material.pbrMetallicRoughness||{};
     const textureInfo=pbr.baseColorTexture||material.emissiveTexture;
-    if(!textureInfo) throw new Error(`${fileName} no contiene una textura de color compatible.`);
+    if(!textureInfo) throw new Error(`${fileName} does not contain a supported color texture.`);
     const image=gltf.images[gltf.textures[textureInfo.index].source];
     const imageView=gltf.bufferViews[image.bufferView];
     const textureBytes=new Uint8Array(binary,imageView.byteOffset||0,imageView.byteLength).slice();
@@ -1845,7 +1845,7 @@
       try { models.set(stage,await uploadModel(gl,file)); }
       catch(error) { console.warn('PRESS START 3D model not loaded:',file,error); }
     }));
-    if(!models.size) throw new Error('No se pudo cargar ninguno de los modelos 3D.');
+    if(!models.size) throw new Error('Could not load any of the 3D models.');
     if(fallback) fallback.style.display='none';
 
     function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.5),w=Math.max(1,Math.floor(r.width*d)),h=Math.max(1,Math.floor(r.height*d));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}}
