@@ -2055,11 +2055,28 @@
 
 (()=>{const URL='https://mzfravlmrmlrlsmixszk.supabase.co',KEY='sb_publishable_p172H18pZGCkDp1oIBG5Yw_QjUSwbPj',$=id=>document.getElementById(id);
 if(!window.supabase||!$('roulette-create'))return;const db=window.supabase.createClient(URL,KEY);
-const words=[['PIXEL','A tiny square that makes up a digital image.'],['MOUSE','A device used to point and click on a computer.'],['LEVEL','A stage or section in a video game.'],['ARCADE','A place full of video game machines.'],['JOYSTICK','A controller with a stick used to move in games.'],['CONSOLE','A machine designed mainly for playing video games.'],['CARTRIDGE','A removable game format used by classic consoles.'],['MULTIPLAYER','A game mode where several people play together.'],['CHECKPOINT','A saved position you can return to after failing.'],['PLAYSTATION','A famous family of video game consoles.'],['ACHIEVEMENT','A reward for completing a special challenge.'],['LEADERBOARD','A ranking that compares player scores.'],['COMPETITIVE','Describes a game focused on beating other players.'],['PROCEDURAL','Generated automatically by rules or algorithms.']];
+let words=[];
 let user=null,room=null,players=[],channel=null,timer=null,seconds=0,current=null,spinning=false,challengeKey=null,spinKey=null,liveText='',answering=false,nextSpinTimer=null,lastQueuedKey=null,audioCtx=null,musicTimer=null,soundOn=true,refreshBusy=false,refreshPending=false,wheelAngle=0,turnSnapshot=null;
 const say=(id,msg)=>$(id).textContent=msg,esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function setWheel(){const wheel=$('roulette-wheel'),n=players.length;if(!n){wheel.style.background='conic-gradient(#222b50,#10162d)';wheel.innerHTML='';return;}const colors=['#f45b83','#26375e','#44aeca','#563b83','#a34169','#314c78'];wheel.style.background='conic-gradient('+players.map((p,i)=>colors[i%colors.length]+' '+(i*360/n)+'deg '+((i+1)*360/n)+'deg').join(',')+')';wheel.innerHTML=players.map((p,i)=>{const angle=(i+.5)*2*Math.PI/n-Math.PI/2,r=.34,x=50+Math.cos(angle)*r*100,y=50+Math.sin(angle)*r*100;return '<div class="roulette-wheel-label '+(p.user_id===room?.current_player_id?'active':'')+'" style="left:'+x+'%;top:'+y+'%"><span class="wheel-name">'+esc(p.player_profiles?.nickname||'PLAYER')+'</span><span class="hearts">'+('♥ '.repeat(Math.max(0,p.lives))||'—')+'</span></div>';}).join('');}
-async function init(){let r=await db.auth.getSession();if(!r.data.session){r=await db.auth.signInAnonymously();if(r.error){say('roulette-status','ENABLE ANONYMOUS SIGN-INS IN SUPABASE AUTH SETTINGS.');return;}user=r.data.user;}else user=r.data.session.user;const p=await db.from('player_profiles').select('*').eq('user_id',user.id).maybeSingle();if(p.data){$('roulette-nickname').value=p.data.nickname;say('roulette-profile-status','PROFILE READY · '+p.data.nickname);}say('roulette-status','CONNECTED · CREATE A ROOM OR ENTER A ROOM CODE.');}
+async function init(){
+  let r=await db.auth.getSession();
+  if(!r.data.session){
+    r=await db.auth.signInAnonymously();
+    if(r.error){say('roulette-status','ENABLE ANONYMOUS SIGN-INS IN SUPABASE AUTH SETTINGS.');return;}
+    user=r.data.user;
+  }else user=r.data.session.user;
+  const bank=await db.from('word_bank').select('id,word,clue,difficulty').order('id');
+  if(bank.error||!bank.data?.length){
+    console.error('PRESS START word bank:',bank.error);
+    say('roulette-status','WORD BANK COULD NOT BE LOADED. PLEASE REFRESH.');
+    return;
+  }
+  words=bank.data.map(w=>[String(w.word).toUpperCase(),w.clue,Number(w.id),Number(w.difficulty)]);
+  const p=await db.from('player_profiles').select('*').eq('user_id',user.id).maybeSingle();
+  if(p.data){$('roulette-nickname').value=p.data.nickname;say('roulette-profile-status','PROFILE READY · '+p.data.nickname);}
+  say('roulette-status','CONNECTED · CREATE A ROOM OR ENTER A ROOM CODE.');
+}
 async function profile(){const nickname=$('roulette-nickname').value.trim();if(nickname.length<2){say('roulette-profile-status','USE AT LEAST 2 CHARACTERS.');return false;}const r=await db.from('player_profiles').upsert({user_id:user.id,nickname});say('roulette-profile-status',r.error?r.error.message:'PROFILE SAVED · '+nickname);return !r.error;}
 async function enter(found){room=found;let r=await db.from('room_players').upsert({room_id:room.id,user_id:user.id,is_active:true},{onConflict:'room_id,user_id'});if(r.error){say('roulette-status',r.error.message);return;}$('roulette-code').value=room.room_code;say('roulette-status','ROOM '+room.room_code+' · SHARE THIS CODE WITH FRIENDS');await refresh();if(channel)db.removeChannel(channel);channel=db.channel('room-'+room.id).on('postgres_changes',{event:'*',schema:'public',table:'room_players',filter:'room_id=eq.'+room.id},refresh).on('postgres_changes',{event:'*',schema:'public',table:'game_rooms',filter:'id=eq.'+room.id},async e=>{room=e.new;await refresh();}).on('broadcast',{event:'typing'},({payload})=>{if(payload.user_id!==user.id&&room?.current_player_id===payload.user_id){liveText=payload.text||'';$('roulette-live-answer').textContent=liveText?liveText.replace(/./g,'▰ '):'';}}).on('broadcast',{event:'life_lost'},({payload})=>{if(payload.user_id!==user.id)showLifeLost(payload.nickname,payload.lives);}).subscribe();}
 async function refresh(){
@@ -2143,9 +2160,41 @@ try{
   if(refreshPending){refreshPending=false;refresh();}
 }
 }
-function startChallenge(){const p=players.find(x=>x.user_id===room.current_player_id);if(!p)return;const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;if(challengeKey===key)return;challengeKey=key;turnSnapshot={key,score:p.score,streak:p.streak,lives:p.lives};const seed=String(room.current_player_id)+String(room.turn_deadline||'');let hash=0;for(let i=0;i<seed.length;i++)hash=(hash*31+seed.charCodeAt(i))>>>0;const pool=words.filter(w=>w[0].length>=4+Math.min(4,Math.floor(p.streak/2))*2);current=pool[hash%pool.length];liveText='';$('roulette-live-answer').textContent='';const isTurn=p.user_id===user.id;
-$('roulette-word').textContent=current[0].split('').map((c,i)=>i===0||i===current[0].length-1?c:'_').join(' ');say('roulette-clue',(isTurn?'YOUR TURN · ':'NOW PLAYING · ')+(p.player_profiles?.nickname||'PLAYER')+' — '+words.find(w=>w[0]===current[0])[1]);say('roulette-word-hint',(p.player_profiles?.nickname||'PLAYER')+' IS COMPLETING THE WORD · WATCH THE PROGRESS');say('roulette-turn',(isTurn?'YOUR TURN':'PLAYER: '+(p.player_profiles?.nickname||'PLAYER'))+' · STREAK x'+p.streak);$('roulette-lives').textContent='♥ '.repeat(p.lives);$('roulette-answer').disabled=!isTurn;$('roulette-submit').disabled=!isTurn;$('roulette-answer').value='';if(isTurn)$('roulette-answer').focus();
-const deadline=new Date(room.turn_deadline).getTime();clearInterval(timer);const tick=()=>{seconds=Math.max(0,Math.ceil((deadline-Date.now())/1000));say('roulette-timer','00:'+String(seconds).padStart(2,'0'));document.querySelector('.roulette-panel')?.classList.toggle('is-tense',seconds<=7&&seconds>0);if(seconds===0&&isTurn&&!answering)miss('TIME UP!');};tick();timer=setInterval(tick,250);}
+function startChallenge(){
+  const p=players.find(x=>x.user_id===room.current_player_id);
+  if(!p)return;
+  const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;
+  if(challengeKey===key)return;
+  challengeKey=key;
+  turnSnapshot={key,score:p.score,streak:p.streak,lives:p.lives};
+  current=words.find(w=>Number(w[2])===Number(room.current_word_id));
+  if(!current){
+    say('roulette-feedback','WORD COULD NOT BE LOADED · THE HOST SHOULD SPIN AGAIN');
+    return;
+  }
+  liveText='';
+  $('roulette-live-answer').textContent='';
+  const isTurn=p.user_id===user.id;
+  $('roulette-word').textContent=current[0].split('').map((c,i)=>i===0||i===current[0].length-1?c:'_').join(' ');
+  say('roulette-clue',(isTurn?'YOUR TURN · ':'NOW PLAYING · ')+(p.player_profiles?.nickname||'PLAYER')+' — '+current[1]);
+  say('roulette-word-hint',(p.player_profiles?.nickname||'PLAYER')+' IS COMPLETING THE WORD · WATCH THE PROGRESS');
+  say('roulette-turn',(isTurn?'YOUR TURN':'PLAYER: '+(p.player_profiles?.nickname||'PLAYER'))+' · STREAK x'+p.streak);
+  $('roulette-lives').textContent='♥ '.repeat(p.lives);
+  $('roulette-answer').disabled=!isTurn;
+  $('roulette-submit').disabled=!isTurn;
+  $('roulette-answer').value='';
+  if(isTurn)$('roulette-answer').focus();
+  const deadline=new Date(room.turn_deadline).getTime();
+  clearInterval(timer);
+  const tick=()=>{
+    seconds=Math.max(0,Math.ceil((deadline-Date.now())/1000));
+    say('roulette-timer','00:'+String(seconds).padStart(2,'0'));
+    document.querySelector('.roulette-panel')?.classList.toggle('is-tense',seconds<=7&&seconds>0);
+    if(seconds===0&&isTurn&&!answering)miss('TIME UP!');
+  };
+  tick();
+  timer=setInterval(tick,250);
+}
 async function miss(reason){
 if(!current||answering||!room||room.status!=='playing'||room.current_player_id!==user.id)return;
 answering=true;
@@ -2202,32 +2251,53 @@ $('roulette-save-profile').onclick=async()=>{if(user)await profile();};
 $('roulette-create').onclick=async()=>{startMusic();if(!user||!await profile())return;const code=Math.random().toString(36).slice(2,8).toUpperCase(),r=await db.from('game_rooms').insert({room_code:code,host_id:user.id}).select().single();if(r.error){say('roulette-status',r.error.message);return;}await enter(r.data);};
 $('roulette-join').onclick=async()=>{startMusic();if(!user||!await profile())return;const r=await db.from('game_rooms').select('*').eq('room_code',$('roulette-code').value.trim().toUpperCase()).maybeSingle();if(r.error||!r.data){say('roulette-status','ROOM NOT FOUND. CHECK THE CODE.');return;}await enter(r.data);};
 async function spinNext(){
-if(!room||room.host_id!==user.id||spinning||room.status==='finished')return;
-spinning=true;$('roulette-spin').disabled=true;
-try{
-  const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();
-  if(state.error)throw state.error;
-  if(!state.data)return;
-  room=state.data;
-  if(room.status!=='waiting')return;
-  const roster=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});
-  if(roster.error)throw roster.error;
-  players=roster.data||[];
-  const alive=players.filter(p=>p.lives>0);
-  if(alive.length<2){await refresh();return;}
-  const selected=alive[Math.floor(Math.random()*alive.length)],spinDeadline=new Date(Date.now()+5000).toISOString();
-  const result=await db.from('game_rooms').update({status:'spinning',current_player_id:selected.user_id,turn_deadline:spinDeadline})
-    .eq('id',room.id).eq('status','waiting').select().maybeSingle();
-  if(result.error)throw result.error;
-  if(!result.data){lastQueuedKey=null;await refresh();return;}
-  room=result.data;playSpinSound();await refresh();
-}catch(error){
-  console.error('PRESS START spin failed:',error);
-  say('roulette-status','SPIN COULD NOT START · RETRYING…');
-  lastQueuedKey=null;
-}finally{
-  spinning=false;
-}
+  if(!room||room.host_id!==user.id||spinning||room.status==='finished')return;
+  spinning=true;$('roulette-spin').disabled=true;
+  try{
+    const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();
+    if(state.error)throw state.error;
+    if(!state.data)return;
+    room=state.data;
+    if(room.status!=='waiting')return;
+    const roster=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});
+    if(roster.error)throw roster.error;
+    players=roster.data||[];
+    const alive=players.filter(p=>p.lives>0);
+    if(alive.length<2){await refresh();return;}
+    const selected=alive[Math.floor(Math.random()*alive.length)];
+    const usedIds=new Set((Array.isArray(room.used_word_ids)?room.used_word_ids:[]).map(Number));
+    const minLength=4+Math.min(4,Math.floor((selected.streak||0)/2))*2;
+    let wordPool=words.filter(w=>w[0].length>=minLength&&!usedIds.has(Number(w[2])));
+    if(!wordPool.length)wordPool=words.filter(w=>!usedIds.has(Number(w[2])));
+    if(!wordPool.length){
+      const champion=[...alive].sort((a,b)=>b.score-a.score)[0];
+      const ending=await db.from('game_rooms').update({status:'finished',current_player_id:champion?.user_id||null,turn_deadline:null})
+        .eq('id',room.id).eq('status','waiting').select().maybeSingle();
+      if(ending.error)throw ending.error;
+      if(ending.data)room=ending.data;
+      say('roulette-feedback','ALL WORDS HAVE BEEN USED · GAME COMPLETE');
+      await refresh();
+      return;
+    }
+    const selectedWord=wordPool[Math.floor(Math.random()*wordPool.length)];
+    const spinDeadline=new Date(Date.now()+5000).toISOString();
+    const result=await db.from('game_rooms').update({
+      status:'spinning',
+      current_player_id:selected.user_id,
+      current_word_id:selectedWord[2],
+      used_word_ids:[...usedIds,selectedWord[2]],
+      turn_deadline:spinDeadline
+    }).eq('id',room.id).eq('status','waiting').select().maybeSingle();
+    if(result.error)throw result.error;
+    if(!result.data){lastQueuedKey=null;await refresh();return;}
+    room=result.data;playSpinSound();await refresh();
+  }catch(error){
+    console.error('PRESS START spin failed:',error);
+    say('roulette-status','SPIN COULD NOT START · RETRYING…');
+    lastQueuedKey=null;
+  }finally{
+    spinning=false;
+  }
 }
 function queueAutoSpin(){
 const key=room.id+'|'+players.map(p=>p.user_id+':'+p.lives+':'+p.score+':'+p.streak).join(',')+'|'+room.status+'|'+room.current_player_id;
