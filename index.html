@@ -1000,9 +1000,9 @@
             <label for="comment-name">PLAYER NAME</label><input id="comment-name" name="name" maxlength="28" placeholder="Your name" required>
             <label for="comment-message">YOUR COMMENT</label><textarea id="comment-message" name="message" maxlength="500" placeholder="Write your message..." required></textarea>
             <button class="comment-submit" type="submit">POST COMMENT ↗</button>
-            <p class="comment-notice">Demo guestbook: comments are saved only in this browser on this device. They are not shared with other visitors yet.</p><p class="comment-notice" id="comment-status" role="status" aria-live="polite"></p>
+            <p class="comment-notice">Messages are shared with everyone visiting PRESS START, from any device.</p><p class="comment-notice" id="comment-status" role="status" aria-live="polite"></p>
           </form>
-          <div><p class="feature-kicker">PLAYER MESSAGES / <span id="comment-count">00</span></p><div class="comment-list" id="comment-list"><div class="comment-empty">NO COMMENTS YET. BE THE FIRST PLAYER.</div></div></div>
+          <div><p class="feature-kicker">PLAYER MESSAGES / <span id="comment-count">00</span></p><div class="comment-list" id="comment-list"><div class="comment-empty">LOADING PLAYER MESSAGES…</div></div></div>
         </div>
         <div class="feature-footer"><span>PRESS START / COMMUNITY BOARD</span><a href="#welcome">BACK TO START ↑</a></div>
       </div>
@@ -1025,15 +1025,7 @@
         battleTabs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.battle===key)));
       }
       battleTabs.forEach(button=>button.addEventListener('click',()=>renderBattle(button.dataset.battle)));renderBattle('hardware');
-      const form=document.getElementById('comment-form'),list=document.getElementById('comment-list'),count=document.getElementById('comment-count'),status=document.getElementById('comment-status'),storageKey='press-start-player-comments-v1';
-      let comments=[];try{comments=JSON.parse(localStorage.getItem(storageKey)||'[]');if(!Array.isArray(comments))comments=[];}catch(_){comments=[];}
-      function drawComments(){
-        list.replaceChildren();count.textContent=String(comments.length).padStart(2,'0');
-        if(!comments.length){const empty=document.createElement('div');empty.className='comment-empty';empty.textContent='NO COMMENTS YET. BE THE FIRST PLAYER.';list.append(empty);return;}
-        comments.slice().reverse().forEach(comment=>{const entry=document.createElement('article');entry.className='comment-entry';const name=document.createElement('strong');name.textContent=comment.name;const date=document.createElement('time');date.textContent=comment.date;const message=document.createElement('p');message.textContent=comment.message;entry.append(name,date,message);list.append(entry);});
-      }
-      form.addEventListener('submit',event=>{event.preventDefault();const name=document.getElementById('comment-name').value.trim(),message=document.getElementById('comment-message').value.trim();if(!name||!message)return;comments.push({name,message,date:new Date().toLocaleDateString()});comments=comments.slice(-30);try{localStorage.setItem(storageKey,JSON.stringify(comments));status.textContent='COMMENT SAVED ON THIS DEVICE. THANKS, PLAYER!';}catch(_){status.textContent='YOUR BROWSER COULD NOT SAVE THIS COMMENT.';}form.reset();drawComments();});
-      drawComments();
+
     })();
   </script>
   <script>
@@ -1903,6 +1895,162 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const form = document.getElementById('comment-form');
+  const list = document.getElementById('comment-list');
+  const count = document.getElementById('comment-count');
+  const status = document.getElementById('comment-status');
+  const nameInput = document.getElementById('comment-name');
+  const messageInput = document.getElementById('comment-message');
+  if (!form || !list || !count || !status) return;
+
+  const SUPABASE_URL = 'https://mzfravlmrmlrlsmixszk.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_p172H18pZGCkDp1oIBG5Yw_QjUSwbPj';
+  const LEGACY_KEY = 'press-start-player-comments-v1';
+  const MIGRATED_KEY = 'press-start-player-comments-shared-v1';
+  const DEVICE_KEY = 'press-start-comment-device-id-v1';
+  let db = null;
+  let busy = false;
+  let commentChannel = null;
+
+  function renderComments(rows, total) {
+    list.replaceChildren();
+    count.textContent = String(total ?? rows.length).padStart(2, '0');
+    if (!rows.length) {
+      const empty = document.createElement('div');
+      empty.className = 'comment-empty';
+      empty.textContent = 'NO COMMENTS YET. BE THE FIRST PLAYER.';
+      list.append(empty);
+      return;
+    }
+    rows.forEach(comment => {
+      const entry = document.createElement('article');
+      entry.className = 'comment-entry';
+      const name = document.createElement('strong');
+      name.textContent = comment.name || 'PLAYER';
+      const date = document.createElement('time');
+      const timestamp = comment.created_at ? new Date(comment.created_at) : null;
+      date.textContent = timestamp && !Number.isNaN(timestamp.getTime())
+        ? new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: 'numeric' }).format(timestamp)
+        : '';
+      const message = document.createElement('p');
+      message.textContent = comment.message || '';
+      entry.append(name, date, message);
+      list.append(entry);
+    });
+  }
+
+  async function importThisDeviceComments() {
+    if (localStorage.getItem(MIGRATED_KEY) === '1') return;
+    let oldComments = [];
+    try {
+      const saved = JSON.parse(localStorage.getItem(LEGACY_KEY) || '[]');
+      if (Array.isArray(saved)) oldComments = saved;
+    } catch (_) {}
+    if (!oldComments.length) {
+      localStorage.setItem(MIGRATED_KEY, '1');
+      return;
+    }
+
+    let deviceId = localStorage.getItem(DEVICE_KEY);
+    if (!deviceId) {
+      deviceId = (window.crypto && typeof window.crypto.randomUUID === 'function')
+        ? window.crypto.randomUUID()
+        : 'device-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+      localStorage.setItem(DEVICE_KEY, deviceId);
+    }
+    const batch = oldComments.slice(-30).map((comment, index) => ({
+      name: String(comment.name || '').trim().slice(0, 28),
+      message: String(comment.message || '').trim().slice(0, 500),
+      legacy_key: deviceId + ':' + index
+    })).filter(comment => comment.name && comment.message);
+    if (!batch.length) {
+      localStorage.setItem(MIGRATED_KEY, '1');
+      return;
+    }
+
+    const { error } = await db.from('site_comments').upsert(batch, {
+      onConflict: 'legacy_key',
+      ignoreDuplicates: true
+    });
+    if (error) throw error;
+    localStorage.setItem(MIGRATED_KEY, '1');
+    status.textContent = 'YOUR SAVED COMMENTS FROM THIS DEVICE WERE SHARED.';
+  }
+
+  async function loadComments() {
+    const { data, error, count: total } = await db
+      .from('site_comments')
+      .select('id,name,message,created_at', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    renderComments(data || [], total ?? (data || []).length);
+  }
+
+  async function initialize() {
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+      throw new Error('The comments service could not be loaded.');
+    }
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    await importThisDeviceComments();
+    await loadComments();
+    commentChannel = db.channel('press-start-shared-comments')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'site_comments'
+      }, () => loadComments().catch(error => console.error('Could not refresh comments:', error)))
+      .subscribe();
+  }
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (busy) return;
+    const name = nameInput.value.trim();
+    const message = messageInput.value.trim();
+    if (!name || !message) return;
+    if (name.length > 28 || message.length > 500) {
+      status.textContent = 'PLEASE CHECK THE NAME AND MESSAGE LENGTH.';
+      return;
+    }
+    busy = true;
+    const submit = form.querySelector('[type="submit"]');
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = 'POSTING…';
+    }
+    try {
+      if (!db) throw new Error('COMMENTS ARE STILL CONNECTING. PLEASE TRY AGAIN.');
+      const { error } = await db.from('site_comments').insert([{ name, message }]);
+      if (error) throw error;
+      form.reset();
+      status.textContent = 'COMMENT SHARED. THANKS, PLAYER!';
+      await loadComments();
+    } catch (error) {
+      console.error('PRESS START comment submit:', error);
+      status.textContent = 'COULD NOT SHARE YOUR COMMENT. PLEASE TRY AGAIN.';
+    } finally {
+      busy = false;
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = 'POST COMMENT ↗';
+      }
+    }
+  });
+
+  initialize().catch(error => {
+    console.error('PRESS START comments service:', error);
+    status.textContent = 'COMMENTS COULD NOT LOAD. PLEASE REFRESH THE PAGE.';
+  });
+
+  window.addEventListener('beforeunload', () => {
+    if (commentChannel && db) db.removeChannel(commentChannel);
+  });
+})();
+</script>
+
 <script>
 
 (()=>{const URL='https://mzfravlmrmlrlsmixszk.supabase.co',KEY='sb_publishable_p172H18pZGCkDp1oIBG5Yw_QjUSwbPj',$=id=>document.getElementById(id);
