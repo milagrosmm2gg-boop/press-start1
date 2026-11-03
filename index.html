@@ -1651,7 +1651,14 @@ try{
       .eq('id',room.id).eq('status',room.status).select().maybeSingle();
     if(result.error)throw result.error;
     if(result.data)room=result.data;
-  }else if(room.host_id===user.id&&room.status==='playing'&&room.current_player_id&&room.turn_deadline){
+  }else if(room.host_id===user.id&&room.status==='spinning'&&room.turn_deadline&&Date.now()>=new Date(room.turn_deadline).getTime()){
+    const deadline=new Date(Date.now()+20000).toISOString();
+    const result=await db.from('game_rooms').update({status:'playing',turn_deadline:deadline})
+      .eq('id',room.id).eq('status','spinning').eq('current_player_id',room.current_player_id).eq('turn_deadline',room.turn_deadline).select().maybeSingle();
+    if(result.error)throw result.error;
+    if(result.data)room=result.data;
+  }
+  if(room.host_id===user.id&&room.status==='playing'&&room.current_player_id&&room.turn_deadline){
     const active=players.find(p=>p.user_id===room.current_player_id);
     const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;
     if(active&&turnSnapshot?.key===key&&(active.score!==turnSnapshot.score||active.streak!==turnSnapshot.streak||active.lives!==turnSnapshot.lives)){
@@ -1660,13 +1667,8 @@ try{
       if(result.error)throw result.error;
       if(result.data)room=result.data;
     }
-  }else if(room.host_id===user.id&&room.status==='spinning'&&room.turn_deadline&&Date.now()>=new Date(room.turn_deadline).getTime()){
-    const deadline=new Date(Date.now()+20000).toISOString();
-    const result=await db.from('game_rooms').update({status:'playing',turn_deadline:deadline})
-      .eq('id',room.id).eq('status','spinning').eq('current_player_id',room.current_player_id).eq('turn_deadline',room.turn_deadline).select().maybeSingle();
-    if(result.error)throw result.error;
-    if(result.data)room=result.data;
-  }else if(room.host_id===user.id&&room.status==='playing'&&room.turn_deadline&&Date.now()>new Date(room.turn_deadline).getTime()+3500){
+  }
+  if(room.host_id===user.id&&room.status==='playing'&&room.turn_deadline&&Date.now()>new Date(room.turn_deadline).getTime()+3500){
     const expiredPlayer=room.current_player_id;
     const oldDeadline=room.turn_deadline;
     const result=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
