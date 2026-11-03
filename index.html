@@ -438,6 +438,110 @@
     .trivia-photo figcaption a{color:var(--accent);text-decoration:none}
     @media(max-width:850px){.trivia-feature{grid-template-columns:1fr}.trivia-media{max-width:620px}.game-spotlight-main{min-height:490px}}
     @media(max-width:620px){.game-spotlight-grid{grid-template-columns:1fr}.game-spotlight-main{grid-row:auto;min-height:420px}.trivia-media{grid-template-columns:1fr 1fr}.trivia-photo-michael{grid-column:1/-1}.trivia-photo img{height:155px}.trivia-photo-michael img{height:220px}}
+
+/* Restored Word Roulette styles inside the GAME section */
+.roulette-section{padding:clamp(3rem,7vw,6rem) clamp(1rem,4vw,4rem);background:radial-gradient(ellipse at 50% 45%,#20294b 0%,#101326 68%);color:#f5f2eb;position:relative;overflow:hidden}
+.roulette-inner{max-width:1120px;margin:auto}
+.roulette-kicker{font:700 .7rem Consolas,monospace;letter-spacing:.18em;color:#44d6ff}
+.roulette-title{font:900 clamp(2.5rem,7vw,5.5rem)/.95 Arial Black,Arial,sans-serif;letter-spacing:-.07em;margin:.7rem 0;color:#fff}
+.roulette-title span{color:#f45b83}
+.roulette-lead{color:#b9bdd0;max-width:650px;line-height:1.7}
+.roulette-wheel-wrap{position:relative}
+.roulette-center-arrow{position:absolute;z-index:50;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;display:grid;place-items:center;padding-bottom:7px;background:radial-gradient(circle at 35% 30%,#425681,#10162d 72%);border:4px solid #fff;box-shadow:0 0 0 4px #f45b83,0 0 28px #44d6ff;color:#fff;font:900 2rem/1 Arial,sans-serif;text-shadow:0 0 12px #44d6ff;pointer-events:none}
+.roulette-challenge-box{display:block!important;visibility:visible!important;opacity:1!important;position:relative;margin:1rem auto 1.2rem;padding:1.2rem 1rem;border:2px solid #44d6ff;border-radius:18px;background:linear-gradient(145deg,#101a35,#202b4c);box-shadow:0 0 28px #44d6ff25;text-align:center;min-height:150px}
+.roulette-challenge-label{margin:0;color:#44d6ff;font:900 .8rem Consolas,monospace;letter-spacing:.18em}
+.roulette-challenge-box .roulette-game-word{display:block!important;visibility:visible!important;opacity:1!important;min-height:2.2em;margin:.7rem auto;color:#fff!important;font-size:clamp(2rem,7vw,3.8rem);line-height:1.25;text-shadow:0 0 20px #44d6ff99}
+.roulette-challenge-box .roulette-clue{display:block!important;visibility:visible!important;color:#fff!important;font-size:1rem}
+.roulette-word-hint{margin:.5rem 0 0;color:#aab8d8;font:.72rem Consolas,monospace}
+@media(max-width:600px){
+.roulette-center-arrow{width:58px;height:58px;font-size:1.65rem}
+.roulette-challenge-box{padding:1rem .6rem}
+}
+.roulette-panel{position:relative;overflow:hidden}
+.roulette-wheel{transition:transform 5s cubic-bezier(.08,.82,.08,1),box-shadow .35s}
+.roulette-wheel.is-spinning{animation:wheelPulse .65s ease-in-out infinite alternate}
+.roulette-life-event{position:absolute;z-index:80;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;background:#090d20d9;backdrop-filter:blur(5px);pointer-events:none;text-align:center;color:#fff;font:900 1rem Consolas,monospace;letter-spacing:.1em}
+.roulette-life-event[hidden],.roulette-winner-overlay[hidden]{display:none!important}
+.roulette-broken-heart{font-size:clamp(5rem,18vw,8rem);line-height:1;filter:drop-shadow(0 0 22px #ff426b);animation:heartBreak 1.35s cubic-bezier(.2,.8,.2,1) both}
+.roulette-life-event strong{color:#ff789b;font-size:1.2rem;text-shadow:0 0 18px #f45b83}
+.roulette-winner-overlay{position:absolute;z-index:100;inset:0;display:grid;place-items:center;padding:1rem;background:radial-gradient(circle at 50% 25%,#334477f5,#090d20f7 75%);backdrop-filter:blur(9px);border-radius:24px;overflow:auto}
+.roulette-winner-card{width:min(100%,580px);text-align:center;padding:1.2rem .8rem;animation:winnerPop .85s cubic-bezier(.16,1.3,.3,1) both}
+.roulette-winner-confetti{color:#ffe28a;font-size:1.25rem;letter-spacing:.3em;animation:confettiFloat 1.5s ease-in-out infinite alternate}
+.roulette-winner-trophy{font-size:clamp(4rem,13vw,7rem);line-height:1.2;filter:drop-shadow(0 0 24px #ffd76a);animation:trophyBounce 1.1s ease-in-out infinite alternate}
+.roulette-winner-kicker{color:#ffe28a;font:900 .8rem Consolas,monospace;letter-spacing:.25em;margin:.4rem 0}
+.roulette-winner-card h2{font:1000 clamp(2.5rem,8vw,5rem)/1 Arial Black,Arial,sans-serif;color:#fff;text-shadow:0 0 28px #44d6ff,0 5px #f45b83;margin:.6rem 0;overflow-wrap:anywhere}
+.roulette-winner-subtitle{color:#c5d5ff;font:800 .72rem Consolas,monospace;letter-spacing:.14em}
+.roulette-podium{display:flex;align-items:flex-end;justify-content:center;gap:.6rem;max-width:420px;margin:1.3rem auto 0;min-height:150px}
+.roulette-podium-place{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;color:#fff;font:800 .7rem Consolas,monospace;overflow-wrap:anywhere}
+.roulette-podium-place b{font-size:.82rem;margin-bottom:.5rem}
+.roulette-podium-block{width:100%;padding:.65rem .2rem;border-radius:10px 10px 0 0;background:linear-gradient(#6d7898,#333d5c);border:1px solid #ffffff55}
+.roulette-podium-place.first .roulette-podium-block{height:95px;background:linear-gradient(#ffe28a,#b7792e);color:#20182a;box-shadow:0 0 25px #ffd76a77}
+.roulette-podium-place.second .roulette-podium-block{height:70px}
+.roulette-podium-place.third .roulette-podium-block{height:52px}
+.roulette-podium-place.first{order:2}
+.roulette-podium-place.second{order:1}
+.roulette-podium-place.third{order:3}
+@media(max-width:520px){
+.roulette-winner-overlay{padding:.4rem}
+.roulette-winner-card{padding:.7rem .3rem}
+.roulette-podium{gap:.3rem}
+.roulette-podium-place{font-size:.6rem}
+}
+.roulette-layout{display:block;margin:2rem auto 0;max-width:850px}
+.roulette-panel{background:linear-gradient(145deg,#252c4b,#171d35);border:1px solid #ffffff24;border-radius:24px;padding:clamp(1rem,3vw,2rem);box-shadow:0 22px 70px #0007,inset 0 1px #ffffff0c;animation:rouletteRise .7s both}
+.roulette-panel h3{font:800 .9rem Consolas,monospace;letter-spacing:.1em;margin:1.2rem 0 .7rem;color:#44d6ff}
+.roulette-form{display:flex;gap:.6rem;flex-wrap:wrap;margin:.8rem 0}
+.roulette-input{min-width:0;flex:1;background:#10162d;color:white;border:1px solid #505779;border-radius:10px;padding:.9rem}
+.roulette-input:focus{outline:none;border-color:#44d6ff;box-shadow:0 0 0 3px #44d6ff20}
+.roulette-btn{border:0;border-radius:10px;padding:.85rem 1rem;background:linear-gradient(135deg,#ff7197,#f45b83);color:#17182b;font-weight:900;cursor:pointer;transition:transform .2s,filter .2s,box-shadow .2s;box-shadow:0 5px 18px #f45b8330}
+.roulette-btn:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.08)}
+.roulette-btn.secondary{background:linear-gradient(135deg,#65e4ff,#44d6ff);box-shadow:0 5px 18px #44d6ff26}
+.roulette-btn:disabled{opacity:.45;cursor:not-allowed}
+.roulette-status{color:#b9bdd0;font:.78rem/1.6 Consolas,monospace;min-height:1.5rem;margin:.7rem 0}
+.roulette-wheel-wrap{display:grid;place-items:center;padding:2rem 0 1.2rem;position:relative}
+.roulette-wheel{width:min(76vw,500px);aspect-ratio:1;border-radius:50%;border:10px solid #f5f2eb;box-shadow:0 0 0 5px #f45b83,0 0 55px #f45b8377,0 0 100px #44d6ff22;position:relative;transition:transform 4.4s cubic-bezier(.08,.78,.12,1);isolation:isolate;overflow:hidden}
+.roulette-wheel:before{content:"";position:absolute;z-index:5;left:50%;top:50%;width:0;height:0;transform:translate(-50%,-50%);border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:42px solid #fff;filter:drop-shadow(0 0 9px #44d6ff);pointer-events:none}
+.roulette-wheel:after{content:"";position:absolute;z-index:6;left:50%;top:50%;width:72px;height:72px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#425681,#10162d 72%);border:4px solid #fff;box-shadow:0 0 0 4px #f45b83,0 0 25px #44d6ff99;pointer-events:none}
+.roulette-wheel-label{position:absolute;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;max-width:31%;min-width:0;transform:translate(-50%,-50%);text-align:center;color:#fff;text-shadow:0 2px 5px #000;font:900 clamp(.55rem,1.5vw,.8rem) Consolas,monospace;line-height:1.1;pointer-events:none;overflow:hidden}
+.roulette-wheel-label.active{color:#fff;text-shadow:0 0 10px #fff,0 0 18px #44d6ff}
+.roulette-wheel-label .hearts{color:#ff789b;letter-spacing:1px;font-size:clamp(.58rem,1.5vw,.85rem);text-shadow:0 0 9px #f45b83}
+.roulette-wheel-label .wheel-name{max-width:100%;overflow-wrap:anywhere}
+.roulette-players{display:none}
+.roulette-game-word{font:900 clamp(2rem,6vw,3.8rem)/1.3 Consolas,monospace;letter-spacing:.16em;text-align:center;color:#fff;margin:1.4rem 0 .6rem;text-shadow:0 0 24px #44d6ff77;animation:wordGlow 2.8s ease-in-out infinite}
+.roulette-clue{text-align:center;color:#c4cbe0;line-height:1.6;max-width:560px;margin:0 auto 1rem}
+.roulette-stats{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;color:#44d6ff;font:700 .75rem Consolas,monospace}
+.roulette-stats span{padding:.55rem .8rem;border-radius:99px;background:#10162d;border:1px solid #ffffff18}
+.roulette-answer-form{max-width:560px;width:100%;margin:1rem auto}
+.roulette-answer-form .roulette-input{text-align:center;font:800 1rem Consolas,monospace;letter-spacing:.12em}
+.roulette-live-answer{min-height:1.4rem;color:#ffcfdf;text-align:center;font:800 .9rem Consolas,monospace;letter-spacing:.15em;margin:.5rem 0}
+.roulette-rank{display:grid;grid-template-columns:2rem 1fr auto;gap:.7rem;align-items:center;padding:.55rem 0;border-bottom:1px solid #ffffff20;color:#fff;font:.78rem Consolas,monospace}
+.roulette-rank small{display:block;color:#8e9ab9;margin-top:.2rem}
+@media(max-width:600px){
+.roulette-wheel{width:min(82vw,390px);border-width:7px}
+.roulette-wheel-label{font-size:.52rem}
+.roulette-wheel-label .hearts{font-size:.55rem}
+.roulette-wheel:after{width:56px;height:56px}
+.roulette-wheel:before{border-left-width:11px;border-right-width:11px;border-bottom-width:32px}
+}
+@media(prefers-reduced-motion:reduce){
+.roulette-panel,.roulette-game-word{animation:none}
+.roulette-btn,.roulette-wheel{transition:none}
+}
+.roulette-success-event{position:absolute;z-index:85;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;background:radial-gradient(circle,#173d48f2,#081326f5 72%);pointer-events:none;text-align:center;color:#fff;font:900 1rem Consolas,monospace;letter-spacing:.12em}
+.roulette-success-event[hidden]{display:none!important}
+.roulette-success-burst{font-size:clamp(4rem,15vw,7rem);line-height:1;filter:drop-shadow(0 0 24px #55ffbb);animation:successBurst .75s cubic-bezier(.16,1.4,.3,1) both}
+.roulette-success-event strong{color:#8dffca;font-size:clamp(1.2rem,4vw,2rem);text-shadow:0 0 22px #38ffc4}
+.roulette-panel.is-tense .roulette-challenge-box{animation:tensePulse 1.1s ease-in-out infinite alternate;border-color:#ff7197;box-shadow:0 0 30px #f45b8366}
+.roulette-audio-toggle{display:block;margin:.5rem auto 0;border:1px solid #7180a8;border-radius:99px;padding:.55rem .85rem;background:#10162d;color:#dce8ff;font:700 .68rem Consolas,monospace;letter-spacing:.1em}
+@keyframes wheelPulse{from{box-shadow:0 0 0 5px #f45b83,0 0 30px #f45b8377,0 0 55px #44d6ff22}to{box-shadow:0 0 0 8px #44d6ff,0 0 65px #f45b83,0 0 110px #44d6ff77}}
+@keyframes heartBreak{0%{transform:scale(0) rotate(-25deg);opacity:0}28%{transform:scale(1.3) rotate(12deg);opacity:1}45%{transform:scale(1) rotate(-8deg)}58%{transform:scale(1.08) rotate(7deg)}72%{transform:scale(.92) rotate(-5deg);filter:drop-shadow(0 0 30px #ff426b)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes winnerPop{from{opacity:0;transform:translateY(45px) scale(.7)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes confettiFloat{to{transform:translateY(-12px) rotate(4deg);filter:drop-shadow(0 0 15px #ffe28a)}}
+@keyframes trophyBounce{to{transform:translateY(-10px) rotate(5deg)}}
+@keyframes rouletteRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes wordGlow{0%,100%{opacity:.88;text-shadow:0 0 12px #44d6ff44}50%{opacity:1;text-shadow:0 0 28px #44d6ff99,0 0 55px #f45b8344}}
+@keyframes successBurst{0%{transform:scale(.1) rotate(-35deg);opacity:0}65%{transform:scale(1.25) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+@keyframes tensePulse{to{box-shadow:0 0 42px #f45b8399,0 0 75px #44d6ff22;transform:scale(1.008)}}
 </style>
 </head>
 <body>
@@ -672,6 +776,22 @@
         <p class="feature-kicker">04 / GAME LIBRARY</p>
         <h2 class="feature-title" id="game-title">GAME <em>SPOTLIGHT.</em></h2>
         <p class="feature-lead">Every generation has games that stay with us. Explore a few classics that helped shape the worlds, characters and sounds of gaming.</p>
+<div class="roulette-section" id="word-roulette" aria-labelledby="roulette-title"><div class="roulette-inner">
+<p class="roulette-kicker">MULTIPLAYER ARCADE · WORD CHALLENGE</p><h2 class="roulette-title" id="roulette-title">WORD <span>ROULETTE</span></h2>
+<p class="roulette-lead">One wheel. One player at a time. Complete the English word before the clock hits zero. Build your streak, survive with three lives and take the top spot.</p>
+<div class="roulette-layout"><div class="roulette-panel">
+<div class="roulette-winner-overlay" id="roulette-winner-overlay" hidden><div class="roulette-winner-card"><div class="roulette-winner-confetti">✦　✧　✦　✧　✦</div><div class="roulette-winner-trophy">🏆</div><p class="roulette-winner-kicker">ARCADE CHAMPION</p><h2 id="roulette-winner-name">WINNER!</h2><p class="roulette-winner-subtitle">YOU SURVIVED THE WORD ROULETTE</p><div class="roulette-podium" id="roulette-podium"></div></div></div>
+<div class="roulette-success-event" id="roulette-success-event" hidden><div class="roulette-success-burst">⚡</div><strong id="roulette-success-message">PERFECT!</strong><span>WORD COMPLETED · POINTS EARNED</span></div><div class="roulette-life-event" id="roulette-life-event" hidden><div class="roulette-broken-heart">💔</div><strong id="roulette-life-message">LIFE LOST!</strong></div>
+<div class="roulette-form"><input class="roulette-input" id="roulette-nickname" maxlength="18" placeholder="YOUR ARCADE NICKNAME"><button class="roulette-btn secondary" id="roulette-save-profile">SAVE PROFILE</button></div><p class="roulette-status" id="roulette-profile-status">Choose a nickname to enter the arcade.</p>
+<div class="roulette-form"><button class="roulette-btn" id="roulette-create">CREATE ROOM</button><input class="roulette-input" id="roulette-code" maxlength="6" placeholder="ROOM CODE"><button class="roulette-btn secondary" id="roulette-join">JOIN</button></div><p class="roulette-status" id="roulette-status" aria-live="polite">Connecting…</p>
+<div class="roulette-wheel-wrap"><div class="roulette-wheel" id="roulette-wheel"></div><div class="roulette-center-arrow" aria-hidden="true">▲</div></div>
+<div class="roulette-stats"><span id="roulette-turn">WAITING FOR PLAYERS</span><span id="roulette-timer">--:--</span><span id="roulette-lives">♥ ♥ ♥</span></div>
+<div class="roulette-challenge-box" aria-live="polite"><p class="roulette-challenge-label">WORD TO COMPLETE</p><div class="roulette-game-word" id="roulette-word">_ _ _ _ _</div><p class="roulette-clue" id="roulette-clue">Join a room. The wheel will choose the next player.</p><p class="roulette-word-hint" id="roulette-word-hint">The selected player’s word appears here for everyone.</p></div><div class="roulette-live-answer" id="roulette-live-answer"></div>
+<div class="roulette-form roulette-answer-form"><input class="roulette-input" id="roulette-answer" maxlength="20" placeholder="TYPE THE WORD" disabled><button class="roulette-btn secondary" id="roulette-submit" disabled>SUBMIT</button></div>
+<p class="roulette-status" id="roulette-feedback" aria-live="polite"></p><div style="text-align:center"><button class="roulette-btn" id="roulette-spin" disabled>START THE WHEEL</button><button class="roulette-audio-toggle" id="roulette-audio" type="button">♫ SOUND: ON</button></div>
+<h3>ARCADE LEADERBOARD</h3><div id="roulette-leaderboard"><p class="roulette-status">Scores appear here after you play.</p></div>
+</div></div></div></div>
+
         <div class="game-spotlight-grid">
           <article class="game-spotlight-card game-spotlight-main">
             <div class="game-spotlight-top"><span>FEATURED CLASSIC</span><span>16-BIT ERA</span></div>
@@ -1644,5 +1764,204 @@
 </script>
 
 
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+
+(()=>{const URL='https://mzfravlmrmlrlsmixszk.supabase.co',KEY='sb_publishable_p172H18pZGCkDp1oIBG5Yw_QjUSwbPj',$=id=>document.getElementById(id);
+if(!window.supabase||!$('roulette-create'))return;const db=window.supabase.createClient(URL,KEY);
+const words=[['PIXEL','A tiny square that makes up a digital image.'],['MOUSE','A device used to point and click on a computer.'],['LEVEL','A stage or section in a video game.'],['ARCADE','A place full of video game machines.'],['JOYSTICK','A controller with a stick used to move in games.'],['CONSOLE','A machine designed mainly for playing video games.'],['CARTRIDGE','A removable game format used by classic consoles.'],['MULTIPLAYER','A game mode where several people play together.'],['CHECKPOINT','A saved position you can return to after failing.'],['PLAYSTATION','A famous family of video game consoles.'],['ACHIEVEMENT','A reward for completing a special challenge.'],['LEADERBOARD','A ranking that compares player scores.'],['COMPETITIVE','Describes a game focused on beating other players.'],['PROCEDURAL','Generated automatically by rules or algorithms.']];
+let user=null,room=null,players=[],channel=null,timer=null,seconds=0,current=null,spinning=false,challengeKey=null,spinKey=null,liveText='',answering=false,nextSpinTimer=null,lastQueuedKey=null,audioCtx=null,musicTimer=null,soundOn=true,refreshBusy=false,refreshPending=false,wheelAngle=0,turnSnapshot=null;
+const say=(id,msg)=>$(id).textContent=msg,esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function setWheel(){const wheel=$('roulette-wheel'),n=players.length;if(!n){wheel.style.background='conic-gradient(#222b50,#10162d)';wheel.innerHTML='';return;}const colors=['#f45b83','#26375e','#44aeca','#563b83','#a34169','#314c78'];wheel.style.background='conic-gradient('+players.map((p,i)=>colors[i%colors.length]+' '+(i*360/n)+'deg '+((i+1)*360/n)+'deg').join(',')+')';wheel.innerHTML=players.map((p,i)=>{const angle=(i+.5)*2*Math.PI/n-Math.PI/2,r=.34,x=50+Math.cos(angle)*r*100,y=50+Math.sin(angle)*r*100;return '<div class="roulette-wheel-label '+(p.user_id===room?.current_player_id?'active':'')+'" style="left:'+x+'%;top:'+y+'%"><span class="wheel-name">'+esc(p.player_profiles?.nickname||'PLAYER')+'</span><span class="hearts">'+('♥ '.repeat(Math.max(0,p.lives))||'—')+'</span></div>';}).join('');}
+async function init(){let r=await db.auth.getSession();if(!r.data.session){r=await db.auth.signInAnonymously();if(r.error){say('roulette-status','ENABLE ANONYMOUS SIGN-INS IN SUPABASE AUTH SETTINGS.');return;}user=r.data.user;}else user=r.data.session.user;const p=await db.from('player_profiles').select('*').eq('user_id',user.id).maybeSingle();if(p.data){$('roulette-nickname').value=p.data.nickname;say('roulette-profile-status','PROFILE READY · '+p.data.nickname);}say('roulette-status','CONNECTED · CREATE A ROOM OR ENTER A ROOM CODE.');}
+async function profile(){const nickname=$('roulette-nickname').value.trim();if(nickname.length<2){say('roulette-profile-status','USE AT LEAST 2 CHARACTERS.');return false;}const r=await db.from('player_profiles').upsert({user_id:user.id,nickname});say('roulette-profile-status',r.error?r.error.message:'PROFILE SAVED · '+nickname);return !r.error;}
+async function enter(found){room=found;let r=await db.from('room_players').upsert({room_id:room.id,user_id:user.id,is_active:true},{onConflict:'room_id,user_id'});if(r.error){say('roulette-status',r.error.message);return;}$('roulette-code').value=room.room_code;say('roulette-status','ROOM '+room.room_code+' · SHARE THIS CODE WITH FRIENDS');await refresh();if(channel)db.removeChannel(channel);channel=db.channel('room-'+room.id).on('postgres_changes',{event:'*',schema:'public',table:'room_players',filter:'room_id=eq.'+room.id},refresh).on('postgres_changes',{event:'*',schema:'public',table:'game_rooms',filter:'id=eq.'+room.id},async e=>{room=e.new;await refresh();}).on('broadcast',{event:'typing'},({payload})=>{if(payload.user_id!==user.id&&room?.current_player_id===payload.user_id){liveText=payload.text||'';$('roulette-live-answer').textContent=liveText?liveText.replace(/./g,'▰ '):'';}}).on('broadcast',{event:'life_lost'},({payload})=>{if(payload.user_id!==user.id)showLifeLost(payload.nickname,payload.lives);}).subscribe();}
+async function refresh(){
+if(!room)return;
+if(refreshBusy){refreshPending=true;return;}
+refreshBusy=true;
+try{
+  const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();
+  if(state.error)throw state.error;
+  if(!state.data)return;
+  room=state.data;
+  const result=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});
+  if(result.error)throw result.error;
+  players=result.data||[];
+  setWheel();
+  $('roulette-leaderboard').innerHTML=players.map((p,i)=>'<div class="roulette-rank"><b>'+String(i+1).padStart(2,'0')+'</b><span>'+esc(p.player_profiles?.nickname||'PLAYER')+' <small>STREAK x'+p.streak+'</small></span><strong>'+p.score+'</strong></div>').join('');
+
+  const alive=players.filter(p=>p.lives>0);
+  if(room.host_id===user.id&&players.length>=2&&alive.length<=1&&(room.status==='playing'||room.status==='waiting')){
+    const result=await db.from('game_rooms').update({status:'finished',current_player_id:alive[0]?.user_id||null,turn_deadline:null})
+      .eq('id',room.id).eq('status',room.status).select().maybeSingle();
+    if(result.error)throw result.error;
+    if(result.data)room=result.data;
+  }else if(room.host_id===user.id&&room.status==='spinning'&&room.turn_deadline&&Date.now()>=new Date(room.turn_deadline).getTime()){
+    const deadline=new Date(Date.now()+20000).toISOString();
+    const result=await db.from('game_rooms').update({status:'playing',turn_deadline:deadline})
+      .eq('id',room.id).eq('status','spinning').eq('current_player_id',room.current_player_id).eq('turn_deadline',room.turn_deadline).select().maybeSingle();
+    if(result.error)throw result.error;
+    if(result.data)room=result.data;
+  }
+  if(room.host_id===user.id&&room.status==='playing'&&room.current_player_id&&room.turn_deadline){
+    const active=players.find(p=>p.user_id===room.current_player_id);
+    const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;
+    if(active&&turnSnapshot?.key===key&&(active.score!==turnSnapshot.score||active.streak!==turnSnapshot.streak||active.lives!==turnSnapshot.lives)){
+      const result=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
+        .eq('id',room.id).eq('status','playing').eq('current_player_id',room.current_player_id).eq('turn_deadline',room.turn_deadline).select().maybeSingle();
+      if(result.error)throw result.error;
+      if(result.data)room=result.data;
+    }
+  }
+  if(room.host_id===user.id&&room.status==='playing'&&room.turn_deadline&&Date.now()>new Date(room.turn_deadline).getTime()+3500){
+    const expiredPlayer=room.current_player_id;
+    const oldDeadline=room.turn_deadline;
+    const result=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
+      .eq('id',room.id).eq('status','playing').eq('current_player_id',expiredPlayer).eq('turn_deadline',oldDeadline).select().maybeSingle();
+    if(result.error)throw result.error;
+    if(result.data){room=result.data;say('roulette-feedback','TURN EXPIRED · CONTINUING THE GAME');}
+  }
+
+  $('roulette-spin').disabled=room.host_id!==user.id||room.status==='finished'||!players.some(p=>p.lives>0)||room.status==='spinning'||room.status==='playing';
+  if(room.status==='waiting'&&room.host_id===user.id&&players.filter(p=>p.lives>0).length>=2)queueAutoSpin();
+  if(room.status==='spinning'){
+    const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;
+    if(spinKey!==key){
+      spinKey=key;
+      const idx=players.findIndex(p=>p.user_id===room.current_player_id),n=Math.max(1,players.length);
+      const target=360-(idx+.5)*360/n,currentAngle=((wheelAngle%360)+360)%360,delta=((target-currentAngle+360)%360)+1800;
+      wheelAngle+=delta;
+      $('roulette-wheel').classList.add('is-spinning');
+      $('roulette-wheel').style.transform='rotate('+wheelAngle+'deg)';
+      setTimeout(()=>$('roulette-wheel').classList.remove('is-spinning'),5100);
+    }
+  }
+  if(room.status==='finished'){
+    const champion=players.find(p=>p.user_id===room.current_player_id)||players.find(p=>p.lives>0);
+    if(champion)showWinner(champion);
+    else say('roulette-turn','GAME OVER');
+  }
+  if(room.status==='playing'&&room.current_player_id){startChallenge();}
+  else{
+    current=null;challengeKey=null;clearInterval(timer);
+    say('roulette-turn',room.status.toUpperCase());
+    $('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
+    if(room.status!=='spinning')$('roulette-live-answer').textContent='';
+  }
+}catch(error){
+  console.error('PRESS START room refresh:',error);
+  say('roulette-status','CONNECTION ISSUE · RECONNECTING…');
+}finally{
+  refreshBusy=false;
+  if(refreshPending){refreshPending=false;refresh();}
+}
+}
+function startChallenge(){const p=players.find(x=>x.user_id===room.current_player_id);if(!p)return;const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;if(challengeKey===key)return;challengeKey=key;turnSnapshot={key,score:p.score,streak:p.streak,lives:p.lives};const seed=String(room.current_player_id)+String(room.turn_deadline||'');let hash=0;for(let i=0;i<seed.length;i++)hash=(hash*31+seed.charCodeAt(i))>>>0;const pool=words.filter(w=>w[0].length>=4+Math.min(4,Math.floor(p.streak/2))*2);current=pool[hash%pool.length];liveText='';$('roulette-live-answer').textContent='';const isTurn=p.user_id===user.id;
+$('roulette-word').textContent=current[0].split('').map((c,i)=>i===0||i===current[0].length-1?c:'_').join(' ');say('roulette-clue',(isTurn?'YOUR TURN · ':'NOW PLAYING · ')+(p.player_profiles?.nickname||'PLAYER')+' — '+words.find(w=>w[0]===current[0])[1]);say('roulette-word-hint',(p.player_profiles?.nickname||'PLAYER')+' IS COMPLETING THE WORD · WATCH THE PROGRESS');say('roulette-turn',(isTurn?'YOUR TURN':'PLAYER: '+(p.player_profiles?.nickname||'PLAYER'))+' · STREAK x'+p.streak);$('roulette-lives').textContent='♥ '.repeat(p.lives);$('roulette-answer').disabled=!isTurn;$('roulette-submit').disabled=!isTurn;$('roulette-answer').value='';if(isTurn)$('roulette-answer').focus();
+const deadline=new Date(room.turn_deadline).getTime();clearInterval(timer);const tick=()=>{seconds=Math.max(0,Math.ceil((deadline-Date.now())/1000));say('roulette-timer','00:'+String(seconds).padStart(2,'0'));document.querySelector('.roulette-panel')?.classList.toggle('is-tense',seconds<=7&&seconds>0);if(seconds===0&&isTurn&&!answering)miss('TIME UP!');};tick();timer=setInterval(tick,250);}
+async function miss(reason){
+if(!current||answering||!room||room.status!=='playing'||room.current_player_id!==user.id)return;
+answering=true;
+const answer=current[0],p=players.find(x=>x.user_id===user.id),remaining=Math.max(0,(p?.lives??1)-1),roomId=room.id;
+clearInterval(timer);say('roulette-feedback',reason+' · WORD: '+answer);
+$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
+try{
+  if(!p)throw new Error('PLAYER DATA NOT FOUND');
+  const saved=await db.from('room_players').update({lives:remaining,streak:0}).eq('room_id',roomId).eq('user_id',user.id).select('user_id').maybeSingle();
+  if(saved.error)throw saved.error;
+  if(!saved.data)throw new Error('COULD NOT SAVE LIFE LOSS');
+  showLifeLost(p.player_profiles?.nickname||'PLAYER',remaining);
+  if(channel)channel.send({type:'broadcast',event:'life_lost',payload:{user_id:user.id,nickname:p.player_profiles?.nickname||'PLAYER',lives:remaining}});
+  current=null;
+  await refresh();
+}catch(error){
+  console.error('PRESS START failed turn:',error);
+  say('roulette-feedback',error.message||'COULD NOT FINISH THIS TURN');
+  await refresh();
+}finally{answering=false;}
+}
+function audioReady(){if(!soundOn)return null;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;if(!audioCtx)audioCtx=new AC();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx;}catch(e){return null;}}
+function tone(freq,duration,gain=.025,type='sine',delay=0){const c=audioReady();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,c.currentTime+delay);g.gain.exponentialRampToValueAtTime(gain,c.currentTime+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+delay+duration);o.connect(g);g.connect(c.destination);o.start(c.currentTime+delay);o.stop(c.currentTime+delay+duration+.06);}
+function startMusic(){if(!soundOn||musicTimer)return;audioReady();const notes=[110,146.83,164.81,130.81];let i=0;const beat=()=>{if(!soundOn)return;tone(notes[i%notes.length],1.05,.012,'triangle');tone(notes[i%notes.length]*2,.7,.006,'sine',.08);i++;};beat();musicTimer=setInterval(beat,900);}
+function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null;}}
+function playSpinSound(){tone(190,.3,.035,'sawtooth');tone(260,.5,.018,'triangle',.22);tone(330,.65,.018,'triangle',.48);}
+function playJingle(){[523.25,659.25,783.99,1046.5].forEach((n,i)=>tone(n,.32,.045,'triangle',i*.11));}
+function showSuccess(nickname,points){const box=$('roulette-success-event');$('roulette-success-message').textContent=nickname+' · +'+points+' POINTS!';box.hidden=false;const burst=box.querySelector('.roulette-success-burst');burst.style.animation='none';void burst.offsetWidth;burst.style.animation='successBurst .75s cubic-bezier(.16,1.4,.3,1) both';setTimeout(()=>{box.hidden=true;},1700);}
+function showLifeLost(nickname,lives){const box=$('roulette-life-event');$('roulette-life-message').textContent=(nickname||'PLAYER')+' LOST A LIFE · '+lives+' LEFT';box.hidden=false;const heart=$('roulette-life-event').querySelector('.roulette-broken-heart');heart.style.animation='none';void heart.offsetWidth;heart.style.animation='heartBreak 1.35s cubic-bezier(.2,.8,.2,1) both';setTimeout(()=>{box.hidden=true;},1900);}
+function showWinner(champion){const overlay=$('roulette-winner-overlay');if(!overlay.hidden)return;$('roulette-winner-name').textContent=champion.player_profiles?.nickname||'PLAYER';const top=players.slice(0,3);$('roulette-podium').innerHTML=top.map((p,i)=>{const cls=i===0?'first':i===1?'second':'third';return '<div class="roulette-podium-place '+cls+'"><b>'+esc(p.player_profiles?.nickname||'PLAYER')+' · '+p.score+'</b><div class="roulette-podium-block">'+(i===0?'🏆':i===1?'2ND':'3RD')+'</div></div>';}).join('');overlay.hidden=false;$('roulette-spin').disabled=true;}
+async function submit(){
+if(!current||answering||!room||room.status!=='playing'||room.current_player_id!==user.id)return;
+const guess=$('roulette-answer').value.trim().toUpperCase(),p=players.find(x=>x.user_id===user.id);
+if(guess!==current[0]){await miss('WRONG ANSWER! STREAK LOST.');return;}
+answering=true;clearInterval(timer);document.querySelector('.roulette-panel')?.classList.remove('is-tense');
+const points=100+(p?.streak||0)*25,roomId=room.id;
+$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
+try{
+  if(!p)throw new Error('PLAYER DATA NOT FOUND');
+  const saved=await db.from('room_players').update({score:p.score+points,streak:p.streak+1}).eq('room_id',roomId).eq('user_id',user.id).select('user_id').maybeSingle();
+  if(saved.error)throw saved.error;
+  if(!saved.data)throw new Error('COULD NOT SAVE SCORE');
+  showSuccess(p.player_profiles?.nickname||'PLAYER',points);playJingle();
+  current=null;
+  await refresh();
+}catch(error){
+  console.error('PRESS START failed answer:',error);
+  say('roulette-feedback',error.message||'COULD NOT SAVE THE ANSWER');
+  await refresh();
+}finally{answering=false;}
+}
+$('roulette-audio').onclick=()=>{soundOn=!soundOn;$('roulette-audio').textContent=soundOn?'♫ SOUND: ON':'♫ SOUND: OFF';if(soundOn)startMusic();else stopMusic();};
+$('roulette-save-profile').onclick=async()=>{if(user)await profile();};
+$('roulette-create').onclick=async()=>{startMusic();if(!user||!await profile())return;const code=Math.random().toString(36).slice(2,8).toUpperCase(),r=await db.from('game_rooms').insert({room_code:code,host_id:user.id}).select().single();if(r.error){say('roulette-status',r.error.message);return;}await enter(r.data);};
+$('roulette-join').onclick=async()=>{startMusic();if(!user||!await profile())return;const r=await db.from('game_rooms').select('*').eq('room_code',$('roulette-code').value.trim().toUpperCase()).maybeSingle();if(r.error||!r.data){say('roulette-status','ROOM NOT FOUND. CHECK THE CODE.');return;}await enter(r.data);};
+async function spinNext(){
+if(!room||room.host_id!==user.id||spinning||room.status==='finished')return;
+spinning=true;$('roulette-spin').disabled=true;
+try{
+  const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();
+  if(state.error)throw state.error;
+  if(!state.data)return;
+  room=state.data;
+  if(room.status!=='waiting')return;
+  const roster=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});
+  if(roster.error)throw roster.error;
+  players=roster.data||[];
+  const alive=players.filter(p=>p.lives>0);
+  if(alive.length<2){await refresh();return;}
+  const selected=alive[Math.floor(Math.random()*alive.length)],spinDeadline=new Date(Date.now()+5000).toISOString();
+  const result=await db.from('game_rooms').update({status:'spinning',current_player_id:selected.user_id,turn_deadline:spinDeadline})
+    .eq('id',room.id).eq('status','waiting').select().maybeSingle();
+  if(result.error)throw result.error;
+  if(!result.data){lastQueuedKey=null;await refresh();return;}
+  room=result.data;playSpinSound();await refresh();
+}catch(error){
+  console.error('PRESS START spin failed:',error);
+  say('roulette-status','SPIN COULD NOT START · RETRYING…');
+  lastQueuedKey=null;
+}finally{
+  spinning=false;
+}
+}
+function queueAutoSpin(){
+const key=room.id+'|'+players.map(p=>p.user_id+':'+p.lives+':'+p.score+':'+p.streak).join(',')+'|'+room.status+'|'+room.current_player_id;
+if(lastQueuedKey===key)return;
+lastQueuedKey=key;clearTimeout(nextSpinTimer);
+nextSpinTimer=setTimeout(async()=>{
+  if(room&&room.status==='waiting'){
+    await spinNext();
+    if(room?.status==='waiting'&&lastQueuedKey===key)lastQueuedKey=null;
+  }
+},1400);
+}
+$('roulette-spin').onclick=()=>{if(!room)return;startMusic();lastQueuedKey=null;clearTimeout(nextSpinTimer);spinNext();};
+$('roulette-answer').addEventListener('input',e=>{if(!room||room.current_player_id!==user.id||!channel)return;channel.send({type:'broadcast',event:'typing',payload:{user_id:user.id,text:e.target.value.toUpperCase().slice(0,20)}});});
+$('roulette-submit').onclick=submit;$('roulette-answer').addEventListener('keydown',e=>{if(e.key==='Enter')submit();});setInterval(()=>{if(room)refresh();},900);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&room)refresh();});
+init();
+})();
+
+</script>
 </body>
 </html>
