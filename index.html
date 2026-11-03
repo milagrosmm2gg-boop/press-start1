@@ -462,6 +462,40 @@
 @keyframes tensePulse{to{box-shadow:0 0 42px #f45b8399,0 0 75px #44d6ff22;transform:scale(1.008)}}
 .roulette-audio-toggle{display:block;margin:.5rem auto 0;border:1px solid #7180a8;border-radius:99px;padding:.55rem .85rem;background:#10162d;color:#dce8ff;font:700 .68rem Consolas,monospace;letter-spacing:.1em}
 
+
+    .game-spotlight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+    .game-spotlight-card{position:relative;display:flex;flex-direction:column;min-height:275px;padding:clamp(1.3rem,3vw,2rem);border:1px solid var(--line);background:var(--surface);overflow:hidden}
+    .game-spotlight-main{grid-row:span 2;min-height:570px;justify-content:center;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 12%,var(--surface)),var(--surface) 65%)}
+    .game-spotlight-top{display:flex;justify-content:space-between;gap:1rem;color:var(--accent);font:700 .62rem/1.4 Consolas,monospace;letter-spacing:.12em}
+    .game-spotlight-year{margin:3.4rem 0 .5rem;color:var(--muted);font:700 .65rem Consolas,monospace;letter-spacing:.12em}
+    .game-spotlight-card h3{margin:.5rem 0 1rem;font:900 clamp(1.7rem,3.2vw,3rem)/.95 var(--heading-font);letter-spacing:-.06em}
+    .game-spotlight-main h3{font-size:clamp(2.8rem,5vw,5.2rem)}
+    .game-spotlight-card h3 em{color:var(--accent);font-style:normal}
+    .game-spotlight-card p:not(.game-spotlight-year){max-width:48ch;margin:0;color:var(--muted);font-size:.9rem;line-height:1.75}
+    .game-spotlight-tags{display:flex;flex-wrap:wrap;gap:.45rem;margin:1.5rem 0}
+    .game-spotlight-tags span,.game-spotlight-platform{display:inline-flex;align-self:flex-start;padding:.45rem .6rem;border:1px solid var(--line);color:var(--muted);font:700 .58rem Consolas,monospace;letter-spacing:.1em}
+    .game-spotlight-link{display:inline-flex;align-self:flex-start;margin-top:1.5rem;padding-bottom:.45rem;border-bottom:1px solid var(--accent);color:var(--accent);font:700 .65rem Consolas,monospace;letter-spacing:.1em;text-decoration:none}
+    .game-spotlight-symbol{margin:2.3rem 0 1.3rem;color:var(--accent);font:900 3rem/1 Arial,sans-serif}
+    .game-spotlight-platform{margin-top:auto}
+    .trivia-feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);gap:clamp(1.5rem,4vw,4rem);align-items:center;padding:clamp(1.25rem,3vw,2.4rem);border:1px solid var(--line);background:var(--surface)}
+    .trivia-label{margin:0 0 1rem;color:var(--accent);font:700 .65rem Consolas,monospace;letter-spacing:.16em}
+    .trivia-copy h3{max-width:16ch;margin:0 0 1.25rem;font:900 clamp(1.8rem,3.3vw,3.4rem)/.98 var(--heading-font);letter-spacing:-.065em}
+    .trivia-copy h3 em{color:var(--accent);font-style:normal}
+    .trivia-copy>p:not(.trivia-label){max-width:56ch;color:var(--muted);font-size:.9rem;line-height:1.8}
+    .trivia-copy strong{color:var(--ink)}
+    .trivia-copy .trivia-note{padding-left:1rem;border-left:2px solid var(--accent);font-size:.82rem}
+    .trivia-source-links{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+    .trivia-source-links a{color:var(--accent);font:700 .62rem Consolas,monospace;letter-spacing:.08em;text-decoration:none}
+    .trivia-source-links a:hover{text-decoration:underline;text-underline-offset:.3em}
+    .trivia-media{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;align-items:start}
+    .trivia-photo{min-width:0;margin:0;padding:.55rem;border:1px solid var(--line);background:var(--surface-raised)}
+    .trivia-photo-michael{grid-column:1/-1}
+    .trivia-photo img{display:block;width:100%;height:190px;object-fit:cover}
+    .trivia-photo-michael img{height:270px;object-position:center 43%}
+    .trivia-photo figcaption{padding:.55rem .25rem .2rem;color:var(--muted);font-size:.65rem;line-height:1.5}
+    .trivia-photo figcaption a{color:var(--accent);text-decoration:none}
+    @media(max-width:850px){.trivia-feature{grid-template-columns:1fr}.trivia-media{max-width:620px}.game-spotlight-main{min-height:490px}}
+    @media(max-width:620px){.game-spotlight-grid{grid-template-columns:1fr}.game-spotlight-main{grid-row:auto;min-height:420px}.trivia-media{grid-template-columns:1fr 1fr}.trivia-photo-michael{grid-column:1/-1}.trivia-photo img{height:155px}.trivia-photo-michael img{height:220px}}
 </style>
 </head>
 <body>
@@ -491,8 +525,6 @@
             <button class="menu-item" type="button" data-menu="6" data-target="what-if" aria-pressed="false"><span class="menu-number">07</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg><span class="menu-label">WHAT IF...?</span><span class="menu-arrow">↗</span></button>
             <button class="menu-item" type="button" data-menu="7" data-target="console-battle" aria-pressed="false"><span class="menu-number">08</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h10c2 0 3 1 3.7 3.2l1 3.1c.7 2.2-1.6 3.8-3.4 2.3l-2.2-1.8H7.9l-2.2 1.8c-1.8 1.5-4.1-.1-3.4-2.3l1-3.1C4 9 5 8 7 8Z"/><path d="M7 10.5v4m-2-2h4m7-1h.01m2 2h.01"/></svg><span class="menu-label">CONSOLE BATTLE</span><span class="menu-arrow">↗</span></button>
             <button class="menu-item" type="button" data-menu="8" data-target="comments" aria-pressed="false"><span class="menu-number">09</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.5-3A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11h8m-8 3h5"/></svg><span class="menu-label">COMMENTS</span><span class="menu-arrow">↗</span></button>
-
-<button class="menu-item" type="button" data-menu="9" data-target="game" aria-pressed="false"><span class="menu-number">10</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg><span class="menu-label">WORD ROULETTE</span><span class="menu-arrow">↗</span></button>
           </nav>
           <p class="menu-status" id="menu-status" aria-live="polite"><span></span> Choose a destination to begin.</p>
         </div>
@@ -692,23 +724,74 @@
       </div>
     </section>
   
-<section class="roulette-section" id="game" aria-labelledby="roulette-title"><div class="roulette-inner">
-<p class="roulette-kicker">10 / MULTIPLAYER ARCADE</p><h2 class="roulette-title" id="roulette-title">WORD <span>ROULETTE</span></h2>
-<p class="roulette-lead">One wheel. One player at a time. Complete the English word before the clock hits zero. Build your streak, survive with three lives and take the top spot.</p>
-<div class="roulette-layout"><div class="roulette-panel">
-<div class="roulette-winner-overlay" id="roulette-winner-overlay" hidden><div class="roulette-winner-card"><div class="roulette-winner-confetti">✦　✧　✦　✧　✦</div><div class="roulette-winner-trophy">🏆</div><p class="roulette-winner-kicker">ARCADE CHAMPION</p><h2 id="roulette-winner-name">WINNER!</h2><p class="roulette-winner-subtitle">YOU SURVIVED THE WORD ROULETTE</p><div class="roulette-podium" id="roulette-podium"></div></div></div>
-<div class="roulette-success-event" id="roulette-success-event" hidden><div class="roulette-success-burst">⚡</div><strong id="roulette-success-message">PERFECT!</strong><span>WORD COMPLETED · POINTS EARNED</span></div><div class="roulette-life-event" id="roulette-life-event" hidden><div class="roulette-broken-heart">💔</div><strong id="roulette-life-message">LIFE LOST!</strong></div>
-<div class="roulette-form"><input class="roulette-input" id="roulette-nickname" maxlength="18" placeholder="YOUR ARCADE NICKNAME"><button class="roulette-btn secondary" id="roulette-save-profile">SAVE PROFILE</button></div><p class="roulette-status" id="roulette-profile-status">Choose a nickname to enter the arcade.</p>
-<div class="roulette-form"><button class="roulette-btn" id="roulette-create">CREATE ROOM</button><input class="roulette-input" id="roulette-code" maxlength="6" placeholder="ROOM CODE"><button class="roulette-btn secondary" id="roulette-join">JOIN</button></div><p class="roulette-status" id="roulette-status" aria-live="polite">Connecting…</p>
-<div class="roulette-wheel-wrap"><div class="roulette-wheel" id="roulette-wheel"></div><div class="roulette-center-arrow" aria-hidden="true">▲</div></div>
-<div class="roulette-stats"><span id="roulette-turn">WAITING FOR PLAYERS</span><span id="roulette-timer">--:--</span><span id="roulette-lives">♥ ♥ ♥</span></div>
-<div class="roulette-challenge-box" aria-live="polite"><p class="roulette-challenge-label">WORD TO COMPLETE</p><div class="roulette-game-word" id="roulette-word">_ _ _ _ _</div><p class="roulette-clue" id="roulette-clue">Join a room. The wheel will choose the next player.</p><p class="roulette-word-hint" id="roulette-word-hint">The selected player’s word appears here for everyone.</p></div><div class="roulette-live-answer" id="roulette-live-answer"></div>
-<div class="roulette-form roulette-answer-form"><input class="roulette-input" id="roulette-answer" maxlength="20" placeholder="TYPE THE WORD" disabled><button class="roulette-btn secondary" id="roulette-submit" disabled>SUBMIT</button></div>
-<p class="roulette-status" id="roulette-feedback" aria-live="polite"></p><div style="text-align:center"><button class="roulette-btn" id="roulette-spin" disabled>START THE WHEEL</button><button class="roulette-audio-toggle" id="roulette-audio" type="button">♫ SOUND: ON</button></div>
-<h3>ARCADE LEADERBOARD</h3><div id="roulette-leaderboard"><p class="roulette-status">Scores appear here after you play.</p></div>
-</div></div></div></section></div></section>
+<section class="feature-section" id="game" aria-labelledby="game-title">
+      <div class="feature-inner">
+        <header class="feature-header"><a class="feature-brand" href="#welcome"><b>P</b> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU ↗</a></header>
+        <p class="feature-kicker">04 / GAME LIBRARY</p>
+        <h2 class="feature-title" id="game-title">GAME <em>SPOTLIGHT.</em></h2>
+        <p class="feature-lead">Every generation has games that stay with us. Explore a few classics that helped shape the worlds, characters and sounds of gaming.</p>
+        <div class="game-spotlight-grid">
+          <article class="game-spotlight-card game-spotlight-main">
+            <div class="game-spotlight-top"><span>FEATURED CLASSIC</span><span>16-BIT ERA</span></div>
+            <p class="game-spotlight-year">1994 · SEGA GENESIS / MEGA DRIVE</p>
+            <h3>SONIC THE<br><em>HEDGEHOG 3.</em></h3>
+            <p>Sonic and Tails return for a high-speed adventure across Angel Island. The game brought colorful zones, memorable music and fast platforming to Sega’s 16-bit console.</p>
+            <div class="game-spotlight-tags"><span>PLATFORMER</span><span>CARTRIDGE</span><span>1–2 PLAYERS</span></div>
+            <a class="game-spotlight-link" href="#did-you-know">DISCOVER A SURPRISING SONIC FACT ↗</a>
+          </article>
+          <article class="game-spotlight-card">
+            <div class="game-spotlight-top"><span>THE ARCADE ICON</span><span>1980</span></div>
+            <div class="game-spotlight-symbol" aria-hidden="true">◉</div>
+            <h3>PAC-MAN</h3>
+            <p>A maze, four ghosts and a simple idea that became one of the most recognizable arcade experiences ever.</p>
+            <span class="game-spotlight-platform">ARCADE · NAMCO</span>
+          </article>
+          <article class="game-spotlight-card">
+            <div class="game-spotlight-top"><span>THE 16-BIT ADVENTURE</span><span>1990</span></div>
+            <div class="game-spotlight-symbol" aria-hidden="true">✦</div>
+            <h3>SUPER MARIO<br>WORLD</h3>
+            <p>Mario and Yoshi explored Dinosaur Land in a landmark adventure for the Super Nintendo.</p>
+            <span class="game-spotlight-platform">SUPER NINTENDO · NINTENDO</span>
+          </article>
+        </div>
+        <div class="feature-footer"><span>PLAY · EXPLORE · REMEMBER</span><a href="#did-you-know">NEXT: DID YOU KNOW? ↓</a></div>
+      </div>
+    </section>
 
-  <section class="feature-section" id="comments" aria-labelledby="comments-title">
+    <section class="feature-section" id="did-you-know" aria-labelledby="did-you-know-title">
+      <div class="feature-inner">
+        <header class="feature-header"><a class="feature-brand" href="#welcome"><b>P</b> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU ↗</a></header>
+        <p class="feature-kicker">05 / A SURPRISING SONIC STORY</p>
+        <h2 class="feature-title" id="did-you-know-title">DID YOU <em>KNOW?</em></h2>
+        <p class="feature-lead">A pop-music legend, Sega’s blue hedgehog and one of the most talked-about stories behind a 16-bit soundtrack.</p>
+        <div class="trivia-feature">
+          <div class="trivia-copy">
+            <p class="trivia-label">MICHAEL JACKSON × SONIC</p>
+            <h3>MICHAEL JACKSON WAS A HUGE <em>SONIC FAN.</em></h3>
+            <p>Former Sega Technical Institute director Roger Hector described Michael Jackson as a “very big fan of Sonic” and said he visited the team while Sonic the Hedgehog 3 was being developed.</p>
+            <p>Jackson’s longtime musical collaborator Brad Buxer later said that he and Jackson worked on music for <strong>Sonic the Hedgehog 3</strong>, released for the Sega Genesis / Mega Drive in 1994.</p>
+            <p class="trivia-note">The story is still debated: Sega never officially confirmed Jackson’s contribution, and later accounts differed. That uncertainty is part of what makes this such a fascinating piece of gaming history.</p>
+            <div class="trivia-source-links">
+              <a href="https://www.theguardian.com/music/2009/dec/04/michael-jackson-sonic-hedgehog" target="_blank" rel="noopener noreferrer">THE GUARDIAN · 2009 ↗</a>
+              <a href="https://www.gamespot.com/articles/yuji-naka-confirms-that-michael-jackson-wrote-music-for-sonic-the-hedgehog-3/1100-6504850/" target="_blank" rel="noopener noreferrer">GAMESPOT · 2022 UPDATE ↗</a>
+            </div>
+          </div>
+          <div class="trivia-media">
+            <figure class="trivia-photo trivia-photo-michael">
+              <img src="https://imagenes.hobbyconsolas.com/files/image_1920_1080/uploads/imagenes/2023/04/25/6900c287826eb.jpeg" alt="Michael Jackson playing a Sega game in front of television screens" loading="lazy">
+              <figcaption>Michael Jackson with a Sega gaming setup. <a href="https://www.hobbyconsolas.com/reportajes/mayores-mitos-leyendas-historia-videojuegos-verdaderos-falsos-609247" target="_blank" rel="noopener noreferrer">Photo source ↗</a></figcaption>
+            </figure>
+            <figure class="trivia-photo trivia-photo-game">
+              <img src="https://retromtl.com/cdn/shop/products/IMG_7203-2_87bda7b9-31dd-4d7b-8ac9-d9a5cd59019f_1024x1024%402x.jpg?v=1666959961" alt="Sonic the Hedgehog 3 original Sega Genesis game box and cartridge" loading="lazy">
+              <figcaption><em>Sonic the Hedgehog 3</em> · Sega Genesis, 1994. <a href="https://retromtl.com/products/sonic-the-hedgehog-3-sega-genesis" target="_blank" rel="noopener noreferrer">Image source ↗</a></figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="feature-footer"><span>GAME HISTORY IS FULL OF SURPRISES.</span><a href="#how-it-works">NEXT: HOW IT WORKS ↓</a></div>
+      </div>
+    </section>
+
+    <section class="feature-section" id="comments" aria-labelledby="comments-title">
       <div class="feature-inner">
         <header class="feature-header"><a class="feature-brand" href="#welcome"><b>P</b> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU ↗</a></header>
         <p class="feature-kicker">09 / PLAYER COMMUNITY</p><h2 class="feature-title" id="comments-title">YOUR TURN, <em>PLAYER.</em></h2>
@@ -764,13 +847,12 @@
         'Choose a destination to begin.',
         'Meet the people and ideas behind this project.',
         'Travel through the history of video games, one era at a time.',
-        'This level is still being built. Stay tuned!',
-        'Fun facts are loading. Come back soon!',
+        'Explore memorable games that defined their generations.',
+        'Discover Michael Jackson’s surprising connection with Sonic the Hedgehog.',
         'Discover how PRESS START was designed and developed.',
         'Imagine what you can learn by playing and exploring.',
         'Compare two legendary consoles head to head.',
-        'Share your thoughts with the PRESS START team.',
-        'Spin the wheel, solve the word and climb the leaderboard.'
+        'Share your thoughts with the PRESS START team.'
       ];
       function selectMenu(index) {
         menuItems.forEach((button, i) => {
@@ -1382,7 +1464,7 @@
     [2, 'ATARI.glb.gz'],
     [3, 'nes1.glb.gz'],
     [4, 'ps11.glb.gz'],
-    [5, 'ps2.glb.gz'], // PlayStation 2 moved to the online-gaming era.
+    [5, 'ps33.glb.gz'], // PlayStation 2 model file in the project assets.
     [6, 'pc.glb.gz'],
     [7, 'ps4.glb.gz'],
     [8, 'vr.glb.gz'],
@@ -1619,201 +1701,6 @@
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(()=>{const URL='https://mzfravlmrmlrlsmixszk.supabase.co',KEY='sb_publishable_p172H18pZGCkDp1oIBG5Yw_QjUSwbPj',$=id=>document.getElementById(id);
-if(!window.supabase||!$('roulette-create'))return;const db=window.supabase.createClient(URL,KEY);
-const words=[['PIXEL','A tiny square that makes up a digital image.'],['MOUSE','A device used to point and click on a computer.'],['LEVEL','A stage or section in a video game.'],['ARCADE','A place full of video game machines.'],['JOYSTICK','A controller with a stick used to move in games.'],['CONSOLE','A machine designed mainly for playing video games.'],['CARTRIDGE','A removable game format used by classic consoles.'],['MULTIPLAYER','A game mode where several people play together.'],['CHECKPOINT','A saved position you can return to after failing.'],['PLAYSTATION','A famous family of video game consoles.'],['ACHIEVEMENT','A reward for completing a special challenge.'],['LEADERBOARD','A ranking that compares player scores.'],['COMPETITIVE','Describes a game focused on beating other players.'],['PROCEDURAL','Generated automatically by rules or algorithms.']];
-let user=null,room=null,players=[],channel=null,timer=null,seconds=0,current=null,spinning=false,challengeKey=null,spinKey=null,liveText='',answering=false,nextSpinTimer=null,lastQueuedKey=null,audioCtx=null,musicTimer=null,soundOn=true,refreshBusy=false,refreshPending=false,wheelAngle=0,turnSnapshot=null;
-const say=(id,msg)=>$(id).textContent=msg,esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function setWheel(){const wheel=$('roulette-wheel'),n=players.length;if(!n){wheel.style.background='conic-gradient(#222b50,#10162d)';wheel.innerHTML='';return;}const colors=['#f45b83','#26375e','#44aeca','#563b83','#a34169','#314c78'];wheel.style.background='conic-gradient('+players.map((p,i)=>colors[i%colors.length]+' '+(i*360/n)+'deg '+((i+1)*360/n)+'deg').join(',')+')';wheel.innerHTML=players.map((p,i)=>{const angle=(i+.5)*2*Math.PI/n-Math.PI/2,r=.34,x=50+Math.cos(angle)*r*100,y=50+Math.sin(angle)*r*100;return '<div class="roulette-wheel-label '+(p.user_id===room?.current_player_id?'active':'')+'" style="left:'+x+'%;top:'+y+'%"><span class="wheel-name">'+esc(p.player_profiles?.nickname||'PLAYER')+'</span><span class="hearts">'+('♥ '.repeat(Math.max(0,p.lives))||'—')+'</span></div>';}).join('');}
-async function init(){let r=await db.auth.getSession();if(!r.data.session){r=await db.auth.signInAnonymously();if(r.error){say('roulette-status','ENABLE ANONYMOUS SIGN-INS IN SUPABASE AUTH SETTINGS.');return;}user=r.data.user;}else user=r.data.session.user;const p=await db.from('player_profiles').select('*').eq('user_id',user.id).maybeSingle();if(p.data){$('roulette-nickname').value=p.data.nickname;say('roulette-profile-status','PROFILE READY · '+p.data.nickname);}say('roulette-status','CONNECTED · CREATE A ROOM OR ENTER A ROOM CODE.');}
-async function profile(){const nickname=$('roulette-nickname').value.trim();if(nickname.length<2){say('roulette-profile-status','USE AT LEAST 2 CHARACTERS.');return false;}const r=await db.from('player_profiles').upsert({user_id:user.id,nickname});say('roulette-profile-status',r.error?r.error.message:'PROFILE SAVED · '+nickname);return !r.error;}
-async function enter(found){room=found;let r=await db.from('room_players').upsert({room_id:room.id,user_id:user.id,is_active:true},{onConflict:'room_id,user_id'});if(r.error){say('roulette-status',r.error.message);return;}$('roulette-code').value=room.room_code;say('roulette-status','ROOM '+room.room_code+' · SHARE THIS CODE WITH FRIENDS');await refresh();if(channel)db.removeChannel(channel);channel=db.channel('room-'+room.id).on('postgres_changes',{event:'*',schema:'public',table:'room_players',filter:'room_id=eq.'+room.id},refresh).on('postgres_changes',{event:'*',schema:'public',table:'game_rooms',filter:'id=eq.'+room.id},async e=>{room=e.new;await refresh();}).on('broadcast',{event:'typing'},({payload})=>{if(payload.user_id!==user.id&&room?.current_player_id===payload.user_id){liveText=payload.text||'';$('roulette-live-answer').textContent=liveText?liveText.replace(/./g,'▰ '):'';}}).on('broadcast',{event:'life_lost'},({payload})=>{if(payload.user_id!==user.id)showLifeLost(payload.nickname,payload.lives);}).subscribe();}
-async function refresh(){
-if(!room)return;
-if(refreshBusy){refreshPending=true;return;}
-refreshBusy=true;
-try{
-  const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();
-  if(state.error)throw state.error;
-  if(!state.data)return;
-  room=state.data;
-  const result=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});
-  if(result.error)throw result.error;
-  players=result.data||[];
-  setWheel();
-  $('roulette-leaderboard').innerHTML=players.map((p,i)=>'<div class="roulette-rank"><b>'+String(i+1).padStart(2,'0')+'</b><span>'+esc(p.player_profiles?.nickname||'PLAYER')+' <small>STREAK x'+p.streak+'</small></span><strong>'+p.score+'</strong></div>').join('');
 
-  const alive=players.filter(p=>p.lives>0);
-  if(room.host_id===user.id&&players.length>=2&&alive.length<=1&&(room.status==='playing'||room.status==='waiting')){
-    const result=await db.from('game_rooms').update({status:'finished',current_player_id:alive[0]?.user_id||null,turn_deadline:null})
-      .eq('id',room.id).eq('status',room.status).select().maybeSingle();
-    if(result.error)throw result.error;
-    if(result.data)room=result.data;
-  }else if(room.host_id===user.id&&room.status==='spinning'&&room.turn_deadline&&Date.now()>=new Date(room.turn_deadline).getTime()){
-    const deadline=new Date(Date.now()+20000).toISOString();
-    const result=await db.from('game_rooms').update({status:'playing',turn_deadline:deadline})
-      .eq('id',room.id).eq('status','spinning').eq('current_player_id',room.current_player_id).eq('turn_deadline',room.turn_deadline).select().maybeSingle();
-    if(result.error)throw result.error;
-    if(result.data)room=result.data;
-  }
-  if(room.host_id===user.id&&room.status==='playing'&&room.current_player_id&&room.turn_deadline){
-    const active=players.find(p=>p.user_id===room.current_player_id);
-    const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;
-    if(active&&turnSnapshot?.key===key&&(active.score!==turnSnapshot.score||active.streak!==turnSnapshot.streak||active.lives!==turnSnapshot.lives)){
-      const result=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
-        .eq('id',room.id).eq('status','playing').eq('current_player_id',room.current_player_id).eq('turn_deadline',room.turn_deadline).select().maybeSingle();
-      if(result.error)throw result.error;
-      if(result.data)room=result.data;
-    }
-  }
-  if(room.host_id===user.id&&room.status==='playing'&&room.turn_deadline&&Date.now()>new Date(room.turn_deadline).getTime()+3500){
-    const expiredPlayer=room.current_player_id;
-    const oldDeadline=room.turn_deadline;
-    const result=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
-      .eq('id',room.id).eq('status','playing').eq('current_player_id',expiredPlayer).eq('turn_deadline',oldDeadline).select().maybeSingle();
-    if(result.error)throw result.error;
-    if(result.data){room=result.data;say('roulette-feedback','TURN EXPIRED · CONTINUING THE GAME');}
-  }
-
-  $('roulette-spin').disabled=room.host_id!==user.id||room.status==='finished'||!players.some(p=>p.lives>0)||room.status==='spinning'||room.status==='playing';
-  if(room.status==='waiting'&&room.host_id===user.id&&players.filter(p=>p.lives>0).length>=2)queueAutoSpin();
-  if(room.status==='spinning'){
-    const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;
-    if(spinKey!==key){
-      spinKey=key;
-      const idx=players.findIndex(p=>p.user_id===room.current_player_id),n=Math.max(1,players.length);
-      const target=360-(idx+.5)*360/n,currentAngle=((wheelAngle%360)+360)%360,delta=((target-currentAngle+360)%360)+1800;
-      wheelAngle+=delta;
-      $('roulette-wheel').classList.add('is-spinning');
-      $('roulette-wheel').style.transform='rotate('+wheelAngle+'deg)';
-      setTimeout(()=>$('roulette-wheel').classList.remove('is-spinning'),5100);
-    }
-  }
-  if(room.status==='finished'){
-    const champion=players.find(p=>p.user_id===room.current_player_id)||players.find(p=>p.lives>0);
-    if(champion)showWinner(champion);
-    else say('roulette-turn','GAME OVER');
-  }
-  if(room.status==='playing'&&room.current_player_id){startChallenge();}
-  else{
-    current=null;challengeKey=null;clearInterval(timer);
-    say('roulette-turn',room.status.toUpperCase());
-    $('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
-    if(room.status!=='spinning')$('roulette-live-answer').textContent='';
-  }
-}catch(error){
-  console.error('PRESS START room refresh:',error);
-  say('roulette-status','CONNECTION ISSUE · RECONNECTING…');
-}finally{
-  refreshBusy=false;
-  if(refreshPending){refreshPending=false;refresh();}
-}
-}
-function startChallenge(){const p=players.find(x=>x.user_id===room.current_player_id);if(!p)return;const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;if(challengeKey===key)return;challengeKey=key;turnSnapshot={key,score:p.score,streak:p.streak,lives:p.lives};const seed=String(room.current_player_id)+String(room.turn_deadline||'');let hash=0;for(let i=0;i<seed.length;i++)hash=(hash*31+seed.charCodeAt(i))>>>0;const pool=words.filter(w=>w[0].length>=4+Math.min(4,Math.floor(p.streak/2))*2);current=pool[hash%pool.length];liveText='';$('roulette-live-answer').textContent='';const isTurn=p.user_id===user.id;
-$('roulette-word').textContent=current[0].split('').map((c,i)=>i===0||i===current[0].length-1?c:'_').join(' ');say('roulette-clue',(isTurn?'YOUR TURN · ':'NOW PLAYING · ')+(p.player_profiles?.nickname||'PLAYER')+' — '+words.find(w=>w[0]===current[0])[1]);say('roulette-word-hint',(p.player_profiles?.nickname||'PLAYER')+' IS COMPLETING THE WORD · WATCH THE PROGRESS');say('roulette-turn',(isTurn?'YOUR TURN':'PLAYER: '+(p.player_profiles?.nickname||'PLAYER'))+' · STREAK x'+p.streak);$('roulette-lives').textContent='♥ '.repeat(p.lives);$('roulette-answer').disabled=!isTurn;$('roulette-submit').disabled=!isTurn;$('roulette-answer').value='';if(isTurn)$('roulette-answer').focus();
-const deadline=new Date(room.turn_deadline).getTime();clearInterval(timer);const tick=()=>{seconds=Math.max(0,Math.ceil((deadline-Date.now())/1000));say('roulette-timer','00:'+String(seconds).padStart(2,'0'));document.querySelector('.roulette-panel')?.classList.toggle('is-tense',seconds<=7&&seconds>0);if(seconds===0&&isTurn&&!answering)miss('TIME UP!');};tick();timer=setInterval(tick,250);}
-async function miss(reason){
-if(!current||answering||!room||room.status!=='playing'||room.current_player_id!==user.id)return;
-answering=true;
-const answer=current[0],p=players.find(x=>x.user_id===user.id),remaining=Math.max(0,(p?.lives??1)-1),roomId=room.id;
-clearInterval(timer);say('roulette-feedback',reason+' · WORD: '+answer);
-$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
-try{
-  if(!p)throw new Error('PLAYER DATA NOT FOUND');
-  const saved=await db.from('room_players').update({lives:remaining,streak:0}).eq('room_id',roomId).eq('user_id',user.id).select('user_id').maybeSingle();
-  if(saved.error)throw saved.error;
-  if(!saved.data)throw new Error('COULD NOT SAVE LIFE LOSS');
-  showLifeLost(p.player_profiles?.nickname||'PLAYER',remaining);
-  if(channel)channel.send({type:'broadcast',event:'life_lost',payload:{user_id:user.id,nickname:p.player_profiles?.nickname||'PLAYER',lives:remaining}});
-  current=null;
-  await refresh();
-}catch(error){
-  console.error('PRESS START failed turn:',error);
-  say('roulette-feedback',error.message||'COULD NOT FINISH THIS TURN');
-  await refresh();
-}finally{answering=false;}
-}
-function audioReady(){if(!soundOn)return null;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;if(!audioCtx)audioCtx=new AC();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx;}catch(e){return null;}}
-function tone(freq,duration,gain=.025,type='sine',delay=0){const c=audioReady();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,c.currentTime+delay);g.gain.exponentialRampToValueAtTime(gain,c.currentTime+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+delay+duration);o.connect(g);g.connect(c.destination);o.start(c.currentTime+delay);o.stop(c.currentTime+delay+duration+.06);}
-function startMusic(){if(!soundOn||musicTimer)return;audioReady();const notes=[110,146.83,164.81,130.81];let i=0;const beat=()=>{if(!soundOn)return;tone(notes[i%notes.length],1.05,.012,'triangle');tone(notes[i%notes.length]*2,.7,.006,'sine',.08);i++;};beat();musicTimer=setInterval(beat,900);}
-function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null;}}
-function playSpinSound(){tone(190,.3,.035,'sawtooth');tone(260,.5,.018,'triangle',.22);tone(330,.65,.018,'triangle',.48);}
-function playJingle(){[523.25,659.25,783.99,1046.5].forEach((n,i)=>tone(n,.32,.045,'triangle',i*.11));}
-function showSuccess(nickname,points){const box=$('roulette-success-event');$('roulette-success-message').textContent=nickname+' · +'+points+' POINTS!';box.hidden=false;const burst=box.querySelector('.roulette-success-burst');burst.style.animation='none';void burst.offsetWidth;burst.style.animation='successBurst .75s cubic-bezier(.16,1.4,.3,1) both';setTimeout(()=>{box.hidden=true;},1700);}
-function showLifeLost(nickname,lives){const box=$('roulette-life-event');$('roulette-life-message').textContent=(nickname||'PLAYER')+' LOST A LIFE · '+lives+' LEFT';box.hidden=false;const heart=$('roulette-life-event').querySelector('.roulette-broken-heart');heart.style.animation='none';void heart.offsetWidth;heart.style.animation='heartBreak 1.35s cubic-bezier(.2,.8,.2,1) both';setTimeout(()=>{box.hidden=true;},1900);}
-function showWinner(champion){const overlay=$('roulette-winner-overlay');if(!overlay.hidden)return;$('roulette-winner-name').textContent=champion.player_profiles?.nickname||'PLAYER';const top=players.slice(0,3);$('roulette-podium').innerHTML=top.map((p,i)=>{const cls=i===0?'first':i===1?'second':'third';return '<div class="roulette-podium-place '+cls+'"><b>'+esc(p.player_profiles?.nickname||'PLAYER')+' · '+p.score+'</b><div class="roulette-podium-block">'+(i===0?'🏆':i===1?'2ND':'3RD')+'</div></div>';}).join('');overlay.hidden=false;$('roulette-spin').disabled=true;}
-async function submit(){
-if(!current||answering||!room||room.status!=='playing'||room.current_player_id!==user.id)return;
-const guess=$('roulette-answer').value.trim().toUpperCase(),p=players.find(x=>x.user_id===user.id);
-if(guess!==current[0]){await miss('WRONG ANSWER! STREAK LOST.');return;}
-answering=true;clearInterval(timer);document.querySelector('.roulette-panel')?.classList.remove('is-tense');
-const points=100+(p?.streak||0)*25,roomId=room.id;
-$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
-try{
-  if(!p)throw new Error('PLAYER DATA NOT FOUND');
-  const saved=await db.from('room_players').update({score:p.score+points,streak:p.streak+1}).eq('room_id',roomId).eq('user_id',user.id).select('user_id').maybeSingle();
-  if(saved.error)throw saved.error;
-  if(!saved.data)throw new Error('COULD NOT SAVE SCORE');
-  showSuccess(p.player_profiles?.nickname||'PLAYER',points);playJingle();
-  current=null;
-  await refresh();
-}catch(error){
-  console.error('PRESS START failed answer:',error);
-  say('roulette-feedback',error.message||'COULD NOT SAVE THE ANSWER');
-  await refresh();
-}finally{answering=false;}
-}
-$('roulette-audio').onclick=()=>{soundOn=!soundOn;$('roulette-audio').textContent=soundOn?'♫ SOUND: ON':'♫ SOUND: OFF';if(soundOn)startMusic();else stopMusic();};
-$('roulette-save-profile').onclick=async()=>{if(user)await profile();};
-$('roulette-create').onclick=async()=>{startMusic();if(!user||!await profile())return;const code=Math.random().toString(36).slice(2,8).toUpperCase(),r=await db.from('game_rooms').insert({room_code:code,host_id:user.id}).select().single();if(r.error){say('roulette-status',r.error.message);return;}await enter(r.data);};
-$('roulette-join').onclick=async()=>{startMusic();if(!user||!await profile())return;const r=await db.from('game_rooms').select('*').eq('room_code',$('roulette-code').value.trim().toUpperCase()).maybeSingle();if(r.error||!r.data){say('roulette-status','ROOM NOT FOUND. CHECK THE CODE.');return;}await enter(r.data);};
-async function spinNext(){
-if(!room||room.host_id!==user.id||spinning||room.status==='finished')return;
-spinning=true;$('roulette-spin').disabled=true;
-try{
-  const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();
-  if(state.error)throw state.error;
-  if(!state.data)return;
-  room=state.data;
-  if(room.status!=='waiting')return;
-  const roster=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});
-  if(roster.error)throw roster.error;
-  players=roster.data||[];
-  const alive=players.filter(p=>p.lives>0);
-  if(alive.length<2){await refresh();return;}
-  const selected=alive[Math.floor(Math.random()*alive.length)],spinDeadline=new Date(Date.now()+5000).toISOString();
-  const result=await db.from('game_rooms').update({status:'spinning',current_player_id:selected.user_id,turn_deadline:spinDeadline})
-    .eq('id',room.id).eq('status','waiting').select().maybeSingle();
-  if(result.error)throw result.error;
-  if(!result.data){lastQueuedKey=null;await refresh();return;}
-  room=result.data;playSpinSound();await refresh();
-}catch(error){
-  console.error('PRESS START spin failed:',error);
-  say('roulette-status','SPIN COULD NOT START · RETRYING…');
-  lastQueuedKey=null;
-}finally{
-  spinning=false;
-}
-}
-function queueAutoSpin(){
-const key=room.id+'|'+players.map(p=>p.user_id+':'+p.lives+':'+p.score+':'+p.streak).join(',')+'|'+room.status+'|'+room.current_player_id;
-if(lastQueuedKey===key)return;
-lastQueuedKey=key;clearTimeout(nextSpinTimer);
-nextSpinTimer=setTimeout(async()=>{
-  if(room&&room.status==='waiting'){
-    await spinNext();
-    if(room?.status==='waiting'&&lastQueuedKey===key)lastQueuedKey=null;
-  }
-},1400);
-}
-$('roulette-spin').onclick=()=>{if(!room)return;startMusic();lastQueuedKey=null;clearTimeout(nextSpinTimer);spinNext();};
-$('roulette-answer').addEventListener('input',e=>{if(!room||room.current_player_id!==user.id||!channel)return;channel.send({type:'broadcast',event:'typing',payload:{user_id:user.id,text:e.target.value.toUpperCase().slice(0,20)}});});
-$('roulette-submit').onclick=submit;$('roulette-answer').addEventListener('keydown',e=>{if(e.key==='Enter')submit();});setInterval(()=>{if(room)refresh();},900);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&room)refresh();});
-init();
-})();
-</script>
 </body>
 </html>
