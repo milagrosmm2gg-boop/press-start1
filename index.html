@@ -339,6 +339,65 @@
       .scrolly-finish { min-height:65svh; padding-left:.9rem; }
       .scrolly-finish h3 { font-size:clamp(2.7rem,12vw,4.2rem); }
     }
+
+    .feature-section{position:relative;padding:clamp(4rem,8vw,8rem) clamp(1.2rem,5vw,5.5rem);background:var(--bg);border-top:1px solid var(--line)}
+    .feature-inner{max-width:1280px;margin:0 auto}
+    .feature-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:1.2rem;border-bottom:1px solid var(--line)}
+    .feature-kicker{margin:0 0 .8rem;color:var(--accent);font:700 .68rem/1.4 Consolas,monospace;letter-spacing:.15em}
+    .feature-title{max-width:850px;margin:0;font:900 clamp(2.8rem,7vw,6.2rem)/.94 var(--heading-font);letter-spacing:-.075em;text-wrap:balance}
+    .feature-title em{color:var(--accent);font-style:normal}
+    .feature-lead{max-width:56ch;margin:1.2rem 0 2.5rem;color:var(--muted);line-height:1.7}
+    .feature-brand{display:flex;align-items:center;gap:.55rem;color:var(--muted);font:700 .64rem Consolas,monospace;letter-spacing:.12em;text-decoration:none}
+    .feature-brand b{display:grid;place-items:center;width:30px;height:30px;color:var(--accent-ink);background:var(--accent)}
+    .how-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+    .how-card{min-height:245px;padding:1.4rem;background:var(--surface)}
+    .how-number{display:flex;justify-content:space-between;color:var(--accent);font:700 .7rem Consolas,monospace}
+    .how-icon{margin:2.1rem 0 1rem;color:var(--accent);font:900 2rem Consolas,monospace}
+    .how-card h3{margin:0 0 .6rem;font:800 1.1rem var(--heading-font);letter-spacing:-.03em}
+    .how-card p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.65}
+    .whatif-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+    .whatif-card{position:relative;min-height:270px;display:flex;flex-direction:column;justify-content:space-between;padding:1.5rem;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+    .whatif-card:after{content:"?";position:absolute;right:.3rem;bottom:-3.2rem;color:color-mix(in srgb,var(--accent) 13%,transparent);font:900 13rem/.9 var(--heading-font);pointer-events:none}
+    .whatif-card .tag{color:var(--accent);font:700 .65rem Consolas,monospace;letter-spacing:.12em}
+    .whatif-card h3{position:relative;z-index:1;max-width:18ch;margin:2rem 0 .6rem;font:800 clamp(1.35rem,2.5vw,2rem)/1.12 var(--heading-font)}
+    .whatif-card p{position:relative;z-index:1;max-width:38ch;margin:0;color:var(--muted);font-size:.86rem;line-height:1.6}
+    .battle-hero{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;margin:2rem 0 1.2rem;padding:1.3rem;background:#171923;color:#F5F2EB}
+    .battle-side{text-align:center}
+    .battle-side img{display:block;width:min(100%,280px);height:170px;object-fit:contain;margin:0 auto .8rem}
+    .battle-side strong{display:block;font:900 clamp(1rem,2vw,1.5rem) var(--heading-font)}
+    .battle-side span{color:#B9BDD0;font:600 .62rem Consolas,monospace;letter-spacing:.12em}
+    .battle-vs{color:#F45B83;font:900 clamp(2.2rem,6vw,4.5rem) var(--heading-font);text-shadow:3px 3px 0 #343B59}
+    .battle-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+    .battle-tab{padding:.7rem 1rem;border:1px solid var(--line);color:var(--muted);background:transparent;font:700 .66rem Consolas,monospace;letter-spacing:.08em}
+    .battle-tab[aria-pressed="true"]{border-color:var(--accent);color:var(--accent-ink);background:var(--accent)}
+    .battle-data{display:grid;grid-template-columns:1fr minmax(130px,.7fr) 1fr;align-items:stretch;gap:.7rem}
+    .battle-stat{padding:1.1rem;border:1px solid var(--line);background:var(--surface)}
+    .battle-stat strong{display:block;margin-bottom:.5rem;font:800 1.05rem var(--heading-font)}
+    .battle-stat p{margin:0;color:var(--muted);font-size:.84rem;line-height:1.55}
+    .battle-category{display:grid;place-items:center;padding:1rem;color:var(--accent);font:800 .7rem/1.4 Consolas,monospace;text-align:center;letter-spacing:.1em;border-block:1px solid var(--line)}
+    .battle-disclaimer{margin:1rem 0 0;color:var(--muted);font-size:.72rem;line-height:1.6}
+    .comments-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:2rem;align-items:start}
+    .comment-form{display:grid;gap:.8rem;padding:1.3rem;background:var(--surface);border:1px solid var(--line)}
+    .comment-form label{color:var(--muted);font:700 .65rem Consolas,monospace;letter-spacing:.1em}
+    .comment-form input,.comment-form textarea{width:100%;margin-top:.4rem;padding:.85rem;border:1px solid var(--line);border-radius:0;color:var(--ink);background:var(--bg);font:inherit}
+    .comment-form textarea{min-height:120px;resize:vertical}
+    .comment-submit{justify-self:start;padding:.9rem 1.1rem;border:0;color:var(--accent-ink);background:var(--accent);font:800 .7rem Consolas,monospace;letter-spacing:.1em}
+    .comment-notice{margin:0;color:var(--muted);font-size:.72rem;line-height:1.5}
+    .comment-list{display:grid;gap:.7rem}
+    .comment-entry{padding:1.1rem;border-left:3px solid var(--accent);background:var(--surface)}
+    .comment-entry strong{font:800 .8rem Consolas,monospace}
+    .comment-entry time{float:right;color:var(--muted);font-size:.68rem}
+    .comment-entry p{margin:.6rem 0 0;color:var(--muted);font-size:.88rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+    .comment-empty{padding:2rem;border:1px dashed var(--line);color:var(--muted);text-align:center;font-size:.85rem}
+    .feature-footer{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--muted);font:700 .6rem Consolas,monospace;letter-spacing:.1em}
+    @media(max-width:900px){.how-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.comments-layout{grid-template-columns:1fr}}
+    @media(max-width:650px){
+      .feature-section{padding:3.5rem 1rem}.feature-header{align-items:flex-start}.feature-title{font-size:clamp(2.7rem,13vw,4.3rem)}
+      .how-grid,.whatif-grid{grid-template-columns:1fr}.how-card{min-height:190px}.whatif-card{min-height:225px}
+      .battle-hero{gap:.35rem;padding:.7rem .35rem}.battle-side img{height:105px}.battle-side strong{font-size:.83rem}.battle-side span{font-size:.5rem}
+      .battle-data{grid-template-columns:1fr 1fr}.battle-category{grid-column:1/-1;grid-row:1;min-height:40px}.battle-stat{padding:.8rem}.feature-footer{flex-direction:column}
+    }
+
     @media(prefers-reduced-motion:reduce) {
       html { scroll-behavior:auto; }
       .hero-spark-one,.device-art { animation:none; }
@@ -370,6 +429,10 @@
             <button class="menu-item" type="button" data-menu="2" data-target="timeline" aria-pressed="false"><span class="menu-number">03</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.4 2.2"/></svg><span class="menu-label">TIMELINE</span><span class="menu-arrow">↗</span></button>
             <button class="menu-item" type="button" data-menu="3" data-target="game" aria-pressed="false"><span class="menu-number">04</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.4 8.2h9.2c2 0 3.1 1 3.8 3.2l1 3.3c.7 2.4-1.7 4-3.6 2.4l-2.4-2H8.6l-2.4 2c-1.9 1.6-4.3 0-3.6-2.4l1-3.3c.7-2.2 1.8-3.2 3.8-3.2Z"/><path d="M7 10.7v4M5 12.7h4M16.5 11.5h.01M18.2 14h.01"/></svg><span class="menu-label">GAME</span><span class="menu-arrow">↗</span></button>
             <button class="menu-item" type="button" data-menu="4" data-target="did-you-know" aria-pressed="false"><span class="menu-number">05</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.3 15.2a6 6 0 1 1 7.4 0c-.9.6-1.2 1.4-1.2 2.3h-5c0-.9-.3-1.7-1.2-2.3Z"/><path d="M9.5 20h5M10.2 22h3.6M12 4.6v.01"/></svg><span class="menu-label">DID YOU KNOW?</span><span class="menu-arrow">↗</span></button>
+            <button class="menu-item" type="button" data-menu="5" data-target="how-it-works" aria-pressed="false"><span class="menu-number">06</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 9l2 2-2 2m5 0h3"/></svg><span class="menu-label">HOW IT WORKS</span><span class="menu-arrow">↗</span></button>
+            <button class="menu-item" type="button" data-menu="6" data-target="what-if" aria-pressed="false"><span class="menu-number">07</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg><span class="menu-label">WHAT IF...?</span><span class="menu-arrow">↗</span></button>
+            <button class="menu-item" type="button" data-menu="7" data-target="console-battle" aria-pressed="false"><span class="menu-number">08</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h10c2 0 3 1 3.7 3.2l1 3.1c.7 2.2-1.6 3.8-3.4 2.3l-2.2-1.8H7.9l-2.2 1.8c-1.8 1.5-4.1-.1-3.4-2.3l1-3.1C4 9 5 8 7 8Z"/><path d="M7 10.5v4m-2-2h4m7-1h.01m2 2h.01"/></svg><span class="menu-label">CONSOLE BATTLE</span><span class="menu-arrow">↗</span></button>
+            <button class="menu-item" type="button" data-menu="8" data-target="comments" aria-pressed="false"><span class="menu-number">09</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.5-3A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11h8m-8 3h5"/></svg><span class="menu-label">COMMENTS</span><span class="menu-arrow">↗</span></button>
           </nav>
           <p class="menu-status" id="menu-status" aria-live="polite"><span></span> Choose a destination to begin.</p>
         </div>
@@ -522,8 +585,98 @@
         <div class="timeline-sources"><span>HISTORY NOTES:</span><a href="https://www.history.com/articles/history-of-video-games" target="_blank" rel="noreferrer">HISTORY.COM</a><a href="https://www.computerhistory.org/timeline/graphics-games/" target="_blank" rel="noreferrer">COMPUTER HISTORY MUSEUM</a><a href="https://blog.scienceandmediamuseum.org.uk/60-years-history-of-videogames-timeline-1951-2011/" target="_blank" rel="noreferrer">NATIONAL SCIENCE AND MEDIA MUSEUM</a></div>
         <footer class="timeline-footer"><span>PRESS START / PLAYER 01</span><span>THE STORY IS STILL LOADING...</span><a href="#welcome">RETURN TO START ↑</a></footer>
       </div>
+
+    <section class="feature-section" id="how-it-works" aria-labelledby="how-title">
+      <div class="feature-inner">
+        <header class="feature-header"><a class="feature-brand" href="#welcome"><b>P</b> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU ↗</a></header>
+        <p class="feature-kicker">06 / BEHIND THE SCREEN</p><h2 class="feature-title" id="how-title">HOW IT <em>WORKS.</em></h2>
+        <p class="feature-lead">A closer look at how PRESS START was planned and built — from the first idea to an interactive journey through gaming history.</p>
+        <div class="how-grid">
+          <article class="how-card"><div class="how-number"><span>01 / RESEARCH</span><span>⌕</span></div><div class="how-icon">[?]</div><h3>WE EXPLORE THE PAST</h3><p>We researched consoles, important games and milestones to organize the story of video games into clear eras.</p></article>
+          <article class="how-card"><div class="how-number"><span>02 / DESIGN</span><span>✳</span></div><div class="how-icon">▧</div><h3>WE DESIGN THE EXPERIENCE</h3><p>We planned the visual identity, colors, typography and layouts to give the website its own retro-futuristic style.</p></article>
+          <article class="how-card"><div class="how-number"><span>03 / DEVELOPMENT</span><span>⌘</span></div><div class="how-icon">&lt;/&gt;</div><h3>WE BUILD WITH CODE</h3><p>HTML structures the content, CSS creates the visual design, and JavaScript adds navigation and interactive behavior.</p></article>
+          <article class="how-card"><div class="how-number"><span>04 / 3D & LAUNCH</span><span>◉</span></div><div class="how-icon">◎</div><h3>WE BRING IT TO LIFE</h3><p>WebGL displays the 3D models. The project is versioned with GitHub and published on Vercel so visitors can explore it online.</p></article>
+        </div>
+        <div class="feature-footer"><span>IDEA → RESEARCH → DESIGN → CODE → PLAY</span><a href="#what-if">NEXT: WHAT IF...? ↓</a></div>
+      </div>
+    </section>
+    <section class="feature-section" id="what-if" aria-labelledby="whatif-title">
+      <div class="feature-inner">
+        <header class="feature-header"><a class="feature-brand" href="#welcome"><b>P</b> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU ↗</a></header>
+        <p class="feature-kicker">07 / IMAGINE YOUR NEXT LEVEL</p><h2 class="feature-title" id="whatif-title">WHAT <em>IF...?</em></h2>
+        <p class="feature-lead">Small actions can lead to big discoveries. Read these possibilities and imagine what you could learn by playing and exploring.</p>
+        <div class="whatif-grid">
+          <article class="whatif-card"><span class="tag">IF YOU PLAY</span><div><h3>If you play video games every day, you will improve your skills.</h3><p>Si jugás videojuegos todos los días, mejorarás tus habilidades.</p></div></article>
+          <article class="whatif-card"><span class="tag">IF YOU VISIT</span><div><h3>If you visit our website, you will learn about the history of video games.</h3><p>Si visitás nuestra página web, aprenderás sobre la historia de los videojuegos.</p></div></article>
+          <article class="whatif-card"><span class="tag">IF YOU EXPLORE</span><div><h3>If you explore the website, you will discover old and new video games.</h3><p>Si explorás la página web, descubrirás videojuegos antiguos y nuevos.</p></div></article>
+        </div>
+        <div class="feature-footer"><span>THINK IT. TRY IT. DISCOVER IT.</span><a href="#console-battle">NEXT: CONSOLE BATTLE ↓</a></div>
+      </div>
+    </section>
+    <section class="feature-section" id="console-battle" aria-labelledby="battle-title">
+      <div class="feature-inner">
+        <header class="feature-header"><a class="feature-brand" href="#welcome"><b>P</b> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU ↗</a></header>
+        <p class="feature-kicker">08 / HEAD-TO-HEAD</p><h2 class="feature-title" id="battle-title">CONSOLE <em>BATTLE.</em></h2>
+        <p class="feature-lead">Two 16-bit legends. Compare their hardware, graphics, sound and iconic games — then decide which one wins your vote.</p>
+        <div class="battle-hero">
+          <div class="battle-side"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/SNES-Mod1-Console-Set.png" alt="Super Nintendo console and controller" loading="lazy"><strong>SUPER NINTENDO</strong><span>SNES · 1990/1991</span></div>
+          <div class="battle-vs">VS</div>
+          <div class="battle-side"><img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Sega-Genesis-Mod1-6button.jpg" alt="Sega Genesis console" loading="lazy"><strong>SEGA GENESIS</strong><span>MEGA DRIVE · 1988</span></div>
+        </div>
+        <div class="battle-tabs" role="group" aria-label="Choose a comparison category">
+          <button class="battle-tab" type="button" data-battle="hardware" aria-pressed="true">01 / HARDWARE</button><button class="battle-tab" type="button" data-battle="graphics" aria-pressed="false">02 / GRAPHICS</button><button class="battle-tab" type="button" data-battle="sound" aria-pressed="false">03 / SOUND</button><button class="battle-tab" type="button" data-battle="games" aria-pressed="false">04 / GAMES</button>
+        </div>
+        <div class="battle-data" id="battle-data" aria-live="polite"></div>
+        <p class="battle-disclaimer">Specifications are simplified for a quick comparison. Hardware results do not tell the whole story: game design, art direction and developer experience matter too.</p>
+        <div class="feature-footer"><span>NO CONSOLE WAR. JUST GAME HISTORY.</span><a href="#comments">NEXT: JOIN THE CONVERSATION ↓</a></div>
+      </div>
+    </section>
+    <section class="feature-section" id="comments" aria-labelledby="comments-title">
+      <div class="feature-inner">
+        <header class="feature-header"><a class="feature-brand" href="#welcome"><b>P</b> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU ↗</a></header>
+        <p class="feature-kicker">09 / PLAYER COMMUNITY</p><h2 class="feature-title" id="comments-title">YOUR TURN, <em>PLAYER.</em></h2>
+        <p class="feature-lead">What is your favorite console? Which era would you like to explore next? Leave a message for the PRESS START team.</p>
+        <div class="comments-layout">
+          <form class="comment-form" id="comment-form">
+            <label for="comment-name">PLAYER NAME</label><input id="comment-name" name="name" maxlength="28" placeholder="Your name" required>
+            <label for="comment-message">YOUR COMMENT</label><textarea id="comment-message" name="message" maxlength="500" placeholder="Write your message..." required></textarea>
+            <button class="comment-submit" type="submit">POST COMMENT ↗</button>
+            <p class="comment-notice">Demo guestbook: comments are saved only in this browser on this device. They are not shared with other visitors yet.</p><p class="comment-notice" id="comment-status" role="status" aria-live="polite"></p>
+          </form>
+          <div><p class="feature-kicker">PLAYER MESSAGES / <span id="comment-count">00</span></p><div class="comment-list" id="comment-list"><div class="comment-empty">NO COMMENTS YET. BE THE FIRST PLAYER.</div></div></div>
+        </div>
+        <div class="feature-footer"><span>PRESS START / COMMUNITY BOARD</span><a href="#welcome">BACK TO START ↑</a></div>
+      </div>
+    </section>
     </section>
   </div>
+  <script>
+    (() => {
+      const compareData = {
+        hardware:[['Ricoh 5A22','16-bit CPU based on the 65C816, running at up to 3.58 MHz.','Motorola 68000','16/32-bit CPU running at approximately 7.67 MHz.','PROCESSING POWER']],
+        graphics:[['32,768 colors','Up to 256 colors on screen at once, with effects such as Mode 7.','512 colors','Typically up to 64 colors on screen at once; strong sprite performance.','COLOR & DISPLAY']],
+        sound:[['Sony SPC700','Sample-based audio with 8 channels, known for rich orchestral and atmospheric sound.','Yamaha YM2612 + PSG','FM synthesis plus PSG channels, known for punchy and distinctive music.','SOUND CHIP']],
+        games:[['Super Mario World · Zelda','Also Donkey Kong Country and Super Metroid.','Sonic · Streets of Rage','Also Mortal Kombat and Golden Axe.','ICONIC GAMES']]
+      };
+      const battleTabs=[...document.querySelectorAll('[data-battle]')],battleData=document.getElementById('battle-data');
+      function renderBattle(key){
+        const d=compareData[key][0];battleData.replaceChildren();
+        [[d[0],d[1]],[d[2],d[3]]].forEach(item=>{const card=document.createElement('article');card.className='battle-stat';const strong=document.createElement('strong');strong.textContent=item[0];const p=document.createElement('p');p.textContent=item[1];card.append(strong,p);battleData.append(card);});
+        const label=document.createElement('div');label.className='battle-category';label.textContent=d[4];battleData.insertBefore(label,battleData.children[1]);
+        battleTabs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.battle===key)));
+      }
+      battleTabs.forEach(button=>button.addEventListener('click',()=>renderBattle(button.dataset.battle)));renderBattle('hardware');
+      const form=document.getElementById('comment-form'),list=document.getElementById('comment-list'),count=document.getElementById('comment-count'),status=document.getElementById('comment-status'),storageKey='press-start-player-comments-v1';
+      let comments=[];try{comments=JSON.parse(localStorage.getItem(storageKey)||'[]');if(!Array.isArray(comments))comments=[];}catch(_){comments=[];}
+      function drawComments(){
+        list.replaceChildren();count.textContent=String(comments.length).padStart(2,'0');
+        if(!comments.length){const empty=document.createElement('div');empty.className='comment-empty';empty.textContent='NO COMMENTS YET. BE THE FIRST PLAYER.';list.append(empty);return;}
+        comments.slice().reverse().forEach(comment=>{const entry=document.createElement('article');entry.className='comment-entry';const name=document.createElement('strong');name.textContent=comment.name;const date=document.createElement('time');date.textContent=comment.date;const message=document.createElement('p');message.textContent=comment.message;entry.append(name,date,message);list.append(entry);});
+      }
+      form.addEventListener('submit',event=>{event.preventDefault();const name=document.getElementById('comment-name').value.trim(),message=document.getElementById('comment-message').value.trim();if(!name||!message)return;comments.push({name,message,date:new Date().toLocaleDateString()});comments=comments.slice(-30);try{localStorage.setItem(storageKey,JSON.stringify(comments));status.textContent='COMMENT SAVED ON THIS DEVICE. THANKS, PLAYER!';}catch(_){status.textContent='YOUR BROWSER COULD NOT SAVE THIS COMMENT.';}form.reset();drawComments();});
+      drawComments();
+    })();
+  </script>
   <script>
     (() => {
       const menuItems = [...document.querySelectorAll('.menu-item')];
@@ -535,7 +688,11 @@
         'Meet the people and ideas behind this project.',
         'Travel through the history of video games, one era at a time.',
         'This level is still being built. Stay tuned!',
-        'Fun facts are loading. Come back soon!'
+        'Fun facts are loading. Come back soon!',
+        'Discover how PRESS START was designed and developed.',
+        'Imagine what you can learn by playing and exploring.',
+        'Compare two legendary consoles head to head.',
+        'Share your thoughts with the PRESS START team.'
       ];
       function selectMenu(index) {
         menuItems.forEach((button, i) => {
@@ -550,8 +707,8 @@
         button.addEventListener('click', () => {
           selectMenu(index);
           const target = button.dataset.target;
-          if (['welcome','about-us','timeline'].includes(target)) {
-            document.getElementById(target)?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+          if (target && document.getElementById(target)) {
+            document.getElementById(target).scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
           }
         });
       });
