@@ -542,6 +542,143 @@
 @keyframes wordGlow{0%,100%{opacity:.88;text-shadow:0 0 12px #44d6ff44}50%{opacity:1;text-shadow:0 0 28px #44d6ff99,0 0 55px #f45b8344}}
 @keyframes successBurst{0%{transform:scale(.1) rotate(-35deg);opacity:0}65%{transform:scale(1.25) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0)}}
 @keyframes tensePulse{to{box-shadow:0 0 42px #f45b8399,0 0 75px #44d6ff22;transform:scale(1.008)}}
+
+/* Mobile-first refinements: keep every section readable and tappable on phones. */
+@media (max-width: 760px) {
+  html { scroll-padding-top: .5rem; }
+  body { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+  img, svg, canvas, video { max-width: 100%; }
+  .hero { padding-inline: .9rem; }
+  .site-header { gap: .65rem; }
+  .brand { min-width: 0; }
+  .brand-mark { flex: 0 0 36px; width: 36px; height: 36px; }
+  .header-status { gap: .35rem; font-size: .5rem; letter-spacing: .06em; white-space: nowrap; }
+  .hero-content, .feature-inner, .about-inner, .timeline-shell { min-width: 0; }
+  .main-menu { width: 100%; }
+  .menu-item { min-height: 46px; grid-template-columns: 1.45rem 1.15rem minmax(0,1fr) 1rem; gap: .35rem; padding-inline: .1rem; }
+  .menu-label { font-size: clamp(.62rem, 2.3vw, .76rem); letter-spacing: .045em; }
+  .menu-number { font-size: .61rem; }
+  .menu-status { font-size: .72rem; }
+  .hero-art-wrap { width: min(76vw, 320px); }
+  .about-header, .timeline-header, .feature-header { flex-wrap: wrap; }
+  .about-header, .timeline-header { gap: .5rem; }
+  .about-brand, .feature-brand { min-width: 0; }
+  .back-link { font-size: .53rem; }
+  .about-intro h2, .timeline-intro h2, .feature-title { overflow-wrap: anywhere; }
+  .team-grid { overscroll-behavior-x: contain; }
+  .member-card { flex-basis: 124px; }
+  .member-avatar img { width: 100px; height: 100px; }
+  .timeline-viewport { max-width: 100%; }
+  .stage-card { flex-basis: min(86vw, 390px); width: min(86vw, 390px); }
+  .stage-head, .stage-foot { overflow-wrap: anywhere; }
+  .milestones { flex-wrap: wrap; }
+  .milestone { max-width: 100%; overflow-wrap: anywhere; }
+  .device-scene { min-width: 0; }
+  .device-art { max-width: min(320px, 100%); }
+  .feature-section { padding: 3.25rem .9rem; }
+  .feature-header { align-items: center; }
+  .feature-title { font-size: clamp(2.45rem, 12vw, 4.3rem); }
+  .feature-lead { margin: 1rem 0 1.6rem; font-size: .92rem; }
+  .how-grid, .whatif-grid, .game-spotlight-grid, .comments-layout { grid-template-columns: minmax(0,1fr); }
+  .how-card, .whatif-card, .game-spotlight-card, .battle-stat, .comment-form { min-width: 0; }
+  .game-spotlight-main { grid-row: auto; min-height: 0; }
+  .game-spotlight-card { padding: 1.15rem; }
+  .game-spotlight-card h3 { overflow-wrap: anywhere; }
+  .trivia-feature { min-width: 0; padding: 1rem; }
+  .trivia-media { width: 100%; }
+  .battle-hero { grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: .3rem; }
+  .battle-side { min-width: 0; }
+  .battle-side img { width: 100%; height: auto; max-height: 100px; object-fit: contain; }
+  .battle-side strong, .battle-side span { overflow-wrap: anywhere; }
+  .battle-data { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  .battle-category { grid-column: 1 / -1; grid-row: auto; }
+  .battle-tabs { gap: .4rem; }
+  .battle-tab { min-height: 44px; padding: .65rem .75rem; }
+  .comments-layout { gap: 1rem; }
+  .comment-form input, .comment-form textarea, .roulette-input { min-width: 0; font-size: 16px; }
+  .comment-submit, .roulette-btn, .roulette-audio-toggle { min-height: 46px; }
+  .comment-entry time { float: none; display: block; margin-top: .3rem; }
+  .feature-footer { gap: .7rem; font-size: .56rem; }
+  .roulette-section { padding: 1.25rem .15rem; }
+  .roulette-inner { width: 100%; min-width: 0; }
+  .roulette-title { font-size: clamp(2.15rem, 11vw, 3.6rem); overflow-wrap: anywhere; }
+  .roulette-lead { font-size: .9rem; }
+  .roulette-layout { width: 100%; margin-top: 1rem; }
+  .roulette-panel { padding: .8rem; border-radius: 16px; }
+  .roulette-form { display: grid; grid-template-columns: minmax(0,1fr); gap: .55rem; }
+  .roulette-form > * { width: 100%; min-width: 0; }
+  .roulette-form #roulette-create { grid-column: 1 / -1; }
+  .roulette-input { min-height: 46px; padding: .8rem; }
+  .roulette-btn { width: 100%; padding: .78rem .75rem; }
+  .roulette-wheel-wrap { width: 100%; padding: 1.3rem 0 1rem; overflow: hidden; }
+  .roulette-wheel { width: min(84vw, 340px); max-width: 100%; }
+  .roulette-wheel-label { font-size: clamp(.43rem, 1.6vw, .55rem); max-width: 34%; }
+  .roulette-wheel-label .hearts { font-size: .5rem; }
+  .roulette-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .35rem; }
+  .roulette-stats span { min-width: 0; padding: .5rem .25rem; font-size: clamp(.48rem, 1.7vw, .62rem); text-align: center; overflow-wrap: anywhere; }
+  .roulette-challenge-box { min-width: 0; padding: .9rem .55rem; }
+  .roulette-challenge-label { font-size: .68rem; }
+  .roulette-challenge-box .roulette-game-word { font-size: clamp(1.55rem, 7vw, 2.7rem); letter-spacing: .08em; overflow-wrap: anywhere; }
+  .roulette-challenge-box .roulette-clue { font-size: .88rem; }
+  .roulette-word-hint, .roulette-status { overflow-wrap: anywhere; }
+  .roulette-answer-form { display: grid; grid-template-columns: minmax(0,1fr); }
+  .roulette-live-answer { font-size: .78rem; overflow-wrap: anywhere; }
+  .roulette-rank { grid-template-columns: 1.6rem minmax(0,1fr) auto; gap: .45rem; font-size: .7rem; }
+  .roulette-audio-toggle { width: auto; padding-inline: 1rem; }
+}
+@media (max-width: 420px) {
+  .hero { padding-inline: .75rem; }
+  .brand-wordmark { font-size: .68rem; }
+  .header-status { font-size: .46rem; }
+  .hero h1 { font-size: clamp(2.55rem, 12vw, 3.3rem); }
+  .hero-intro { max-width: 31ch; font-size: .84rem; }
+  .menu-item { grid-template-columns: 1.25rem 1rem minmax(0,1fr) .8rem; gap: .28rem; }
+  .menu-item svg { width: 16px; height: 16px; }
+  .menu-label { font-size: .61rem; letter-spacing: .025em; }
+  .menu-arrow { font-size: .95rem; }
+  .about, .feature-section { padding-inline: .75rem; }
+  .about-brand, .feature-brand { font-size: .58rem; letter-spacing: .07em; }
+  .back-link { font-size: .48rem; letter-spacing: .04em; }
+  .team-grid { width: calc(100% + 14px); margin-left: -7px; padding-inline: 7px; }
+  .timeline-section { padding-inline: .65rem; }
+  .stage-card { flex-basis: 88vw; width: 88vw; }
+  .stage-body { padding-inline: .8rem; }
+  .stage-copy h3 { max-width: 100%; font-size: clamp(1.85rem, 9vw, 2.5rem); }
+  .timeline-controls { flex-wrap: wrap; }
+  .progress-meta { flex-wrap: wrap; justify-content: center; }
+  .feature-title { font-size: clamp(2.15rem, 11.5vw, 3.2rem); }
+  .trivia-media { grid-template-columns: minmax(0,1fr); }
+  .trivia-photo-michael { grid-column: auto; }
+  .trivia-photo img, .trivia-photo-michael img { height: auto; max-height: 250px; object-fit: cover; }
+  .battle-hero { grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
+  .battle-side img { max-height: 74px; }
+  .battle-side strong { font-size: .72rem; }
+  .battle-side span { font-size: .45rem; }
+  .battle-vs { font-size: 1.8rem; }
+  .roulette-panel { padding: .6rem; }
+  .roulette-wheel { width: min(86vw, 310px); }
+  .roulette-center-arrow { width: 48px; height: 48px; font-size: 1.35rem; }
+  .roulette-wheel:after { width: 48px; height: 48px; }
+  .roulette-challenge-box .roulette-game-word { font-size: clamp(1.35rem, 6.4vw, 2.2rem); letter-spacing: .045em; }
+  .roulette-winner-card h2 { font-size: clamp(2rem, 11vw, 3rem); }
+  .roulette-podium { max-width: 100%; }
+  .roulette-podium-place b { font-size: .65rem; }
+  .roulette-audio-toggle { max-width: 100%; }
+  .comment-form { padding: .9rem; }
+}
+@media (max-width: 360px) {
+  .hero-art-wrap { width: min(72vw, 250px); }
+  .header-status { gap: .25rem; letter-spacing: 0; }
+  .menu-label { font-size: .57rem; }
+  .menu-number { font-size: .55rem; }
+  .about-header, .timeline-header, .feature-header { gap: .35rem; }
+  .member-card { flex-basis: 116px; }
+  .feature-header .back-link { max-width: 44%; }
+  .roulette-stats span { font-size: .46rem; }
+  .roulette-wheel-label { font-size: .42rem; }
+  .roulette-rank { grid-template-columns: 1.25rem minmax(0,1fr) auto; font-size: .65rem; }
+}
+
 </style>
 </head>
 <body>
