@@ -1634,23 +1634,101 @@ async function refresh(){
 if(!room)return;
 if(refreshBusy){refreshPending=true;return;}
 refreshBusy=true;
-try{const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();if(state.data)room=state.data;const r=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});players=r.data||[];setWheel();
-$('roulette-leaderboard').innerHTML=players.map((p,i)=>'<div class="roulette-rank"><b>'+String(i+1).padStart(2,'0')+'</b><span>'+esc(p.player_profiles?.nickname||'PLAYER')+' <small>STREAK x'+p.streak+'</small></span><strong>'+p.score+'</strong></div>').join('');
-if((room.status==='playing'||room.status==='waiting')&&room.host_id===user.id&&players.length>=2&&players.filter(p=>p.lives>0).length===1){const champion=players.find(p=>p.lives>0);await db.from('game_rooms').update({status:'finished',current_player_id:champion.user_id}).eq('id',room.id).eq('status',room.status);return;}
-if(room.status==='spinning'&&room.host_id===user.id&&room.turn_deadline&&Date.now()>new Date(room.turn_deadline).getTime()+1200){const deadline=new Date(Date.now()+20000).toISOString();const recovered=await db.from('game_rooms').update({status:'playing',turn_deadline:deadline}).eq('id',room.id).eq('status','spinning').select().maybeSingle();if(recovered.data)room=recovered.data;else if(recovered.error)say('roulette-status','TURN RECOVERY: '+recovered.error.message);}
-$('roulette-spin').disabled=room.host_id!==user.id||room.status==='finished'||!players.some(p=>p.lives>0)||room.status==='spinning'||room.status==='playing';
-if(room.status!=='playing'&&room.status!=='spinning'&&room.status!=='finished'&&room.host_id===user.id&&players.filter(p=>p.lives>0).length>=2)queueAutoSpin();
-if(room.status==='spinning'){const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;if(spinKey!==key){spinKey=key;const idx=players.findIndex(p=>p.user_id===room.current_player_id),n=Math.max(1,players.length),target=360-(idx+.5)*360/n,currentAngle=((wheelAngle%360)+360)%360,delta=((target-currentAngle+360)%360)+1800;wheelAngle+=delta;$('roulette-wheel').classList.add('is-spinning');$('roulette-wheel').style.transform='rotate('+wheelAngle+'deg)';setTimeout(()=>$('roulette-wheel').classList.remove('is-spinning'),4900);}}
-if(room.status==='finished'){const champion=players.find(p=>p.user_id===room.current_player_id)||players.find(p=>p.lives>0);if(champion)showWinner(champion);}
-if(room.status==='playing'&&room.current_player_id){startChallenge();}else{current=null;challengeKey=null;clearInterval(timer);say('roulette-turn',room.status.toUpperCase());$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;if(room.status!=='spinning')$('roulette-live-answer').textContent='';}
-}catch(error){console.error('PRESS START room refresh:',error);say('roulette-status','CONNECTION ISSUE · SYNCING…');}
-finally{refreshBusy=false;if(refreshPending){refreshPending=false;refresh();}}
+try{
+  const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();
+  if(state.error)throw state.error;
+  if(!state.data)return;
+  room=state.data;
+  const result=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});
+  if(result.error)throw result.error;
+  players=result.data||[];
+  setWheel();
+  $('roulette-leaderboard').innerHTML=players.map((p,i)=>'<div class="roulette-rank"><b>'+String(i+1).padStart(2,'0')+'</b><span>'+esc(p.player_profiles?.nickname||'PLAYER')+' <small>STREAK x'+p.streak+'</small></span><strong>'+p.score+'</strong></div>').join('');
+
+  const alive=players.filter(p=>p.lives>0);
+  if(room.host_id===user.id&&players.length>=2&&alive.length<=1&&(room.status==='playing'||room.status==='waiting')){
+    const result=await db.from('game_rooms').update({status:'finished',current_player_id:alive[0]?.user_id||null,turn_deadline:null})
+      .eq('id',room.id).eq('status',room.status).select().maybeSingle();
+    if(result.error)throw result.error;
+    if(result.data)room=result.data;
+  }else if(room.host_id===user.id&&room.status==='spinning'&&room.turn_deadline&&Date.now()>=new Date(room.turn_deadline).getTime()){
+    const deadline=new Date(Date.now()+20000).toISOString();
+    const result=await db.from('game_rooms').update({status:'playing',turn_deadline:deadline})
+      .eq('id',room.id).eq('status','spinning').eq('current_player_id',room.current_player_id).eq('turn_deadline',room.turn_deadline).select().maybeSingle();
+    if(result.error)throw result.error;
+    if(result.data)room=result.data;
+  }else if(room.host_id===user.id&&room.status==='playing'&&room.turn_deadline&&Date.now()>new Date(room.turn_deadline).getTime()+3500){
+    const expiredPlayer=room.current_player_id;
+    const oldDeadline=room.turn_deadline;
+    const result=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
+      .eq('id',room.id).eq('status','playing').eq('current_player_id',expiredPlayer).eq('turn_deadline',oldDeadline).select().maybeSingle();
+    if(result.error)throw result.error;
+    if(result.data){room=result.data;say('roulette-feedback','TURN EXPIRED · CONTINUING THE GAME');}
+  }
+
+  $('roulette-spin').disabled=room.host_id!==user.id||room.status==='finished'||!players.some(p=>p.lives>0)||room.status==='spinning'||room.status==='playing';
+  if(room.status==='waiting'&&room.host_id===user.id&&players.filter(p=>p.lives>0).length>=2)queueAutoSpin();
+  if(room.status==='spinning'){
+    const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;
+    if(spinKey!==key){
+      spinKey=key;
+      const idx=players.findIndex(p=>p.user_id===room.current_player_id),n=Math.max(1,players.length);
+      const target=360-(idx+.5)*360/n,currentAngle=((wheelAngle%360)+360)%360,delta=((target-currentAngle+360)%360)+1800;
+      wheelAngle+=delta;
+      $('roulette-wheel').classList.add('is-spinning');
+      $('roulette-wheel').style.transform='rotate('+wheelAngle+'deg)';
+      setTimeout(()=>$('roulette-wheel').classList.remove('is-spinning'),5100);
+    }
+  }
+  if(room.status==='finished'){
+    const champion=players.find(p=>p.user_id===room.current_player_id)||players.find(p=>p.lives>0);
+    if(champion)showWinner(champion);
+    else say('roulette-turn','GAME OVER');
+  }
+  if(room.status==='playing'&&room.current_player_id){startChallenge();}
+  else{
+    current=null;challengeKey=null;clearInterval(timer);
+    say('roulette-turn',room.status.toUpperCase());
+    $('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
+    if(room.status!=='spinning')$('roulette-live-answer').textContent='';
+  }
+}catch(error){
+  console.error('PRESS START room refresh:',error);
+  say('roulette-status','CONNECTION ISSUE · RECONNECTING…');
+}finally{
+  refreshBusy=false;
+  if(refreshPending){refreshPending=false;refresh();}
+}
 }
 function startChallenge(){const p=players.find(x=>x.user_id===room.current_player_id);if(!p)return;const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;if(challengeKey===key)return;challengeKey=key;const seed=String(room.current_player_id)+String(room.turn_deadline||'');let hash=0;for(let i=0;i<seed.length;i++)hash=(hash*31+seed.charCodeAt(i))>>>0;const pool=words.filter(w=>w[0].length>=4+Math.min(4,Math.floor(p.streak/2))*2);current=pool[hash%pool.length];liveText='';$('roulette-live-answer').textContent='';const isTurn=p.user_id===user.id;
 $('roulette-word').textContent=current[0].split('').map((c,i)=>i===0||i===current[0].length-1?c:'_').join(' ');say('roulette-clue',(isTurn?'YOUR TURN · ':'NOW PLAYING · ')+(p.player_profiles?.nickname||'PLAYER')+' — '+words.find(w=>w[0]===current[0])[1]);say('roulette-word-hint',(p.player_profiles?.nickname||'PLAYER')+' IS COMPLETING THE WORD · WATCH THE PROGRESS');say('roulette-turn',(isTurn?'YOUR TURN':'PLAYER: '+(p.player_profiles?.nickname||'PLAYER'))+' · STREAK x'+p.streak);$('roulette-lives').textContent='♥ '.repeat(p.lives);$('roulette-answer').disabled=!isTurn;$('roulette-submit').disabled=!isTurn;$('roulette-answer').value='';if(isTurn)$('roulette-answer').focus();
 const deadline=new Date(room.turn_deadline).getTime();clearInterval(timer);const tick=()=>{seconds=Math.max(0,Math.ceil((deadline-Date.now())/1000));say('roulette-timer','00:'+String(seconds).padStart(2,'0'));document.querySelector('.roulette-panel')?.classList.toggle('is-tense',seconds<=7&&seconds>0);if(seconds===0&&isTurn&&!answering)miss('TIME UP!');};tick();timer=setInterval(tick,250);}
-async function miss(reason){if(!current||answering||room.current_player_id!==user.id)return;answering=true;const answer=current[0],p=players.find(x=>x.user_id===user.id),remaining=Math.max(0,p.lives-1);clearInterval(timer);say('roulette-feedback',reason+' · WORD: '+answer);$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;const r=await db.from('room_players').update({lives:remaining,streak:0}).eq('room_id',room.id).eq('user_id',user.id);if(r.error){say('roulette-feedback',r.error.message);answering=false;return;}showLifeLost(p.player_profiles?.nickname||'PLAYER',remaining);if(channel)channel.send({type:'broadcast',event:'life_lost',payload:{user_id:user.id,nickname:p.player_profiles?.nickname||'PLAYER',lives:remaining}});answering=false;current=null;const end=await db.from('game_rooms').update({status:'waiting',current_player_id:null}).eq('id',room.id).eq('status','playing');if(end.error)say('roulette-feedback',end.error.message);else room={...room,status:'waiting',current_player_id:null};await refresh();}
-
+async function miss(reason){
+if(!current||answering||!room||room.status!=='playing'||room.current_player_id!==user.id)return;
+answering=true;
+const answer=current[0],p=players.find(x=>x.user_id===user.id),remaining=Math.max(0,(p?.lives??1)-1),turnDeadline=room.turn_deadline,roomId=room.id;
+clearInterval(timer);say('roulette-feedback',reason+' · WORD: '+answer);
+$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
+try{
+  if(!p)throw new Error('PLAYER DATA NOT FOUND');
+  const saved=await db.from('room_players').update({lives:remaining,streak:0}).eq('room_id',roomId).eq('user_id',user.id).select('user_id').maybeSingle();
+  if(saved.error)throw saved.error;
+  if(!saved.data)throw new Error('COULD NOT SAVE LIFE LOSS');
+  showLifeLost(p.player_profiles?.nickname||'PLAYER',remaining);
+  if(channel)channel.send({type:'broadcast',event:'life_lost',payload:{user_id:user.id,nickname:p.player_profiles?.nickname||'PLAYER',lives:remaining}});
+  const end=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
+    .eq('id',roomId).eq('status','playing').eq('current_player_id',user.id).eq('turn_deadline',turnDeadline).select().maybeSingle();
+  if(end.error)throw end.error;
+  current=null;
+  if(end.data)room=end.data;
+  else say('roulette-feedback','TURN ALREADY MOVED · SYNCING…');
+  await refresh();
+}catch(error){
+  console.error('PRESS START failed turn:',error);
+  say('roulette-feedback',error.message||'COULD NOT FINISH THIS TURN');
+  await refresh();
+}finally{answering=false;}
+}
 function audioReady(){if(!soundOn)return null;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;if(!audioCtx)audioCtx=new AC();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx;}catch(e){return null;}}
 function tone(freq,duration,gain=.025,type='sine',delay=0){const c=audioReady();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,c.currentTime+delay);g.gain.exponentialRampToValueAtTime(gain,c.currentTime+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+delay+duration);o.connect(g);g.connect(c.destination);o.start(c.currentTime+delay);o.stop(c.currentTime+delay+duration+.06);}
 function startMusic(){if(!soundOn||musicTimer)return;audioReady();const notes=[110,146.83,164.81,130.81];let i=0;const beat=()=>{if(!soundOn)return;tone(notes[i%notes.length],1.05,.012,'triangle');tone(notes[i%notes.length]*2,.7,.006,'sine',.08);i++;};beat();musicTimer=setInterval(beat,900);}
@@ -1660,16 +1738,79 @@ function playJingle(){[523.25,659.25,783.99,1046.5].forEach((n,i)=>tone(n,.32,.0
 function showSuccess(nickname,points){const box=$('roulette-success-event');$('roulette-success-message').textContent=nickname+' · +'+points+' POINTS!';box.hidden=false;const burst=box.querySelector('.roulette-success-burst');burst.style.animation='none';void burst.offsetWidth;burst.style.animation='successBurst .75s cubic-bezier(.16,1.4,.3,1) both';setTimeout(()=>{box.hidden=true;},1700);}
 function showLifeLost(nickname,lives){const box=$('roulette-life-event');$('roulette-life-message').textContent=(nickname||'PLAYER')+' LOST A LIFE · '+lives+' LEFT';box.hidden=false;const heart=$('roulette-life-event').querySelector('.roulette-broken-heart');heart.style.animation='none';void heart.offsetWidth;heart.style.animation='heartBreak 1.35s cubic-bezier(.2,.8,.2,1) both';setTimeout(()=>{box.hidden=true;},1900);}
 function showWinner(champion){const overlay=$('roulette-winner-overlay');if(!overlay.hidden)return;$('roulette-winner-name').textContent=champion.player_profiles?.nickname||'PLAYER';const top=players.slice(0,3);$('roulette-podium').innerHTML=top.map((p,i)=>{const cls=i===0?'first':i===1?'second':'third';return '<div class="roulette-podium-place '+cls+'"><b>'+esc(p.player_profiles?.nickname||'PLAYER')+' · '+p.score+'</b><div class="roulette-podium-block">'+(i===0?'🏆':i===1?'2ND':'3RD')+'</div></div>';}).join('');overlay.hidden=false;$('roulette-spin').disabled=true;}
-async function submit(){if(!current||answering||room.current_player_id!==user.id)return;const guess=$('roulette-answer').value.trim().toUpperCase(),p=players.find(x=>x.user_id===user.id);if(guess===current[0]){answering=true;clearInterval(timer);document.querySelector('.roulette-panel')?.classList.remove('is-tense');const points=100+p.streak*25;const r=await db.from('room_players').update({score:p.score+points,streak:p.streak+1}).eq('room_id',room.id).eq('user_id',user.id);say('roulette-feedback',r.error?r.error.message:'★ CORRECT! +'+points+' POINTS');if(!r.error){showSuccess(p.player_profiles?.nickname||'PLAYER',points);playJingle();}$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;answering=false;current=null;const end=await db.from('game_rooms').update({status:'waiting',current_player_id:null}).eq('id',room.id).eq('status','playing');if(end.error)say('roulette-feedback',end.error.message);else room={...room,status:'waiting',current_player_id:null};await refresh();}else await miss('WRONG ANSWER! STREAK LOST.');}
+async function submit(){
+if(!current||answering||!room||room.status!=='playing'||room.current_player_id!==user.id)return;
+const guess=$('roulette-answer').value.trim().toUpperCase(),p=players.find(x=>x.user_id===user.id);
+if(guess!==current[0]){await miss('WRONG ANSWER! STREAK LOST.');return;}
+answering=true;clearInterval(timer);document.querySelector('.roulette-panel')?.classList.remove('is-tense');
+const points=100+(p?.streak||0)*25,turnDeadline=room.turn_deadline,roomId=room.id;
+$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
+try{
+  if(!p)throw new Error('PLAYER DATA NOT FOUND');
+  const saved=await db.from('room_players').update({score:p.score+points,streak:p.streak+1}).eq('room_id',roomId).eq('user_id',user.id).select('user_id').maybeSingle();
+  if(saved.error)throw saved.error;
+  if(!saved.data)throw new Error('COULD NOT SAVE SCORE');
+  showSuccess(p.player_profiles?.nickname||'PLAYER',points);playJingle();
+  const end=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
+    .eq('id',roomId).eq('status','playing').eq('current_player_id',user.id).eq('turn_deadline',turnDeadline).select().maybeSingle();
+  if(end.error)throw end.error;
+  current=null;
+  if(end.data)room=end.data;
+  else say('roulette-feedback','TURN ALREADY MOVED · SYNCING…');
+  await refresh();
+}catch(error){
+  console.error('PRESS START failed answer:',error);
+  say('roulette-feedback',error.message||'COULD NOT SAVE THE ANSWER');
+  await refresh();
+}finally{answering=false;}
+}
 $('roulette-audio').onclick=()=>{soundOn=!soundOn;$('roulette-audio').textContent=soundOn?'♫ SOUND: ON':'♫ SOUND: OFF';if(soundOn)startMusic();else stopMusic();};
 $('roulette-save-profile').onclick=async()=>{if(user)await profile();};
 $('roulette-create').onclick=async()=>{startMusic();if(!user||!await profile())return;const code=Math.random().toString(36).slice(2,8).toUpperCase(),r=await db.from('game_rooms').insert({room_code:code,host_id:user.id}).select().single();if(r.error){say('roulette-status',r.error.message);return;}await enter(r.data);};
 $('roulette-join').onclick=async()=>{startMusic();if(!user||!await profile())return;const r=await db.from('game_rooms').select('*').eq('room_code',$('roulette-code').value.trim().toUpperCase()).maybeSingle();if(r.error||!r.data){say('roulette-status','ROOM NOT FOUND. CHECK THE CODE.');return;}await enter(r.data);};
-async function spinNext(){if(!room||room.host_id!==user.id||spinning||room.status==='finished'||room.status==='playing'||room.status==='spinning')return;const alive=players.filter(p=>p.lives>0);if(alive.length<2){await refresh();return;}spinning=true;$('roulette-spin').disabled=true;const selected=alive[Math.floor(Math.random()*alive.length)],spinAt=Date.now(),spinDeadline=new Date(spinAt+5000).toISOString();const r=await db.from('game_rooms').update({status:'spinning',current_player_id:selected.user_id,turn_deadline:spinDeadline}).eq('id',room.id).eq('status',room.status).select().maybeSingle();if(r.error||!r.data){say('roulette-status',r.error?.message||'THE ROOM STATE CHANGED. RESYNCING…');spinning=false;lastQueuedKey=null;await refresh();return;}room=r.data;playSpinSound();await refresh();setTimeout(async()=>{if(!room||room.id!==r.data.id){spinning=false;return;}const deadline=new Date(Date.now()+20000).toISOString();const done=await db.from('game_rooms').update({status:'playing',turn_deadline:deadline}).eq('id',room.id).eq('status','spinning').select().maybeSingle();if(done.data){room=done.data;await refresh();}else if(done.error){say('roulette-status','TURN START: '+done.error.message);await refresh();}spinning=false;},4300);}
-function queueAutoSpin(){const key=room.id+'|'+players.map(p=>p.user_id+':'+p.lives+':'+p.score+':'+p.streak).join(',')+'|'+room.status+'|'+room.current_player_id;if(lastQueuedKey===key)return;lastQueuedKey=key;clearTimeout(nextSpinTimer);nextSpinTimer=setTimeout(()=>{if(room&&room.status!=='finished')spinNext();},2200);}
+async function spinNext(){
+if(!room||room.host_id!==user.id||spinning||room.status==='finished')return;
+spinning=true;$('roulette-spin').disabled=true;
+try{
+  const state=await db.from('game_rooms').select('*').eq('id',room.id).maybeSingle();
+  if(state.error)throw state.error;
+  if(!state.data)return;
+  room=state.data;
+  if(room.status!=='waiting')return;
+  const roster=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});
+  if(roster.error)throw roster.error;
+  players=roster.data||[];
+  const alive=players.filter(p=>p.lives>0);
+  if(alive.length<2){await refresh();return;}
+  const selected=alive[Math.floor(Math.random()*alive.length)],spinDeadline=new Date(Date.now()+5000).toISOString();
+  const result=await db.from('game_rooms').update({status:'spinning',current_player_id:selected.user_id,turn_deadline:spinDeadline})
+    .eq('id',room.id).eq('status','waiting').select().maybeSingle();
+  if(result.error)throw result.error;
+  if(!result.data){lastQueuedKey=null;await refresh();return;}
+  room=result.data;playSpinSound();await refresh();
+}catch(error){
+  console.error('PRESS START spin failed:',error);
+  say('roulette-status','SPIN COULD NOT START · RETRYING…');
+  lastQueuedKey=null;
+}catchDone: {
+}finally{
+  spinning=false;
+}
+}
+function queueAutoSpin(){
+const key=room.id+'|'+players.map(p=>p.user_id+':'+p.lives+':'+p.score+':'+p.streak).join(',')+'|'+room.status+'|'+room.current_player_id;
+if(lastQueuedKey===key)return;
+lastQueuedKey=key;clearTimeout(nextSpinTimer);
+nextSpinTimer=setTimeout(async()=>{
+  if(room&&room.status==='waiting'){
+    await spinNext();
+    if(room?.status==='waiting'&&lastQueuedKey===key)lastQueuedKey=null;
+  }
+},1400);
+}
 $('roulette-spin').onclick=()=>{if(!room)return;startMusic();lastQueuedKey=null;clearTimeout(nextSpinTimer);spinNext();};
 $('roulette-answer').addEventListener('input',e=>{if(!room||room.current_player_id!==user.id||!channel)return;channel.send({type:'broadcast',event:'typing',payload:{user_id:user.id,text:e.target.value.toUpperCase().slice(0,20)}});});
-$('roulette-submit').onclick=submit;$('roulette-answer').addEventListener('keydown',e=>{if(e.key==='Enter')submit();});setInterval(()=>{if(room)refresh();},1800);
+$('roulette-submit').onclick=submit;$('roulette-answer').addEventListener('keydown',e=>{if(e.key==='Enter')submit();});setInterval(()=>{if(room)refresh();},900);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&room)refresh();});
 init();
 })();
