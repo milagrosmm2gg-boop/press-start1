@@ -1624,7 +1624,7 @@
 (()=>{const URL='https://mzfravlmrmlrlsmixszk.supabase.co',KEY='sb_publishable_p172H18pZGCkDp1oIBG5Yw_QjUSwbPj',$=id=>document.getElementById(id);
 if(!window.supabase||!$('roulette-create'))return;const db=window.supabase.createClient(URL,KEY);
 const words=[['PIXEL','A tiny square that makes up a digital image.'],['MOUSE','A device used to point and click on a computer.'],['LEVEL','A stage or section in a video game.'],['ARCADE','A place full of video game machines.'],['JOYSTICK','A controller with a stick used to move in games.'],['CONSOLE','A machine designed mainly for playing video games.'],['CARTRIDGE','A removable game format used by classic consoles.'],['MULTIPLAYER','A game mode where several people play together.'],['CHECKPOINT','A saved position you can return to after failing.'],['PLAYSTATION','A famous family of video game consoles.'],['ACHIEVEMENT','A reward for completing a special challenge.'],['LEADERBOARD','A ranking that compares player scores.'],['COMPETITIVE','Describes a game focused on beating other players.'],['PROCEDURAL','Generated automatically by rules or algorithms.']];
-let user=null,room=null,players=[],channel=null,timer=null,seconds=0,current=null,spinning=false,challengeKey=null,spinKey=null,liveText='',answering=false,nextSpinTimer=null,lastQueuedKey=null,audioCtx=null,musicTimer=null,soundOn=true,refreshBusy=false,refreshPending=false,wheelAngle=0;
+let user=null,room=null,players=[],channel=null,timer=null,seconds=0,current=null,spinning=false,challengeKey=null,spinKey=null,liveText='',answering=false,nextSpinTimer=null,lastQueuedKey=null,audioCtx=null,musicTimer=null,soundOn=true,refreshBusy=false,refreshPending=false,wheelAngle=0,turnSnapshot=null;
 const say=(id,msg)=>$(id).textContent=msg,esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function setWheel(){const wheel=$('roulette-wheel'),n=players.length;if(!n){wheel.style.background='conic-gradient(#222b50,#10162d)';wheel.innerHTML='';return;}const colors=['#f45b83','#26375e','#44aeca','#563b83','#a34169','#314c78'];wheel.style.background='conic-gradient('+players.map((p,i)=>colors[i%colors.length]+' '+(i*360/n)+'deg '+((i+1)*360/n)+'deg').join(',')+')';wheel.innerHTML=players.map((p,i)=>{const angle=(i+.5)*2*Math.PI/n-Math.PI/2,r=.34,x=50+Math.cos(angle)*r*100,y=50+Math.sin(angle)*r*100;return '<div class="roulette-wheel-label '+(p.user_id===room?.current_player_id?'active':'')+'" style="left:'+x+'%;top:'+y+'%"><span class="wheel-name">'+esc(p.player_profiles?.nickname||'PLAYER')+'</span><span class="hearts">'+('♥ '.repeat(Math.max(0,p.lives))||'—')+'</span></div>';}).join('');}
 async function init(){let r=await db.auth.getSession();if(!r.data.session){r=await db.auth.signInAnonymously();if(r.error){say('roulette-status','ENABLE ANONYMOUS SIGN-INS IN SUPABASE AUTH SETTINGS.');return;}user=r.data.user;}else user=r.data.session.user;const p=await db.from('player_profiles').select('*').eq('user_id',user.id).maybeSingle();if(p.data){$('roulette-nickname').value=p.data.nickname;say('roulette-profile-status','PROFILE READY · '+p.data.nickname);}say('roulette-status','CONNECTED · CREATE A ROOM OR ENTER A ROOM CODE.');}
@@ -1651,6 +1651,15 @@ try{
       .eq('id',room.id).eq('status',room.status).select().maybeSingle();
     if(result.error)throw result.error;
     if(result.data)room=result.data;
+  }else if(room.host_id===user.id&&room.status==='playing'&&room.current_player_id&&room.turn_deadline){
+    const active=players.find(p=>p.user_id===room.current_player_id);
+    const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;
+    if(active&&turnSnapshot?.key===key&&(active.score!==turnSnapshot.score||active.streak!==turnSnapshot.streak||active.lives!==turnSnapshot.lives)){
+      const result=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
+        .eq('id',room.id).eq('status','playing').eq('current_player_id',room.current_player_id).eq('turn_deadline',room.turn_deadline).select().maybeSingle();
+      if(result.error)throw result.error;
+      if(result.data)room=result.data;
+    }
   }else if(room.host_id===user.id&&room.status==='spinning'&&room.turn_deadline&&Date.now()>=new Date(room.turn_deadline).getTime()){
     const deadline=new Date(Date.now()+20000).toISOString();
     const result=await db.from('game_rooms').update({status:'playing',turn_deadline:deadline})
@@ -1700,13 +1709,13 @@ try{
   if(refreshPending){refreshPending=false;refresh();}
 }
 }
-function startChallenge(){const p=players.find(x=>x.user_id===room.current_player_id);if(!p)return;const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;if(challengeKey===key)return;challengeKey=key;const seed=String(room.current_player_id)+String(room.turn_deadline||'');let hash=0;for(let i=0;i<seed.length;i++)hash=(hash*31+seed.charCodeAt(i))>>>0;const pool=words.filter(w=>w[0].length>=4+Math.min(4,Math.floor(p.streak/2))*2);current=pool[hash%pool.length];liveText='';$('roulette-live-answer').textContent='';const isTurn=p.user_id===user.id;
+function startChallenge(){const p=players.find(x=>x.user_id===room.current_player_id);if(!p)return;const key=room.id+'|'+room.current_player_id+'|'+room.turn_deadline;if(challengeKey===key)return;challengeKey=key;turnSnapshot={key,score:p.score,streak:p.streak,lives:p.lives};const seed=String(room.current_player_id)+String(room.turn_deadline||'');let hash=0;for(let i=0;i<seed.length;i++)hash=(hash*31+seed.charCodeAt(i))>>>0;const pool=words.filter(w=>w[0].length>=4+Math.min(4,Math.floor(p.streak/2))*2);current=pool[hash%pool.length];liveText='';$('roulette-live-answer').textContent='';const isTurn=p.user_id===user.id;
 $('roulette-word').textContent=current[0].split('').map((c,i)=>i===0||i===current[0].length-1?c:'_').join(' ');say('roulette-clue',(isTurn?'YOUR TURN · ':'NOW PLAYING · ')+(p.player_profiles?.nickname||'PLAYER')+' — '+words.find(w=>w[0]===current[0])[1]);say('roulette-word-hint',(p.player_profiles?.nickname||'PLAYER')+' IS COMPLETING THE WORD · WATCH THE PROGRESS');say('roulette-turn',(isTurn?'YOUR TURN':'PLAYER: '+(p.player_profiles?.nickname||'PLAYER'))+' · STREAK x'+p.streak);$('roulette-lives').textContent='♥ '.repeat(p.lives);$('roulette-answer').disabled=!isTurn;$('roulette-submit').disabled=!isTurn;$('roulette-answer').value='';if(isTurn)$('roulette-answer').focus();
 const deadline=new Date(room.turn_deadline).getTime();clearInterval(timer);const tick=()=>{seconds=Math.max(0,Math.ceil((deadline-Date.now())/1000));say('roulette-timer','00:'+String(seconds).padStart(2,'0'));document.querySelector('.roulette-panel')?.classList.toggle('is-tense',seconds<=7&&seconds>0);if(seconds===0&&isTurn&&!answering)miss('TIME UP!');};tick();timer=setInterval(tick,250);}
 async function miss(reason){
 if(!current||answering||!room||room.status!=='playing'||room.current_player_id!==user.id)return;
 answering=true;
-const answer=current[0],p=players.find(x=>x.user_id===user.id),remaining=Math.max(0,(p?.lives??1)-1),turnDeadline=room.turn_deadline,roomId=room.id;
+const answer=current[0],p=players.find(x=>x.user_id===user.id),remaining=Math.max(0,(p?.lives??1)-1),roomId=room.id;
 clearInterval(timer);say('roulette-feedback',reason+' · WORD: '+answer);
 $('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
 try{
@@ -1716,12 +1725,7 @@ try{
   if(!saved.data)throw new Error('COULD NOT SAVE LIFE LOSS');
   showLifeLost(p.player_profiles?.nickname||'PLAYER',remaining);
   if(channel)channel.send({type:'broadcast',event:'life_lost',payload:{user_id:user.id,nickname:p.player_profiles?.nickname||'PLAYER',lives:remaining}});
-  const end=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
-    .eq('id',roomId).eq('status','playing').eq('current_player_id',user.id).eq('turn_deadline',turnDeadline).select().maybeSingle();
-  if(end.error)throw end.error;
   current=null;
-  if(end.data)room=end.data;
-  else say('roulette-feedback','TURN ALREADY MOVED · SYNCING…');
   await refresh();
 }catch(error){
   console.error('PRESS START failed turn:',error);
@@ -1743,7 +1747,7 @@ if(!current||answering||!room||room.status!=='playing'||room.current_player_id!=
 const guess=$('roulette-answer').value.trim().toUpperCase(),p=players.find(x=>x.user_id===user.id);
 if(guess!==current[0]){await miss('WRONG ANSWER! STREAK LOST.');return;}
 answering=true;clearInterval(timer);document.querySelector('.roulette-panel')?.classList.remove('is-tense');
-const points=100+(p?.streak||0)*25,turnDeadline=room.turn_deadline,roomId=room.id;
+const points=100+(p?.streak||0)*25,roomId=room.id;
 $('roulette-answer').disabled=true;$('roulette-submit').disabled=true;
 try{
   if(!p)throw new Error('PLAYER DATA NOT FOUND');
@@ -1751,12 +1755,7 @@ try{
   if(saved.error)throw saved.error;
   if(!saved.data)throw new Error('COULD NOT SAVE SCORE');
   showSuccess(p.player_profiles?.nickname||'PLAYER',points);playJingle();
-  const end=await db.from('game_rooms').update({status:'waiting',current_player_id:null,turn_deadline:null})
-    .eq('id',roomId).eq('status','playing').eq('current_player_id',user.id).eq('turn_deadline',turnDeadline).select().maybeSingle();
-  if(end.error)throw end.error;
   current=null;
-  if(end.data)room=end.data;
-  else say('roulette-feedback','TURN ALREADY MOVED · SYNCING…');
   await refresh();
 }catch(error){
   console.error('PRESS START failed answer:',error);
