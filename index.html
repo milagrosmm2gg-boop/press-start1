@@ -404,7 +404,24 @@
       .hero-art,.menu-item,.menu-arrow,.member-card,.stage-card,.timeline-track,.progress-fill { transition:none; }
       .history-chapter,.visual-progress span,.visual-nav button { transition:none; }
     }
-  </style>
+  
+.roulette-section{padding:clamp(3rem,7vw,6rem) clamp(1.2rem,5vw,5.5rem);background:#101326;color:#f5f2eb;position:relative;overflow:hidden}
+.roulette-inner{max-width:1180px;margin:auto}.roulette-kicker{font:700 .7rem Consolas,monospace;letter-spacing:.18em;color:#44d6ff}
+.roulette-title{font:900 clamp(2.5rem,7vw,5.5rem)/.95 Arial Black,Arial,sans-serif;letter-spacing:-.07em;margin:.7rem 0;color:#fff}.roulette-title span{color:#f45b83}
+.roulette-lead{color:#b9bdd0;max-width:650px;line-height:1.7}.roulette-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:2rem;align-items:start;margin-top:2.5rem}
+.roulette-panel{background:#232740;border:1px solid #ffffff22;border-radius:18px;padding:clamp(1rem,3vw,1.6rem);box-shadow:0 18px 60px #0005}.roulette-panel h3{font:800 1rem Consolas,monospace;letter-spacing:.08em;margin:0 0 1rem;color:#44d6ff}
+.roulette-form{display:flex;gap:.6rem;flex-wrap:wrap;margin:.8rem 0}.roulette-input{min-width:0;flex:1;background:#11162d;color:white;border:1px solid #505779;border-radius:9px;padding:.85rem}
+.roulette-btn{border:0;border-radius:9px;padding:.85rem 1rem;background:#f45b83;color:#17182b;font-weight:900}.roulette-btn.secondary{background:#44d6ff}.roulette-btn:disabled{opacity:.45;cursor:not-allowed}
+.roulette-status{color:#b9bdd0;font:.78rem/1.6 Consolas,monospace;min-height:1.5rem;margin:.7rem 0}.roulette-wheel-wrap{display:grid;place-items:center;padding:1rem 0}
+.roulette-wheel{width:min(70vw,330px);aspect-ratio:1;border-radius:50%;border:9px solid #f5f2eb;box-shadow:0 0 0 5px #f45b83,0 0 40px #f45b8388;position:relative;background:conic-gradient(#f45b83 0 45deg,#222b50 45deg 90deg,#44d6ff 90deg 135deg,#222b50 135deg 180deg,#f45b83 180deg 225deg,#222b50 225deg 270deg,#44d6ff 270deg 315deg,#222b50 315deg);transition:transform 4s cubic-bezier(.12,.75,.12,1)}
+.roulette-wheel:after{content:"PRESS\A START";white-space:pre;position:absolute;inset:35%;display:grid;place-items:center;text-align:center;border-radius:50%;background:#11162d;border:4px solid #f5f2eb;color:#fff;font:900 .7rem/1.2 Consolas,monospace}
+.roulette-pointer{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:26px solid #fff;margin-bottom:-8px;z-index:2}
+.roulette-players{display:grid;gap:.55rem;margin-top:1rem}.roulette-player{display:flex;justify-content:space-between;gap:1rem;padding:.7rem .8rem;border-radius:9px;background:#11162d;border:1px solid #343b5e;color:#fff;font:.78rem Consolas,monospace}.roulette-player.active{border-color:#44d6ff;box-shadow:inset 3px 0 #44d6ff}
+.roulette-game-word{font:900 clamp(1.8rem,5vw,3rem) Consolas,monospace;letter-spacing:.16em;text-align:center;color:#fff;margin:1rem 0}.roulette-clue{text-align:center;color:#b9bdd0;line-height:1.5}
+.roulette-stats{display:flex;justify-content:center;gap:1.4rem;flex-wrap:wrap;color:#44d6ff;font:700 .75rem Consolas,monospace}.roulette-rank{display:grid;grid-template-columns:2rem 1fr auto;gap:.7rem;align-items:center;padding:.65rem 0;border-bottom:1px solid #ffffff20;color:#fff;font:.8rem Consolas,monospace}
+@media(max-width:800px){.roulette-layout{grid-template-columns:1fr}.roulette-wheel{width:min(72vw,290px)}}
+
+</style>
 </head>
 <body>
   <div class="app-root" id="app">
@@ -433,6 +450,8 @@
             <button class="menu-item" type="button" data-menu="6" data-target="what-if" aria-pressed="false"><span class="menu-number">07</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg><span class="menu-label">WHAT IF...?</span><span class="menu-arrow">↗</span></button>
             <button class="menu-item" type="button" data-menu="7" data-target="console-battle" aria-pressed="false"><span class="menu-number">08</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h10c2 0 3 1 3.7 3.2l1 3.1c.7 2.2-1.6 3.8-3.4 2.3l-2.2-1.8H7.9l-2.2 1.8c-1.8 1.5-4.1-.1-3.4-2.3l1-3.1C4 9 5 8 7 8Z"/><path d="M7 10.5v4m-2-2h4m7-1h.01m2 2h.01"/></svg><span class="menu-label">CONSOLE BATTLE</span><span class="menu-arrow">↗</span></button>
             <button class="menu-item" type="button" data-menu="8" data-target="comments" aria-pressed="false"><span class="menu-number">09</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.5-3A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11h8m-8 3h5"/></svg><span class="menu-label">COMMENTS</span><span class="menu-arrow">↗</span></button>
+
+<button class="menu-item" type="button" data-menu="9" data-target="game" aria-pressed="false"><span class="menu-number">10</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg><span class="menu-label">WORD ROULETTE</span><span class="menu-arrow">↗</span></button>
           </nav>
           <p class="menu-status" id="menu-status" aria-live="polite"><span></span> Choose a destination to begin.</p>
         </div>
@@ -631,7 +650,18 @@
         <div class="feature-footer"><span>NO CONSOLE WAR. JUST GAME HISTORY.</span><a href="#comments">NEXT: JOIN THE CONVERSATION ↓</a></div>
       </div>
     </section>
-    <section class="feature-section" id="comments" aria-labelledby="comments-title">
+  
+<section class="roulette-section" id="game" aria-labelledby="roulette-title"><div class="roulette-inner">
+<p class="roulette-kicker">10 / MULTIPLAYER ARCADE</p><h2 class="roulette-title" id="roulette-title">WORD <span>ROULETTE</span></h2>
+<p class="roulette-lead">One wheel. One player at a time. Complete the English word before the clock hits zero. Build your streak, survive with three lives and take the top spot.</p>
+<div class="roulette-layout"><div class="roulette-panel">
+<h3>PLAYER PROFILE</h3><div class="roulette-form"><input class="roulette-input" id="roulette-nickname" maxlength="18" placeholder="Your arcade nickname"><button class="roulette-btn secondary" id="roulette-save-profile">SAVE PROFILE</button></div><p class="roulette-status" id="roulette-profile-status">Choose a nickname to enter the arcade.</p>
+<h3>JOIN THE GAME</h3><div class="roulette-form"><button class="roulette-btn" id="roulette-create">CREATE ROOM</button><input class="roulette-input" id="roulette-code" maxlength="6" placeholder="ROOM CODE"><button class="roulette-btn secondary" id="roulette-join">JOIN</button></div><p class="roulette-status" id="roulette-status" aria-live="polite">Connecting…</p>
+<div class="roulette-wheel-wrap"><div class="roulette-pointer"></div><div class="roulette-wheel" id="roulette-wheel"></div></div><div style="text-align:center"><button class="roulette-btn" id="roulette-spin" disabled>SPIN THE WHEEL</button></div><div class="roulette-players" id="roulette-players"></div>
+</div><div class="roulette-panel"><h3>YOUR CHALLENGE</h3><div class="roulette-stats"><span id="roulette-turn">WAITING</span><span id="roulette-timer">--:--</span><span id="roulette-lives">♥ ♥ ♥</span></div><div class="roulette-game-word" id="roulette-word">_ _ _ _ _</div><p class="roulette-clue" id="roulette-clue">Join a room. The wheel will choose the next player.</p>
+<div class="roulette-form"><input class="roulette-input" id="roulette-answer" maxlength="20" placeholder="TYPE THE WORD" disabled><button class="roulette-btn secondary" id="roulette-submit" disabled>SUBMIT</button></div><p class="roulette-status" id="roulette-feedback" aria-live="polite"></p><h3>ARCADE LEADERBOARD</h3><div id="roulette-leaderboard"><p class="roulette-status">Scores appear here after you play.</p></div></div></div></div></section>
+
+  <section class="feature-section" id="comments" aria-labelledby="comments-title">
       <div class="feature-inner">
         <header class="feature-header"><a class="feature-brand" href="#welcome"><b>P</b> PRESS START</a><a class="back-link" href="#welcome">BACK TO MENU ↗</a></header>
         <p class="feature-kicker">09 / PLAYER COMMUNITY</p><h2 class="feature-title" id="comments-title">YOUR TURN, <em>PLAYER.</em></h2>
@@ -692,7 +722,8 @@
         'Discover how PRESS START was designed and developed.',
         'Imagine what you can learn by playing and exploring.',
         'Compare two legendary consoles head to head.',
-        'Share your thoughts with the PRESS START team.'
+        'Share your thoughts with the PRESS START team.',
+        'Spin the wheel, solve the word and climb the leaderboard.'
       ];
       function selectMenu(index) {
         menuItems.forEach((button, i) => {
@@ -1538,6 +1569,34 @@
     canvas.style.display='none';
     // The original procedural scene remains visible if a GLB cannot be loaded.
   });
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(()=>{const URL='https://mzfravlmrmlrlsmixszk.supabase.co',KEY='sb_publishable_p172H18pZGCkDp1oIBG5Yw_QjUSwbPj', $=id=>document.getElementById(id);
+if(!window.supabase||!$('roulette-create'))return;const db=window.supabase.createClient(URL,KEY);
+const words=[['PIXEL','A tiny square that makes up a digital image.'],['MOUSE','A device used to point and click on a computer.'],['LEVEL','A stage or section in a video game.'],['ARCADE','A place full of video game machines.'],['JOYSTICK','A controller with a stick used to move in games.'],['CONSOLE','A machine designed mainly for playing video games.'],['CARTRIDGE','A removable game format used by classic consoles.'],['MULTIPLAYER','A game mode where several people play together.'],['CHECKPOINT','A saved position you can return to after failing.'],['PLAYSTATION','A famous family of video game consoles.'],['ACHIEVEMENT','A reward for completing a special challenge.'],['LEADERBOARD','A ranking that compares player scores.'],['COMPETITIVE','Describes a game focused on beating other players.'],['PROCEDURAL','Generated automatically by rules or algorithms.']];
+let user=null,room=null,players=[],channel=null,timer=null,seconds=0,current=null,spinning=false;
+const say=(id,msg)=>$(id).textContent=msg,esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function init(){let r=await db.auth.getSession();if(!r.data.session){r=await db.auth.signInAnonymously();if(r.error){say('roulette-status','ENABLE ANONYMOUS SIGN-INS IN SUPABASE AUTH SETTINGS.');return;}user=r.data.user;}else user=r.data.session.user;
+const p=await db.from('player_profiles').select('*').eq('user_id',user.id).maybeSingle();if(p.data){$('roulette-nickname').value=p.data.nickname;say('roulette-profile-status','PROFILE READY · '+p.data.nickname);}say('roulette-status','CONNECTED · CREATE A ROOM OR ENTER A ROOM CODE.');}
+async function profile(){const nickname=$('roulette-nickname').value.trim();if(nickname.length<2){say('roulette-profile-status','USE AT LEAST 2 CHARACTERS.');return false;}const r=await db.from('player_profiles').upsert({user_id:user.id,nickname});say('roulette-profile-status',r.error?r.error.message:'PROFILE SAVED · '+nickname);return !r.error;}
+async function enter(found){room=found;let r=await db.from('room_players').upsert({room_id:room.id,user_id:user.id,is_active:true},{onConflict:'room_id,user_id'});if(r.error){say('roulette-status',r.error.message);return;}$('roulette-code').value=room.room_code;say('roulette-status','ROOM '+room.room_code+' · SHARE THIS CODE WITH FRIENDS');await refresh();if(channel)db.removeChannel(channel);channel=db.channel('room-'+room.id).on('postgres_changes',{event:'*',schema:'public',table:'room_players',filter:'room_id=eq.'+room.id},refresh).on('postgres_changes',{event:'*',schema:'public',table:'game_rooms',filter:'id=eq.'+room.id},async e=>{room=e.new;await refresh();}).subscribe();}
+async function refresh(){if(!room)return;const r=await db.from('room_players').select('user_id,score,streak,lives,is_active,player_profiles(nickname)').eq('room_id',room.id).order('score',{ascending:false});players=r.data||[];
+$('roulette-players').innerHTML=players.map(p=>'<div class="roulette-player '+(p.user_id===room.current_player_id?'active':'')+'"><span>'+esc(p.player_profiles?.nickname||'PLAYER')+(p.user_id===room.current_player_id?' ◀':'')+'</span><span>'+p.score+' PTS · x'+p.streak+' · ♥'+p.lives+'</span></div>').join('');
+$('roulette-spin').disabled=room.host_id!==user.id||room.status==='finished'||!players.some(p=>p.lives>0);
+$('roulette-wheel').style.background=players.length?'conic-gradient('+players.map((p,i)=>['#f45b83','#222b50','#44d6ff','#563b83'][i%4]+' '+(i*360/players.length)+'deg '+((i+1)*360/players.length)+'deg').join(',')+')':'';
+$('roulette-leaderboard').innerHTML=players.map((p,i)=>'<div class="roulette-rank"><b>'+String(i+1).padStart(2,'0')+'</b><span>'+esc(p.player_profiles?.nickname||'PLAYER')+' <small>STREAK x'+p.streak+'</small></span><strong>'+p.score+'</strong></div>').join('');
+if(room.current_player_id===user.id&&room.status==='playing')challenge();else if(room.status==='playing'){say('roulette-turn','PLAYER TURN');$('roulette-word').textContent='•••••';say('roulette-clue','The selected player is solving the word.');$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;}else say('roulette-turn',room.status.toUpperCase());}
+function challenge(){const p=players.find(x=>x.user_id===user.id);if(!p||current)return;const pool=words.filter(w=>w[0].length>=4+Math.min(4,Math.floor(p.streak/2))*2);current=pool[Math.floor(Math.random()*pool.length)];$('roulette-word').textContent=current[0].split('').map((c,i)=>i===0||i===current[0].length-1?c:'_').join(' ');say('roulette-clue',current[1]);say('roulette-turn','YOUR TURN · STREAK x'+p.streak);$('roulette-lives').textContent='♥ '.repeat(p.lives);$('roulette-answer').disabled=false;$('roulette-submit').disabled=false;$('roulette-answer').value='';seconds=20;say('roulette-timer','00:20');clearInterval(timer);timer=setInterval(()=>{seconds--;say('roulette-timer','00:'+String(Math.max(0,seconds)).padStart(2,'0'));if(seconds<=0)miss('TIME UP!');},1000);}
+async function miss(reason){if(!current)return;const answer=current[0];current=null;clearInterval(timer);const p=players.find(x=>x.user_id===user.id);await db.from('room_players').update({lives:Math.max(0,p.lives-1),streak:0}).eq('room_id',room.id).eq('user_id',user.id);say('roulette-feedback',reason+' · WORD: '+answer);$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;await refresh();}
+async function submit(){if(!current)return;const guess=$('roulette-answer').value.trim().toUpperCase(),p=players.find(x=>x.user_id===user.id);if(guess===current[0]){clearInterval(timer);const points=100+p.streak*25;current=null;await db.from('room_players').update({score:p.score+points,streak:p.streak+1}).eq('room_id',room.id).eq('user_id',user.id);say('roulette-feedback','★ CORRECT! +'+points+' POINTS');$('roulette-answer').disabled=true;$('roulette-submit').disabled=true;await refresh();}else{say('roulette-feedback','NOT QUITE! TRY AGAIN.');$('roulette-answer').select();}}
+$('roulette-save-profile').onclick=async()=>{if(user)await profile();};
+$('roulette-create').onclick=async()=>{if(!user||!await profile())return;const code=Math.random().toString(36).slice(2,8).toUpperCase(),r=await db.from('game_rooms').insert({room_code:code,host_id:user.id}).select().single();if(r.error){say('roulette-status',r.error.message);return;}await enter(r.data);};
+$('roulette-join').onclick=async()=>{if(!user||!await profile())return;const r=await db.from('game_rooms').select('*').eq('room_code',$('roulette-code').value.trim().toUpperCase()).maybeSingle();if(r.error||!r.data){say('roulette-status','ROOM NOT FOUND. CHECK THE CODE.');return;}await enter(r.data);};
+$('roulette-spin').onclick=async()=>{if(!room||room.host_id!==user.id||spinning)return;const alive=players.filter(p=>p.lives>0);if(!alive.length){await db.from('game_rooms').update({status:'finished'}).eq('id',room.id);return;}spinning=true;$('roulette-spin').disabled=true;const selected=alive[Math.floor(Math.random()*alive.length)];$('roulette-wheel').style.transform='rotate('+(1440+Math.random()*360)+'deg)';setTimeout(async()=>{await db.from('game_rooms').update({status:'playing',current_player_id:selected.user_id,turn_deadline:new Date(Date.now()+20000).toISOString()}).eq('id',room.id);spinning=false;},4000);};
+$('roulette-submit').onclick=submit;$('roulette-answer').addEventListener('keydown',e=>{if(e.key==='Enter')submit();});init();
 })();
 </script>
 </body>
