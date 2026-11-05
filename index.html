@@ -212,7 +212,16 @@
     .visual-nav { display:flex; justify-content:flex-end; gap:7px; margin-top:.9rem; pointer-events:auto; }
     .visual-nav button { width:19px; height:3px; padding:0; border:0; background:rgba(245,242,235,.27); cursor:pointer; transition:width 200ms ease,background 200ms ease; }
     .visual-nav button[aria-current="step"] { width:34px; background:#F45B83; }
-    .visual-fallback { position:absolute; inset:0; display:none; place-items:center; padding:2rem; color:#A9AFBF; text-align:center; font:700 .7rem/1.6 Consolas,monospace; letter-spacing:.1em; }
+    .visual-fallback { position:absolute; inset:0; display:none; grid-template-rows:1fr auto; align-content:center; justify-items:center; gap:1rem; overflow:hidden; padding:2rem; color:#A9AFBF; text-align:center; font:700 .7rem/1.6 Consolas,monospace; letter-spacing:.1em; }
+    .visual-fallback-art { position:relative; width:min(70%,340px); height:min(70vw,340px); aspect-ratio:1; perspective:900px; }
+    .visual-fallback-orbit { position:absolute; inset:12%; border:1px solid rgba(244,91,131,.55); border-radius:50%; transform:rotateX(64deg) rotateZ(-24deg); box-shadow:0 0 28px rgba(244,91,131,.12); animation:fallbackOrbit 16s linear infinite; }
+    .visual-fallback-orbit::before { content:""; position:absolute; top:9%; right:12%; width:10px; height:10px; border-radius:50%; background:#44D6FF; box-shadow:0 0 22px #44D6FF; }
+    .visual-fallback-console { position:absolute; top:50%; left:50%; width:64%; height:29%; border:1px solid rgba(232,234,240,.55); border-radius:17px; background:linear-gradient(135deg,#718098 0%,#303B52 42%,#111827 100%); box-shadow:0 25px 55px rgba(0,0,0,.42),0 0 32px rgba(68,214,255,.14); transform:translate(-50%,-50%) rotateX(58deg) rotateZ(-18deg); transform-style:preserve-3d; animation:fallbackFloat 4.8s ease-in-out infinite; }
+    .visual-fallback-console::before { content:""; position:absolute; inset:13% 12%; border:1px solid rgba(245,242,235,.32); border-radius:10px; background:linear-gradient(145deg,rgba(68,214,255,.18),rgba(244,91,131,.13)); }
+    .visual-fallback-console::after { content:""; position:absolute; left:18%; bottom:17%; width:8px; height:8px; border-radius:50%; background:#F45B83; box-shadow:0 0 16px #F45B83; }
+    .visual-fallback-message { position:relative; z-index:1; max-width:34ch; margin:0; }
+    @keyframes fallbackOrbit { to { transform:rotateX(64deg) rotateZ(336deg); } }
+    @keyframes fallbackFloat { 0%,100% { transform:translate(-50%,-50%) rotateX(58deg) rotateZ(-18deg); } 50% { transform:translate(-50%,-55%) rotateX(58deg) rotateZ(-7deg); } }
     .scrolly-intro { display:flex; flex-direction:column; justify-content:center; min-height:76svh; padding:2rem .5rem 3rem 0; }
     .scrolly-intro .chapter-tag { color:#F45B83; }
     .scrolly-intro h3 { max-width:10ch; margin:1.1rem 0; color:#F5F2EB; font:900 clamp(2.8rem,5vw,5.2rem)/.94 var(--heading-font); letter-spacing:-.08em; }
@@ -403,6 +412,7 @@
       .hero-spark-one,.device-art { animation:none; }
       .hero-art,.menu-item,.menu-arrow,.member-card,.stage-card,.timeline-track,.progress-fill { transition:none; }
       .history-chapter,.visual-progress span,.visual-nav button { transition:none; }
+      .visual-fallback-art,.visual-fallback-orbit,.visual-fallback-console { animation:none !important; }
     }
   
 .game-spotlight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
@@ -837,7 +847,7 @@
           </div>
           <aside class="scrolly-visual" aria-label="Live three-dimensional gaming hardware scene">
             <canvas id="history-webgl" aria-label="Three-dimensional scene that changes as you scroll"></canvas>
-            <div class="visual-fallback" id="visual-fallback">A WebGL-capable browser is needed to display this 3D prototype.</div>
+            <div class="visual-fallback" id="visual-fallback" role="status" aria-live="polite"><div class="visual-fallback-art" aria-hidden="true"><div class="visual-fallback-orbit"></div><div class="visual-fallback-console"></div></div><p class="visual-fallback-message">3D is unavailable in this browser. Showing an animated display instead.</p></div>
             <div class="visual-shade" aria-hidden="true"></div>
             <div class="visual-hud">
               <div class="visual-topline"><span>PRESS START / <strong>3D ARCHIVE</strong></span><span>SCROLL-SCRUBBED</span></div>
@@ -1583,7 +1593,7 @@
       function shader(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
       let prog;
       try{prog=gl.createProgram();gl.attachShader(prog,shader(gl.VERTEX_SHADER,vs));gl.attachShader(prog,shader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw Error('link');}
-      catch(e){canvas.hidden=true;fallback.style.display='grid';fallback.textContent='THE 3D VIEW COULD NOT START IN THIS BROWSER.';return;}
+      catch(e){canvas.hidden=true;fallback.style.display='grid';const message=fallback.querySelector('.visual-fallback-message');if(message)message.textContent='THE 3D VIEW COULD NOT START IN THIS BROWSER. SHOWING AN ANIMATED DISPLAY INSTEAD.';return;}
       gl.useProgram(prog);
       const L={p:gl.getAttribLocation(prog,'aP'),n:gl.getAttribLocation(prog,'aN'),m:gl.getUniformLocation(prog,'uM'),vp:gl.getUniformLocation(prog,'uVP'),c:gl.getUniformLocation(prog,'uC'),a:gl.getUniformLocation(prog,'uA')};
       function buffer(pos,nor){const p=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,p);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(pos),gl.STATIC_DRAW);const n=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,n);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(nor),gl.STATIC_DRAW);return{p,n,count:pos.length/3};}
@@ -1640,6 +1650,7 @@
       raf=requestAnimationFrame(tick);
     })();
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
   <script>
 (() => {
   const base = document.getElementById('history-webgl');
@@ -1710,8 +1721,20 @@
     if (!response.ok) throw new Error(`Could not find ${assetUrl.pathname} (${response.status}).`);
     let buffer = await response.arrayBuffer();
     if (fileName.endsWith('.gz')) {
-      if (!('DecompressionStream' in window)) throw new Error('This browser does not support gzip decompression.');
-      buffer = await new Response(new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+      if (typeof DecompressionStream === 'function') {
+        try {
+          buffer = await new Response(new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+        } catch (nativeError) {
+          if (!window.pako || typeof window.pako.ungzip !== 'function') throw nativeError;
+          const inflated = window.pako.ungzip(new Uint8Array(buffer));
+          buffer = inflated.buffer.slice(inflated.byteOffset, inflated.byteOffset + inflated.byteLength);
+        }
+      } else if (window.pako && typeof window.pako.ungzip === 'function') {
+        const inflated = window.pako.ungzip(new Uint8Array(buffer));
+        buffer = inflated.buffer.slice(inflated.byteOffset, inflated.byteOffset + inflated.byteLength);
+      } else {
+        throw new Error('This browser does not support gzip decompression and the fallback decoder is unavailable.');
+      }
     }
 
     const header = new DataView(buffer);
