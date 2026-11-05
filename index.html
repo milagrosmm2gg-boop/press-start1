@@ -1715,8 +1715,20 @@
     m[0]=f/aspect;m[5]=f;m[10]=(far+near)*q;m[11]=-1;m[14]=2*far*near*q;return m;
   }
 
+  // These original models are stored in the repository root; the remaining
+  // models are inside /assets. Keep both locations explicit so every GLB resolves.
+  const rootModelFiles = new Set([
+    'osciloscopio2.glb.gz',
+    'ARCADE1.glb.gz',
+    'ATARI.glb.gz',
+    'nes1.glb.gz',
+    'ps11.glb.gz',
+    'ps33.glb.gz'
+  ]);
+
   async function readGlb(fileName) {
-    const assetUrl = new URL('assets/' + fileName, document.baseURI);
+    const modelPath = rootModelFiles.has(fileName) ? fileName : 'assets/' + fileName;
+    const assetUrl = new URL(modelPath, document.baseURI);
     const response = await fetch(assetUrl, { cache: 'force-cache' });
     if (!response.ok) throw new Error(`Could not find ${assetUrl.pathname} (${response.status}).`);
     let buffer = await response.arrayBuffer();
